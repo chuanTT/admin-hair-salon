@@ -7,6 +7,7 @@ import Users from "@/pages/Users"
 import Blog from "@/pages/Blog"
 import AddUser from "@/pages/Users/AddUser"
 import EditUser from "@/pages/Users/EditUser"
+import Login from "@/pages/Login"
 
 const router: RouteObject[] = [
   {
@@ -50,6 +51,11 @@ const router: RouteObject[] = [
         element: <Blog />
       }
     ]
+  },
+
+  {
+    path: config.router.login,
+    element: <Login />
   }
 ]
 

@@ -1,5 +1,7 @@
+import { sliceRouteDynamic } from "@/common/functions"
 import { iconTypeEvent } from "@/components/Button"
 import { typeEvent, typeEventClick } from "@/types"
+import config from "."
 
 export const EditFuc: typeEvent = {
   id: "edit",
@@ -7,7 +9,8 @@ export const EditFuc: typeEvent = {
   customClass: "text-slate-400 hover:text-slate-500",
   key: "id",
   isViews: true,
-  type: iconTypeEvent.edit
+  type: iconTypeEvent.edit,
+  to: sliceRouteDynamic(config.router.editUser)
 }
 
 export const DeteleFuc: typeEvent = {

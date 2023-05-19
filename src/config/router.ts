@@ -4,7 +4,8 @@ const router = {
   user: "/users",
   addUser: "add-user",
   editUser: "edit-user/:id",
-  blog: "/blog"
+  blog: "/blog",
+  login: "/login"
 }
 
 export default router

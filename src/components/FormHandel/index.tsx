@@ -39,11 +39,11 @@ interface FormHandelProps {
   isEdit?: boolean
   defaultValues?: typeObject
   nameTable?: string
-  id?: number
+  id?: number | string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   schema?: ObjectSchema<any>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callApi: (url: string | FormData) => Promise<AxiosResponse<any, any>>
+  callApi: (url: any) => Promise<AxiosResponse<any, any>>
   errorFuc?: (resert: UseFormReturn["reset"]) => void
   closeFuncSucc?: (obj: {
     propForm?: UseFormReturn
@@ -63,8 +63,11 @@ interface FormHandelProps {
   customValuesData?: (data: any, result: any) => void
   removeClassForm?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callApiEdit?: (url: number | string) => Promise<AxiosResponse<any, any>>
+  callApiEdit?: (url: string) => Promise<AxiosResponse<any, any>>
   customUrl?: (obj: customUrlProps) => string | void | undefined
+  isFormData?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  sussFuc?: (data: any) => void
 }
 
 const FormHandel: FC<FormHandelProps> = (prop) => {
@@ -87,9 +90,10 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
     customDefaultValue,
     removeClassForm,
     errorFuc,
-    // sussFuc,
+    sussFuc,
     customValue,
-    closeFuncSucc
+    closeFuncSucc,
+    isFormData
   } = prop
   // init
   const [isPending, setIsPending] = useState(false)
@@ -120,7 +124,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
   }
 
   const { data, mutate } = useMutation({
-    mutationFn: (values: string | FormData) => {
+    mutationFn: (values: string | FormData | typeObject) => {
       return callApi(values)
     },
     onError: (error) => {
@@ -141,6 +145,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
       } else {
         msgToast.current = MsgType(msgObj?.erorr ?? "Thêm thành công", false)
         nameTable && QueryClient.invalidateQueries([nameTable])
+        typeof sussFuc === "function" && sussFuc(context)
       }
       ReRender()
     }
@@ -207,7 +212,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
 
     // call api
     const customData = (typeof customValuesData === "function" && customValuesData(values, result)) || values
-    const data = isEdit ? customData : SendFormData(customData)
+    const data = isEdit ? customData : isFormData ? SendFormData(customData) : customData
     setIsPending(true)
     mutate(data)
   }
@@ -240,7 +245,11 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
         }`}
         // [&>*]:lg:!w-[84%] [&>*]:max-lg:!w-full
       >
-        {isEdit && !isFetched && <Loading />}
+        {isEdit && !isFetched && (
+          <div className="flex justify-center [&>*]:scale-50 items-start">
+            <Loading />
+          </div>
+        )}
         {isEdit
           ? isFetched && children({ propForm, isPending, result: result || {}, setResertForm })
           : children({ propForm, isPending, result: result || {}, setResertForm })}

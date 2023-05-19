@@ -1,4 +1,5 @@
 import axios from "axios"
+import config from "@/config"
 // import { lsAuth, lsRemoveAuth } from "../utils/Utils";
 
 // export const API_BASE = process.env.API_BASE
@@ -12,15 +13,17 @@ const axiosClient = axios.create({
 
 // Add a request interceptor
 axiosClient.interceptors.request.use(
-  function (config) {
-    // Do something before request is sent
-    // const auth = lsAuth();
+  function (configInterceptors) {
+    if (configInterceptors.url !== config.router.login) {
+      // Do something before request is sent
+      const token = localStorage?.getItem("token")
 
-    // if (auth?.apiToken) {
-    config.headers.Authorization = `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiaWF0IjoxNjg0MDUxNDE3LCJleHAiOjE3MjAwNTE0MTd9.4yz6xQwn_IINtuwQNSuqfJBSxqxPghO3M5DBwGcr-rE`
-    // }
+      if (token) {
+        configInterceptors.headers.Authorization = `Bearer ${token}`
+      }
+    }
 
-    return config
+    return configInterceptors
   },
   function (error) {
     // Do something with request error

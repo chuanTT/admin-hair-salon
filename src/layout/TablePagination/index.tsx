@@ -6,6 +6,7 @@ import Pagination from "@/components/Pagination"
 import Table from "@/components/Table"
 import Loading from "@/components/Loading"
 import ModalDeleteCus from "@/components/ModalDeleteCus"
+import Portal from "@/components/Portal"
 
 const TablePaginationContext = createContext({})
 
@@ -83,17 +84,17 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
   return (
     <TablePaginationContext.Provider value={values}>
       {isDelete && callApiDelete && (
-        // <Portal>
-        <ModalDeleteCus
-          id={idItem.current || 0}
-          isOpen={isOpen}
-          setIsOpen={setIsOpen}
-          callApiDelete={callApiDelete}
-          sussFucMsg={() => {
-            invalidateQueriesQueryClient()
-          }}
-        />
-        // </Portal>
+        <Portal>
+          <ModalDeleteCus
+            id={idItem.current || 0}
+            isOpen={isOpen}
+            setIsOpen={setIsOpen}
+            callApiDelete={callApiDelete}
+            sussFucMsg={() => {
+              invalidateQueriesQueryClient()
+            }}
+          />
+        </Portal>
       )}
 
       <Breadcrumb>

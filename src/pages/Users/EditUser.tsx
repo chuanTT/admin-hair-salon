@@ -1,11 +1,12 @@
 import { useRef } from "react"
 import * as Yup from "yup"
-import { AddUser as AddUserApi } from "@/api/usersApi"
+import { AddUser as AddUserApi, getUser, tableUser } from "@/api/usersApi"
 import Breadcrumb from "@/components/Breadcrumb"
 import Button from "@/components/Button"
 import { InputField } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
+import { useParams } from "react-router-dom"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -17,7 +18,15 @@ const schema = Yup.object().shape({
     .oneOf([Yup.ref("password")], "Mật khẩu không khớp")
 })
 
+const defaultValues = {
+  avatar: "avatar",
+  full_name: "full_name",
+  user_name: "user_name"
+}
+
 const EditUser = () => {
+  const { id } = useParams()
+  console.log(id)
   const ImgRef = useRef<refListImage>(null)
 
   return (
@@ -31,6 +40,11 @@ const EditUser = () => {
           propForm && propForm.reset()
           ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
         }}
+        defaultValues={defaultValues}
+        isEdit
+        nameTable={tableUser}
+        id={id}
+        callApiEdit={getUser}
       >
         {({ propForm, isPending }) => {
           const {
@@ -62,30 +76,7 @@ const EditUser = () => {
                   isRequire
                   isError
                   errors={errors}
-                />
-
-                <InputField
-                  type="password"
-                  classInputContainer="col-md-6 mb-3"
-                  title="Mật khẩu"
-                  placeholder="Nhập mật khẩu"
-                  name="password"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                />
-
-                <InputField
-                  type="password"
-                  classInputContainer="col-md-6 mb-3"
-                  title="Xác nhận mật khẩu"
-                  placeholder="Nhập xác nhận mật khẩu"
-                  name="confirm_password"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
+                  readOnly
                 />
 
                 <ListImagesUploadFile

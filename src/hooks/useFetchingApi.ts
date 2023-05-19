@@ -1,4 +1,3 @@
-import { AxiosResponse } from "axios"
 import QueryRequest from "@/api/builder/QueryRequest"
 import { UseQueryOptions, useQuery, useQueryClient } from "@tanstack/react-query"
 //   import QueryRequest from "@/api/builder/QueryRequest";
@@ -15,13 +14,14 @@ export interface customUrlProps {
   [key: string]: string | number | undefined | QueryRequest | typeObject
 }
 
+
 interface useFetchingApiParmeter {
   nameTable: string
   page?: number
   limit?: number
   customUrl?: (props: customUrlProps) => void | string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  CallAPi?: (url: string) => Promise<AxiosResponse<any, any>>
+  CallAPi?: (url: string) => Promise<any>
   update?: boolean
   configCus?: UseQueryOptions
   isConfig?: boolean

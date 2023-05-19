@@ -164,7 +164,7 @@ const formatDate = (day: string | number, strFormat = "DD/MM/YYYY") => {
 }
 
 const numberMoneyVND = (num: string | number) => {
-  let t = '0'
+  let t = "0"
   if (num) {
     t = num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".")
   }
@@ -173,36 +173,51 @@ const numberMoneyVND = (num: string | number) => {
 
 const convertNumber = (value: number | string) => {
   if (value) {
-      value = value.toString().replace(/[.]/g, '');
-      value = value.trim();
-      value = Number(value);
+    value = value.toString().replace(/[.]/g, "")
+    value = value.trim()
+    value = Number(value)
   }
 
-  const regex = /^\d*$/;
-  const check = regex.test(value.toString());
+  const regex = /^\d*$/
+  const check = regex.test(value.toString())
   return {
-      value,
-      check,
-  };
-};
-
-function convertViToEn(str: number | string, toUpperCase = false) {
-  str = String(str);
-  str = str.toLowerCase();
-  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, 'a');
-  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, 'e');
-  str = str.replace(/ì|í|ị|ỉ|ĩ/g, 'i');
-  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, 'o');
-  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, 'u');
-  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, 'y');
-  str = str.replace(/đ/g, 'd');
-  // Some system encode vietnamese combining accent as individual utf-8 characters
-  str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, ''); // Huyền sắc hỏi ngã nặng
-  str = str.replace(/\u02C6|\u0306|\u031B/g, ''); // Â, Ê, Ă, Ơ, Ư
-
-  return toUpperCase ? str.toUpperCase() : str;
+    value,
+    check
+  }
 }
 
+function convertViToEn(str: number | string, toUpperCase = false) {
+  str = String(str)
+  str = str.toLowerCase()
+  str = str.replace(/à|á|ạ|ả|ã|â|ầ|ấ|ậ|ẩ|ẫ|ă|ằ|ắ|ặ|ẳ|ẵ/g, "a")
+  str = str.replace(/è|é|ẹ|ẻ|ẽ|ê|ề|ế|ệ|ể|ễ/g, "e")
+  str = str.replace(/ì|í|ị|ỉ|ĩ/g, "i")
+  str = str.replace(/ò|ó|ọ|ỏ|õ|ô|ồ|ố|ộ|ổ|ỗ|ơ|ờ|ớ|ợ|ở|ỡ/g, "o")
+  str = str.replace(/ù|ú|ụ|ủ|ũ|ư|ừ|ứ|ự|ử|ữ/g, "u")
+  str = str.replace(/ỳ|ý|ỵ|ỷ|ỹ/g, "y")
+  str = str.replace(/đ/g, "d")
+  // Some system encode vietnamese combining accent as individual utf-8 characters
+  str = str.replace(/\u0300|\u0301|\u0303|\u0309|\u0323/g, "") // Huyền sắc hỏi ngã nặng
+  str = str.replace(/\u02C6|\u0306|\u031B/g, "") // Â, Ê, Ă, Ơ, Ư
+
+  return toUpperCase ? str.toUpperCase() : str
+}
+
+const sliceRouteDynamic = (url: string) => {
+  const regex = /\/:.+/
+  const isVaild = regex.test(url)
+
+  let str = url
+  if (isVaild) {
+    const index = url.search(regex)
+
+    if (index !== -1) {
+      str = url.substring(0, index)
+    }
+  }
+
+  return str
+}
 
 export {
   requestAnimationFrameAccordion,
@@ -216,5 +231,6 @@ export {
   formatDate,
   numberMoneyVND,
   convertNumber,
-  convertViToEn
+  convertViToEn,
+  sliceRouteDynamic
 }

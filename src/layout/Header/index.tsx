@@ -1,15 +1,54 @@
-import images from "@/assets/img"
+import { useEffect } from "react"
+import { Link, NavLink } from "react-router-dom"
+import { RiMenu2Fill } from "react-icons/ri"
+import { BiUser } from "react-icons/bi"
+import { HiPower } from "react-icons/hi2"
 import "./header.css"
+import Images from "@/components/Images"
+import { useProtectedLayout } from "../ProtectedLayout"
 
 const Header = () => {
+  const { data } = useProtectedLayout()
+
+  useEffect(() => {
+    const initPadding = () => {
+      const Header = document.getElementById("layout-navbar")
+      const content = document.querySelector(".container") as HTMLDivElement
+      const y = window.scrollY
+      const wWindown = window.innerWidth
+
+      if (Header && content) {
+        const { height: heaightHeader } = Header.getBoundingClientRect()
+        const maxHeight = heaightHeader + 12
+        if (wWindown >= 1200) {
+          let topH = "12px"
+          if (maxHeight <= y) {
+            topH = "0px"
+          }
+          Header.style.top = topH
+        }
+
+        content.style.marginTop = `${maxHeight}px`
+      }
+    }
+
+    initPadding()
+
+    window.addEventListener("scroll", initPadding)
+
+    return () => {
+      window.removeEventListener("scroll", initPadding)
+    }
+  }, [])
+
   return (
     <nav
-      className="layout-navbar container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme"
+      className="layout-navbar max-1200:!top-0 max-1200:!w-full 1200:!content !fixed 1200:right-[26px] transition-all duration-150 container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme flex items-center"
       id="layout-navbar"
     >
       <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
-        <div className="nav-item nav-link px-0 me-xl-4">
-          <i className="bx bx-menu bx-sm"></i>
+        <div className="nav-item nav-link px-0 me-xl-4 text-xl">
+          <RiMenu2Fill />
         </div>
       </div>
 
@@ -18,59 +57,52 @@ const Header = () => {
           <li className="nav-item navbar-dropdown dropdown-user dropdown">
             <div className="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
               <div className="avatar avatar-online">
-                <img src={images.defaultAvatar} alt="avatar" className="w-px-40 h-auto rounded-circle" />
+                <Images src={data?.avatar} w={"100%"} h={"100%"} alt="avatar" classNameImg="w-px-40 h-auto" isRounded />
               </div>
             </div>
-            {/* <ul className="dropdown-menu dropdown-menu-end">
+            <ul className="dropdown-menu right-0">
               <li>
-                <a className="dropdown-item" href="#">
+                <NavLink className="dropdown-item" to="#">
                   <div className="d-flex">
                     <div className="flex-shrink-0 me-3">
                       <div className="avatar avatar-online">
-                        <img src="../assets/img/avatars/1.png" alt className="w-px-40 h-auto rounded-circle" />
+                        <Images
+                          src={data?.avatar}
+                          w={"100%"}
+                          h={"100%"}
+                          alt="avatar"
+                          classNameImg="w-px-40 h-auto"
+                          isRounded
+                        />
                       </div>
                     </div>
                     <div className="flex-grow-1">
-                      <span className="fw-semibold d-block">John Doe</span>
-                      <small className="text-muted">Admin</small>
+                      <span className="fw-semibold d-block">{data?.full_name || "Mặc định"}</span>
+                      <small className="text-muted">{data?.role?.name}</small>
                     </div>
                   </div>
-                </a>
+                </NavLink>
               </li>
               <li>
                 <div className="dropdown-divider"></div>
               </li>
               <li>
-                <a className="dropdown-item" href="#">
-                  <i className="bx bx-user me-2"></i>
-                  <span className="align-middle">My Profile</span>
-                </a>
+                <Link className="dropdown-item !flex items-center" to="#">
+                  <div className="mr-2 text-lg">
+                    <BiUser />
+                  </div>
+                  <span className="align-middle">Thông tin cá nhân</span>
+                </Link>
               </li>
               <li>
-                <a className="dropdown-item" href="#">
-                  <i className="bx bx-cog me-2"></i>
-                  <span className="align-middle">Settings</span>
+                <a className="dropdown-item !flex items-center" href="auth-login-basic.html">
+                  <div className="mr-2 text-lg">
+                    <HiPower />
+                  </div>
+                  <span className="align-middle">Đăng xuất</span>
                 </a>
               </li>
-              <li>
-                <a className="dropdown-item" href="#">
-                  <span className="d-flex align-items-center align-middle">
-                    <i className="flex-shrink-0 bx bx-credit-card me-2"></i>
-                    <span className="flex-grow-1 align-middle">Billing</span>
-                    <span className="flex-shrink-0 badge badge-center rounded-pill bg-danger w-px-20 h-px-20">4</span>
-                  </span>
-                </a>
-              </li>
-              <li>
-                <div className="dropdown-divider"></div>
-              </li>
-              <li>
-                <a className="dropdown-item" href="auth-login-basic.html">
-                  <i className="bx bx-power-off me-2"></i>
-                  <span className="align-middle">Log Out</span>
-                </a>
-              </li>
-            </ul> */}
+            </ul>
           </li>
         </ul>
       </div>

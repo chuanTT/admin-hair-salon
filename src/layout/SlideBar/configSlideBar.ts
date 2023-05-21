@@ -1,6 +1,6 @@
 import { BsFillPeopleFill } from "react-icons/bs"
 import { FaProductHunt } from "react-icons/fa"
-import { IoHome } from "react-icons/io5"
+import { IoHome, IoSettingsSharp } from "react-icons/io5"
 import { GiOpenBook } from "react-icons/gi"
 
 import config from "@/config"
@@ -29,6 +29,10 @@ const configSildeBar: configSildeBarList[] = [
       {
         title: "Thêm nhân viên",
         to: config.router.addUser
+      },
+      {
+        title: "Chỉnh sửa nhân viên",
+        to: config.router.editUser
       }
     ]
   },
@@ -59,6 +63,18 @@ const configSildeBar: configSildeBarList[] = [
       {
         title: "Thêm viết",
         to: "add"
+      }
+    ]
+  },
+
+  {
+    title: "Cài đặt hệ thống",
+    to: config.router.settings,
+    icon: IoSettingsSharp,
+    children: [
+      {
+        to: config.router.permission,
+        title: "Phân quyền"
       }
     ]
   }

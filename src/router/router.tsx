@@ -8,6 +8,8 @@ import Blog from "@/pages/Blog"
 import AddUser from "@/pages/Users/AddUser"
 import EditUser from "@/pages/Users/EditUser"
 import Login from "@/pages/Login"
+import Permission from "@/pages/Settings/Permission"
+import NotFound from "@/pages/NotFound"
 
 const router: RouteObject[] = [
   {
@@ -17,6 +19,7 @@ const router: RouteObject[] = [
         <Outlet />
       </DefaultLayout>
     ),
+    errorElement: <NotFound />,
     children: [
       {
         index: true,
@@ -49,6 +52,16 @@ const router: RouteObject[] = [
       {
         path: config.router.blog,
         element: <Blog />
+      },
+
+      {
+        path: config.router.settings,
+        children: [
+          {
+            path: config.router.permission,
+            element: <Permission />
+          }
+        ]
       }
     ]
   },

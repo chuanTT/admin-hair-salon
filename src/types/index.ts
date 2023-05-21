@@ -169,3 +169,15 @@ export interface TbodyProps {
   provider?: TypeValue
 }
 
+export interface RoleDefault {
+  id?: number
+  name?: string
+}
+
+export interface PermissionDefault extends RoleDefault {
+  events?: RoleDefault[]
+}
+
+export interface RoleResponsive extends RoleDefault {
+  permissions: PermissionDefault[]
+}

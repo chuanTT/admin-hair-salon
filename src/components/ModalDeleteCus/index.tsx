@@ -59,9 +59,9 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
     onSuccess: (context: any) => {
       msgToast.current = MsgType(msgObj?.suss ?? "Xóa thành công", false)
       if (context) {
-        if (context?.code === 400) {
+        if (context?.code === 400 || context?.code === 403) {
           msgToast.current = MsgType(context?.msg ?? msgObj?.erorr ?? "Xóa thất bại")
-        }
+        } 
       }
 
       msgToast.current.type === TypeToast.SUCCESS && typeof SuccessModal == "function" && SuccessModal()

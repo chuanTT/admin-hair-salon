@@ -14,7 +14,8 @@ const MenuItem: FC<MenuItemProps> = ({ item }) => {
   const Icon = item?.icon || Fragment
   const location = useLocation()
   const path = item?.to || config.router.home
-  const pathname = location?.pathname?.substring(0, path.length)
+  const pathname =
+    path.length === config.router.home.length ? location?.pathname : location?.pathname?.substring(0, path.length)
   const active = pathname === path
 
   return (
@@ -31,6 +32,20 @@ const MenuItem: FC<MenuItemProps> = ({ item }) => {
           parent?.classList.remove("open")
         }
       }}
+      callBackUpdate={(toggleAccordion, activeToggle) => {
+        if (active) {
+          if (checkChildren) {
+            if (!activeToggle) {
+              toggleAccordion()
+            }
+          }
+        } else {
+          if (activeToggle && checkChildren) {
+            toggleAccordion()
+          }
+        }
+      }}
+      isUpdate={active}
     >
       {({ refButton, refContent, toggleAccordion }) => {
         return (
@@ -60,7 +75,7 @@ const MenuItem: FC<MenuItemProps> = ({ item }) => {
                     const acceptPath = path === config.router.home
                     const pathChild = `${path}${child?.to ? (acceptPath ? child.to : "/" + child.to) : ""}`
                     return (
-                      <NavLink to={pathChild} className="menu-item" key={`${item.title}-${count}`}>
+                      <NavLink end to={pathChild} className="menu-item" key={`${item.title}-${count}`}>
                         <span className="menu-link">
                           <div data-i18n="Without navbar">{child.title}</div>
                         </span>

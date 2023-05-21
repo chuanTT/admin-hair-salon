@@ -219,6 +219,12 @@ const sliceRouteDynamic = (url: string) => {
   return str
 }
 
+const NowDate = () => {
+  const d = moment().format("DD/MM/YYYY")
+
+  return d
+}
+
 export {
   requestAnimationFrameAccordion,
   decrementHeight,
@@ -232,5 +238,6 @@ export {
   numberMoneyVND,
   convertNumber,
   convertViToEn,
-  sliceRouteDynamic
+  sliceRouteDynamic,
+  NowDate
 }

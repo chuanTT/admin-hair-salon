@@ -8,7 +8,7 @@ import MenuItem from "./MenuItem"
 const SlideBar = () => {
   return (
     <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
-      <div className="app-brand demo">
+      <div className="app-brand demo mb-4 pt-5 flex justify-center items-center">
         <NavLink to={config.router.home} className="app-brand-link">
           <span className="app-brand-logo demo">
             <svg width="25" viewBox="0 0 25 42" version="1.1" xmlns="http://www.w3.org/2000/svg">
@@ -69,7 +69,7 @@ const SlideBar = () => {
 
       <div className="menu-inner-shadow"></div>
 
-      <ul className="menu-inner py-1">
+      <ul className="menu-inner py-1 overflow-y-auto overflow-x-hidden">
         {configSildeBar?.map((item, index) => {
           return (
             <Fragment key={index}>

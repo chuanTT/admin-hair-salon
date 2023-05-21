@@ -1,4 +1,4 @@
-import { useCallback, useRef, useState, FC, MutableRefObject } from "react"
+import { useCallback, useRef, useState, FC, MutableRefObject, useEffect } from "react"
 import { decrementHeight, incrementHeight, requestAnimationFrameAccordion } from "@/common/functions"
 
 export interface AccordionWapperProps {
@@ -11,13 +11,18 @@ export interface AccordionWapperProps {
   customProgressOpen?: (element: HTMLDivElement | null | undefined) => void
   customFucOpenDone?: (element: HTMLDivElement | null) => void
   customFucCloseDone?: (element: HTMLDivElement | null) => void
+  callBackUpdate?: (toggleAccordion: () => void, active: boolean) => void
+  isUpdate?: boolean
+
 }
 
 const AccordionWapper: FC<AccordionWapperProps> = ({
   children,
   customFucOpenDone,
   customFucCloseDone,
-  customProgressOpen
+  customProgressOpen,
+  callBackUpdate,
+  isUpdate
 }) => {
   const [active, setActive] = useState(false)
   const accordionContentRef = useRef<HTMLDivElement | null>(null)
@@ -78,6 +83,13 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
     updateUi(expanded)
     setActive(expanded)
   }, [active, updateUi])
+
+  useEffect(() => {
+    if(typeof callBackUpdate === "function") {
+      callBackUpdate(toggleAccordion, active)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isUpdate])
 
   return <>{children({ refButton: divActive, active, toggleAccordion, refContent: accordionContentRef })}</>
 }

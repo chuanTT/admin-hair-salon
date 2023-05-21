@@ -1,12 +1,13 @@
 import router from "./router"
-import { configProduct, configUsers, configBlog } from "./configTable"
+import { configProduct, configUsers, configBlog, configPermission } from "./configTable"
 
 const config = {
   router,
   table: {
     configProduct,
     configUsers,
-    configBlog
+    configBlog,
+    configPermission
   },
 }
 

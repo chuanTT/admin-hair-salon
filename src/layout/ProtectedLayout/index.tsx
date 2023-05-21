@@ -1,7 +1,7 @@
 import { useNavigate } from "react-router-dom"
 import config from "@/config"
 import { FC, createContext, useContext, useEffect } from "react"
-import { defaultProps } from "@/types"
+import { RoleResponsive, defaultProps } from "@/types"
 import useFetchingApi from "@/hooks/useFetchingApi"
 import { verifyToken } from "@/api/authApi"
 import Loading from "@/components/Loading"
@@ -13,6 +13,11 @@ interface userProps {
   user_name?: string
   full_name?: string
   avatar?: string
+  role?: RoleResponsive
+}
+
+interface valueProps {
+  data?: userProps
 }
 
 export interface dataInter {
@@ -45,7 +50,7 @@ const ProtectedLayout: FC<defaultProps> = ({ children }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
 
-  const values = {
+  const values: valueProps = {
     data: data?.data as userProps
   }
 
@@ -62,7 +67,7 @@ const ProtectedLayout: FC<defaultProps> = ({ children }) => {
 }
 
 export const useProtectedLayout = () => {
-  const data = useContext(protectedLayoutContext)
+  const data: valueProps = useContext(protectedLayoutContext)
 
   return data
 }

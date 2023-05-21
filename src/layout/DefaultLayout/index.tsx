@@ -13,7 +13,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
           <div className="layout-page">
             <div className="content-wrapper">
               <Header />
-              <div className="container-xxl flex-grow-1 container-p-y">{children}</div>
+              <div className="container container-xxl flex-grow-1 container-p-y">{children}</div>
             </div>
           </div>
         </div>

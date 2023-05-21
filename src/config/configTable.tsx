@@ -1,4 +1,4 @@
-import { formatDate, numberMoneyVND } from "@/common/functions"
+import { NowDate, formatDate, numberMoneyVND } from "@/common/functions"
 import Images from "@/components/Images"
 import { configProps } from "@/types"
 
@@ -103,4 +103,25 @@ const configBlog: configProps[][] = [
   ]
 ]
 
-export { configProduct, configUsers, configBlog }
+const configPermission: configProps[][] = [
+  [
+    {
+      key: "name",
+      head: "Tên vai trò"
+    },
+
+    {
+      key: "test",
+      head: "Ngày tạo",
+      customValue: NowDate
+    },
+
+    {
+      key: "test",
+      head: "Ngày cập nhật",
+      customValue: NowDate
+    }
+  ]
+]
+
+export { configProduct, configUsers, configBlog, configPermission }

@@ -1,29 +1,33 @@
-'use client';
+"use client"
 
-import { FC, memo } from 'react';
-import Thead from './Thead';
+import { FC, memo } from "react"
+import Thead from "./Thead"
 // import { TableProps } from "../Types";
-import Tbody from './Tbody';
-import { TableProps } from '@/types';
-
-
+import Tbody from "./Tbody"
+import { TableProps } from "@/types"
+import CustomScrollTable from "../CustomScrollTable"
 
 const Table: FC<TableProps> = ({ configDetail, isFuc, isStt, selectCheck, data, configFuc, provider }) => {
-    return (
-        // max-sm:w-[1500px] sm:w-[1400px] 2xl:!w-full
-        <table className="table-auto w-full">
+  return (
+    <CustomScrollTable isNoResult={!(data?.data && Array.isArray(data?.data) && data?.data?.length > 0)}>
+      {(refTable) => {
+        return (
+          <table className="table-auto max-md:w-[1000px]  md:w-[900px] lg:w-[1100px] xl:w-full" ref={refTable}>
             <Thead config={configDetail} isFuc={isFuc} isStt={isStt} selectCheck={selectCheck} />
             <Tbody
-                data={data}
-                config={configDetail}
-                selectCheck={selectCheck}
-                isStt={isStt}
-                isFuc={isFuc}
-                configFuc={configFuc}
-                provider={provider}
+              data={data}
+              config={configDetail}
+              selectCheck={selectCheck}
+              isStt={isStt}
+              isFuc={isFuc}
+              configFuc={configFuc}
+              provider={provider}
             />
-        </table>
-    );
-};
+          </table>
+        )
+      }}
+    </CustomScrollTable>
+  )
+}
 
-export default memo(Table);
+export default memo(Table)

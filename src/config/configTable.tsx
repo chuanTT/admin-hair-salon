@@ -53,12 +53,20 @@ const configUsers: configProps[][] = [
         return (
           <div className="flex items-center">
             <div className="w-12 h-12 rounded-full overflow-hidden mr-3">
-              <Images isRounded src={current?.avatar} alt={current?.full_name}/>
+              <Images isRounded src={current?.avatar} alt={current?.full_name} />
             </div>
             <span className="font-medium">{current?.full_name}</span>
           </div>
         )
       }
+    },
+    {
+      key: "phone",
+      head: "Số điện thoại"
+    },
+    {
+      key: "email",
+      head: "Email"
     },
     {
       key: "user_name",

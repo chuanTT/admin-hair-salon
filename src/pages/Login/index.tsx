@@ -44,9 +44,15 @@ const Login = () => {
                 msgObj={{ erorr: "Đăng nhập thất bại", suss: "Đăng nhập thành công" }}
                 sussFuc={(data) => {
                   if (data?.data) {
-                    console.log(data?.data?.token)
                     localStorage.setItem("token", data?.data?.token)
                     navigate(config.router.home)
+                  }
+                }}
+                errorFuc={(reset) => {
+                  if (typeof reset === "function") {
+                    reset({
+                      password: ""
+                    })
                   }
                 }}
                 schema={schema}

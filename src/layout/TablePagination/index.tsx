@@ -74,7 +74,9 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       id: idItem?.current,
       setPage,
       handelFilter,
-      searchValue
+      searchValue,
+      isOpen,
+      setIsOpen
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])
@@ -136,7 +138,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
 }
 
 export const useTablePagination = () => {
-  const data = useContext(TablePaginationContext)
+  const data: TypeValue  = useContext(TablePaginationContext)
   return data
 }
 

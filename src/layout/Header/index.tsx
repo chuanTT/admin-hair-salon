@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 import { RiMenu2Fill } from "react-icons/ri"
 import { BiUser } from "react-icons/bi"
@@ -9,6 +9,7 @@ import { useProtectedLayout } from "../ProtectedLayout"
 
 const Header = () => {
   const { data } = useProtectedLayout()
+  const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
     const initPadding = () => {
@@ -56,11 +57,15 @@ const Header = () => {
         <ul className="navbar-nav flex-row align-items-center ms-auto">
           <li className="nav-item navbar-dropdown dropdown-user dropdown">
             <div className="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-              <div className="avatar avatar-online">
+              <div className="avatar avatar-online select-none" onClick={() => setIsOpen(!isOpen)} aria-hidden="true">
                 <Images src={data?.avatar} w={"100%"} h={"100%"} alt="avatar" classNameImg="w-px-40 h-auto" isRounded />
               </div>
             </div>
-            <ul className="dropdown-menu right-0">
+            <ul
+              className={`dropdown-menu right-0 z-10 !block transition-all duration-300 ${
+                isOpen ? "opacity-100 visible" : "opacity-0 invisible translate-y-5"
+              }`}
+            >
               <li>
                 <NavLink className="dropdown-item" to="#">
                   <div className="d-flex">

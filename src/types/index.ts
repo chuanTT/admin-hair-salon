@@ -94,17 +94,17 @@ export interface typeObjectAdv {
 
 export interface TypeValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  data: AxiosResponse<any, any> | undefined
-  handelDelete: (id: number | string) => void
-  setSearchValue: Dispatch<
+  data?: AxiosResponse<any, any> | undefined
+  handelDelete?: (id: number | string) => void
+  setSearchValue?: Dispatch<
     SetStateAction<{
       [key: string]: string | number
     }>
   >
   id?: number | string | undefined
-  setPage: Dispatch<SetStateAction<number | undefined>>
-  handelFilter: (value: typeObject) => void
-  searchValue: {
+  setPage?: Dispatch<SetStateAction<number | undefined>>
+  handelFilter?: (value: typeObject) => void
+  searchValue?: {
     [key: string]: string | number
   }
 }
@@ -180,4 +180,16 @@ export interface PermissionDefault extends RoleDefault {
 
 export interface RoleResponsive extends RoleDefault {
   permissions: PermissionDefault[]
+}
+
+export interface UpdateRole {
+  permission_id?: number
+  event?: (number | undefined | string)[]
+}
+
+
+export interface RoleList {
+  ROOT: "ROOT",
+  ADMIN: "ADMIN",
+  USER: "USER"
 }

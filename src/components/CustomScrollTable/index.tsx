@@ -1,7 +1,14 @@
-import { ReactNode, useEffect, useRef } from "react"
+import images from "@/assets/img"
+import { MutableRefObject, useEffect, useRef } from "react"
 // import Table from "./Table";
 
-const CustomScrollTable = ({ children }: { children: ReactNode }) => {
+const CustomScrollTable = ({
+  children,
+  isNoResult = true
+}: {
+  children: (refTable: MutableRefObject<HTMLTableElement | null>) => JSX.Element
+  isNoResult: boolean
+}) => {
   const scrollContainer = useRef<HTMLDivElement | null>(null)
   const scrollThumb = useRef<HTMLDivElement | null>(null)
   const TableContainer = useRef<HTMLTableElement | null>(null)
@@ -9,21 +16,17 @@ const CustomScrollTable = ({ children }: { children: ReactNode }) => {
   const scrolling = useRef(false)
 
   useEffect(() => {
-    const scrollBar = document.getElementById("scrollBar")
-
     function init() {
-      if (scrollContainer.current && scrollBg.current && TableContainer.current && scrollThumb.current && scrollBar) {
+      if (scrollContainer.current && scrollBg.current && TableContainer.current && scrollThumb.current) {
         const heightWindow = window.innerHeight
         const { top, height: heightContainer } = scrollContainer.current.getBoundingClientRect()
         const { height: heightThumb } = scrollBg.current.getBoundingClientRect()
         const { width: wTable } = TableContainer.current.getBoundingClientRect()
         scrollThumb.current.style.width = `${wTable}px`
 
-        const marginScrollBar = parseInt(getComputedStyle(scrollBar).marginBottom)
+        const topElement = heightWindow - top - heightThumb
 
-        const topElement = heightWindow - top - marginScrollBar - heightThumb
-
-        const check = heightContainer + marginScrollBar + top
+        const check = heightContainer + top
 
         if (check < heightWindow) {
           scrollBg.current.style.display = `none`
@@ -63,28 +66,33 @@ const CustomScrollTable = ({ children }: { children: ReactNode }) => {
         }
       })
 
-    scrollBar && scrollBar.addEventListener("scroll", init)
+    window.addEventListener("scroll", init)
     window.addEventListener("resize", init)
     window.addEventListener("click", init)
 
     return () => {
-      scrollBar && scrollBar.removeEventListener("scroll", init)
+      window.removeEventListener("scroll", init)
       window.removeEventListener("resize", init)
       window.removeEventListener("click", init)
     }
   }, [])
 
   return (
-    <div className="bg-white shadow-lg rounded-sm border border-slate-200 relative">
+    <div className="bg-white shadow-lg rounded-sm relative">
       <div className="absolute left-0 w-full h-4 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
         <div className=" h-4" ref={scrollThumb}></div>
       </div>
       <div className="overflow-x-auto" ref={scrollContainer}>
-        {/* <Table {...rest} refTable={TableContainer} /> */}
-        <table ref={TableContainer} className="h-[1000px] w-[2000px]">
-          sssss
-        </table>
+        {children(TableContainer)}
       </div>
+
+      {isNoResult && (
+        <div className="[&>img]:w-16 flex flex-col items-center pb-7">
+          <img src={images.NoResult} alt="không có kết quả" />
+
+          <span className="block mt-3">Không tìm thấy dữ liệu</span>
+        </div>
+      )}
     </div>
   )
 }

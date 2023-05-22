@@ -3,7 +3,7 @@ import * as Yup from "yup"
 import { AddUser as AddUserApi } from "@/api/usersApi"
 import Breadcrumb from "@/components/Breadcrumb"
 import Button from "@/components/Button"
-import { InputField } from "@/components/CustomField"
+import { InputField, ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 
@@ -14,7 +14,8 @@ const schema = Yup.object().shape({
   confirm_password: Yup.string()
     .required("Vui lòng nhập mật khẩu")
     .min(6, "Mật khẩu tối thiểu 6 ký tự")
-    .oneOf([Yup.ref("password")], "Mật khẩu không khớp")
+    .oneOf([Yup.ref("password")], "Mật khẩu không khớp"),
+  email: Yup.string().email("Email không đúng định dạng")
 })
 
 const AddUser = () => {
@@ -44,6 +45,7 @@ const AddUser = () => {
             register,
             reset,
             setValue,
+            getValues,
             formState: { errors }
           } = propForm
           return (
@@ -72,6 +74,24 @@ const AddUser = () => {
                 />
 
                 <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Số điện thoại"
+                  placeholder="Nhập số điện thoại"
+                  name="phone"
+                  register={register}
+                />
+
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Email"
+                  placeholder="Nhập địa chỉ email"
+                  name="email"
+                  register={register}
+                  isError
+                  errors={errors}
+                />
+
+                <InputField
                   type="password"
                   classInputContainer="col-md-6 mb-3"
                   title="Mật khẩu"
@@ -93,6 +113,15 @@ const AddUser = () => {
                   isRequire
                   isError
                   errors={errors}
+                />
+
+                <ReactSelectCus
+                  title="Vai trò"
+                  parenSelect="mb-3 col-md-12"
+                  placeholder="Chọn vai trò"
+                  name="role_id"
+                  options={[]}
+                  getValue={getValues}
                 />
 
                 <ListImagesUploadFile

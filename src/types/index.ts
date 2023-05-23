@@ -193,3 +193,8 @@ export interface RoleList {
   ADMIN: "ADMIN",
   USER: "USER"
 }
+
+export interface SelectDefault {
+  value?: string | number
+  label?: string | number
+}

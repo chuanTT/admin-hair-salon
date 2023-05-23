@@ -15,7 +15,7 @@ export interface customUrlProps {
 }
 
 
-interface useFetchingApiParmeter {
+export interface useFetchingApiParmeter {
   nameTable: string
   page?: number
   limit?: number

@@ -65,7 +65,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
   const InputFile = useRef<HTMLInputElement | null>(null)
   // const [images, setImages] = useState()
   const [srcViews, setSrcView] = useState("")
-  const [listImages, setListImages] = useState<optListImages[] | undefined>([])
+  const [listImages, setListImages] = useState<optListImages[] | []>([])
 
   useImperativeHandle(
     ref,
@@ -78,22 +78,19 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
           }
         },
         setSrc: (src: string | undefined) => {
-          setListImages((prev) => {
-            if (prev) {
-              return [...prev, { src }]
-            }
-
-            return [{ src }]
-          })
+          const newSrc = [...listImages, { src }]
+          setListImages(() => newSrc)
         }
       }
     },
-    []
+    [listImages]
   )
 
   useEffect(() => {
     if (listImages?.length === 0) {
-      setListImages(listImagesViews)
+      if(listImagesViews) {
+        setListImages(listImagesViews)
+      }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listImagesViews])

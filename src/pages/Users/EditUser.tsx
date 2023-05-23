@@ -1,56 +1,83 @@
 import { useRef } from "react"
 import * as Yup from "yup"
-import { AddUser as AddUserApi, getUser, tableUser } from "@/api/usersApi"
+import { UpdateUser, getUser, tableUser } from "@/api/usersApi"
 import Breadcrumb from "@/components/Breadcrumb"
 import Button from "@/components/Button"
-import { InputField } from "@/components/CustomField"
+import { InputField, ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 import { useParams } from "react-router-dom"
+import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
+import { getRoles, tableRole } from "@/api/rolesApi"
+import { funcKeyRole } from "@/common/ConfigSelectOption"
+import { isEmptyObj } from "@/common/functions"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
-  user_name: Yup.string().required("Vui lòng nhập tên đăng nhập"),
-  password: Yup.string().required("Vui lòng nhập mật khẩu").min(6, "Mật khẩu tối thiểu 6 ký tự"),
-  confirm_password: Yup.string()
-    .required("Vui lòng nhập mật khẩu")
-    .min(6, "Mật khẩu tối thiểu 6 ký tự")
-    .oneOf([Yup.ref("password")], "Mật khẩu không khớp")
+  user_name: Yup.string().required("Vui lòng nhập tên đăng nhập")
 })
 
 const defaultValues = {
   avatar: "avatar",
   full_name: "full_name",
-  user_name: "user_name"
+  user_name: "user_name",
+  phone: "phone",
+  email: "email",
+  role_id: "role_id"
 }
 
 const EditUser = () => {
   const { id } = useParams()
-  console.log(id)
   const ImgRef = useRef<refListImage>(null)
+  const { option: optionRole } = useFethingOptionApi({
+    CallAPi: getRoles,
+    nameTable: tableRole,
+    customFucKey: funcKeyRole,
+    customUrlOption: ({ query, limit, nameTable, page }) => {
+      return query?.for(nameTable)?.limit(limit).page(page).sort("1")
+    }
+  })
 
   return (
     <Breadcrumb>
       <FormHandel
         isValidate
         schema={schema}
-        callApi={AddUserApi}
-        closeFuncSucc={({ remove, propForm }) => {
-          typeof remove === "function" && remove()
-          propForm && propForm.reset()
-          ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
-        }}
+        callApi={(data) => UpdateUser(id ?? 0, data)}
         defaultValues={defaultValues}
         isEdit
         nameTable={tableUser}
         id={id}
         callApiEdit={getUser}
+        customValue={({ data, key }) => {
+          if (key === defaultValues.avatar) {
+            if (ImgRef.current) {
+              ImgRef.current?.setSrc?.(data[key] ?? "")
+            }
+            return true
+          }
+        }}
+        customValuesData={(value) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { user_name, avatar, ...spread } = value
+          let data = {
+            ...spread
+          }
+
+          if (!isEmptyObj(avatar)) {
+            console.log(data)
+            data = { ...data, avatar }
+          }
+
+          return data
+        }}
       >
         {({ propForm, isPending }) => {
           const {
             register,
             reset,
             setValue,
+            getValues,
             formState: { errors }
           } = propForm
           return (
@@ -77,6 +104,34 @@ const EditUser = () => {
                   isError
                   errors={errors}
                   readOnly
+                />
+
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Số điện thoại"
+                  placeholder="Nhập số điện thoại"
+                  name="phone"
+                  register={register}
+                />
+
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Email"
+                  placeholder="Nhập địa chỉ email"
+                  name="email"
+                  register={register}
+                  isError
+                  errors={errors}
+                />
+
+                <ReactSelectCus
+                  title="Vai trò"
+                  parenSelect="mb-3 col-md-12"
+                  placeholder="Chọn vai trò"
+                  name="role_id"
+                  options={optionRole}
+                  getValue={getValues}
+                  setValue={setValue}
                 />
 
                 <ListImagesUploadFile

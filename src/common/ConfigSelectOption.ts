@@ -1,4 +1,4 @@
-import _ from "lodash"
+import { RoleList } from "@/types"
 
 const LIMIT_SELECT = 50
 
@@ -21,10 +21,24 @@ const funcKey = (arr: any[]) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const unineArrayOption = (key: string, ...rest: any) => {
-  const newProductNew = _.unionBy(...rest, key)
-
-  return newProductNew
+const funcKeyRole = (arr: any[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let option: any[] = []
+  if (Array.isArray(arr)) {
+    const AllowRoles = [RoleList.ROOT]
+    arr.forEach((item) => {
+      if (!(AllowRoles.includes(item?.name))) {
+        option = [
+          ...option,
+          {
+            value: item?.id,
+            label: item?.name
+          }
+        ]
+      }
+    })
+  }
+  return option
 }
 
 const optionAddAll = (
@@ -40,4 +54,4 @@ const optionAddAll = (
   return result
 }
 
-export { funcKey, LIMIT_SELECT, unineArrayOption, optionAddAll }
+export { funcKey, LIMIT_SELECT, optionAddAll, funcKeyRole }

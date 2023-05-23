@@ -128,16 +128,14 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleSelectedOptionChange = (selectedOption: any): void => {
-    if (isMultiple) {
-      if (!Array.isArray(selectedOption)) {
-        const id = selectedOption?.value
-        if (errors?.message) {
-          typeof clearErrors === "function" && clearErrors(name)
-        }
-        typeof setValue === "function" && setValue(name, id)
-        typeof changeSelected === "function" && changeSelected(selectedOption)
-        setRender((prev) => !prev)
+    if (!Array.isArray(selectedOption)) {
+      const id = selectedOption?.value
+      if (errors?.message) {
+        typeof clearErrors === "function" && clearErrors(name)
       }
+      typeof setValue === "function" && setValue(name, id)
+      typeof changeSelected === "function" && changeSelected(selectedOption)
+      setRender((prev) => !prev)
     }
   }
 

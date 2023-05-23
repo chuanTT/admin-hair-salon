@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react"
 import useFetchingApi, { customUrlProps, useFetchingApiParmeter } from "./useFetchingApi"
-import { LIMIT_SELECT, funcKey, optionAddAll, unineArrayOption } from "@/common/ConfigSelectOption"
+import { LIMIT_SELECT, funcKey, optionAddAll } from "@/common/ConfigSelectOption"
 import QueryRequest from "@/api/builder/QueryRequest"
 import { SelectDefault } from "@/types"
+import _ from "lodash"
 
 interface useFetchingOptionApiProps extends useFetchingApiParmeter {
   isSearching?: boolean
   keySearching?: string
   isOptionAll?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  customOptionAll?: (obj: { optionAddAll?: (arr: any[]) => void | []; data: [] }) => []
-  customFucKey?: (arr: []) => void
+  customOptionAll?: (obj: { data: [] }) => []
+  customFucKey?: (arr: []) => SelectDefault[]
   keyUnine?: string
   limit?: number
   customUrlOption?: (props: customUrlProps) => QueryRequest | void
@@ -56,14 +57,17 @@ const useFethingOptionApi = ({
   })
 
   useEffect(() => {
-    if (data?.data) {
-      const result = isOptionAll
-        ? customOptionAll({ optionAddAll, data: data.data }) || optionAddAll(data.data)
-        : [...data.data]
+    if (data?.data?.data) {
+      const { data: dataResult } = data.data
+      const result = isOptionAll ? customOptionAll({ data: dataResult }) || optionAddAll(dataResult) : dataResult
+      let newResult: SelectDefault[] = []
 
-      setOption((prev) => {
-        return unineArrayOption(keyUnine, prev, customFucKey(result))
-      })
+      if (result) {
+        if (typeof customFucKey === "function") {
+          newResult = customFucKey(result)
+        }
+      }
+      setOption((prev) => _.unionBy(prev, newResult, keyUnine ?? "value"))
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])

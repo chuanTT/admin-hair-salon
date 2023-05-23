@@ -30,9 +30,12 @@ const ProtectedLayout: FC<defaultProps> = ({ children }) => {
   const token = localStorage?.getItem("token")
   const navigate = useNavigate()
 
-  if (!token) {
-    navigate(config.router.login)
-  }
+  useEffect(() => {
+    if (!token) {
+      navigate(config.router.login)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [token])
 
   const { data, isFetched } = useFetchingApi({
     nameTable: "auth/verify-token",

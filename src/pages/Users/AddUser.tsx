@@ -6,6 +6,9 @@ import Button from "@/components/Button"
 import { InputField, ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
+import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
+import { getRoles, tableRole } from "@/api/rolesApi"
+import { funcKeyRole } from "@/common/ConfigSelectOption"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -20,7 +23,14 @@ const schema = Yup.object().shape({
 
 const AddUser = () => {
   const ImgRef = useRef<refListImage>(null)
-
+  const { option: optionRole } = useFethingOptionApi({
+    CallAPi: getRoles,
+    nameTable: tableRole,
+    customFucKey: funcKeyRole,
+    customUrlOption: ({ query, limit, nameTable, page }) => {
+      return query?.for(nameTable)?.limit(limit).page(page).sort('1')
+    }
+  })
   return (
     <Breadcrumb>
       <FormHandel
@@ -48,6 +58,7 @@ const AddUser = () => {
             getValues,
             formState: { errors }
           } = propForm
+
           return (
             <>
               <div className="row">
@@ -120,8 +131,9 @@ const AddUser = () => {
                   parenSelect="mb-3 col-md-12"
                   placeholder="Chọn vai trò"
                   name="role_id"
-                  options={[]}
+                  options={optionRole}
                   getValue={getValues}
+                  setValue={setValue}
                 />
 
                 <ListImagesUploadFile

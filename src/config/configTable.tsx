@@ -69,6 +69,10 @@ const configUsers: configProps[][] = [
       head: "Email"
     },
     {
+      key: ['roles', 'name'],
+      head: "Vai trò"
+    },
+    {
       key: "user_name",
       head: "Biệt danh"
     },

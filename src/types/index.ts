@@ -188,10 +188,10 @@ export interface UpdateRole {
 }
 
 
-export interface RoleList {
-  ROOT: "ROOT",
-  ADMIN: "ADMIN",
-  USER: "USER"
+export enum RoleList {
+  ROOT = "ROOT",
+  ADMIN = "ADMIN",
+  USER = "USER"
 }
 
 export interface SelectDefault {

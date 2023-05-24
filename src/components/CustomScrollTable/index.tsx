@@ -79,8 +79,8 @@ const CustomScrollTable = ({
 
   return (
     <div className="bg-white shadow-lg rounded-sm relative">
-      <div className="absolute left-0 w-full h-4 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
-        <div className=" h-4" ref={scrollThumb}></div>
+      <div className="absolute left-0 w-full h-2 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
+        <div className=" h-2" ref={scrollThumb}></div>
       </div>
       <div className="overflow-x-auto" ref={scrollContainer}>
         {children(TableContainer)}

@@ -1,13 +1,14 @@
-import { ComponentClass, FC, InputHTMLAttributes } from "react";
-import { FieldError, FieldValues, UseFormRegister } from "react-hook-form";
+import { FC, HTMLAttributes, TextareaHTMLAttributes } from "react"
+import { FieldError, FieldValues, UseFormRegister } from "react-hook-form"
 
-interface TextAreaProps extends InputHTMLAttributes<HTMLElement> {
-  title?: string;
-  name: string;
-  register: UseFormRegister<FieldValues>;
-  isError?: boolean;
-  errors?: FieldError | undefined;
-  classAreaContainer?: ComponentClass;
+interface TextAreaProps extends TextareaHTMLAttributes<HTMLElement> {
+  title?: string
+  name: string
+  register: UseFormRegister<FieldValues>
+  isError?: boolean
+  errors?: FieldError | undefined
+  classAreaContainer?: HTMLAttributes<HTMLElement>["className"]
+  isRequire?: boolean
 }
 
 const TextArea: FC<TextAreaProps> = ({
@@ -17,16 +18,14 @@ const TextArea: FC<TextAreaProps> = ({
   isError,
   errors,
   classAreaContainer,
+  isRequire,
   ...rest
 }) => {
   return (
     <div className={`${classAreaContainer ?? ""}`}>
       {title && (
-        <label
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          htmlFor={name}
-        >
-          {title}
+        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor={name}>
+          {title} {isRequire && <span className="text-red-500">*</span>}
         </label>
       )}
       <textarea
@@ -34,16 +33,13 @@ const TextArea: FC<TextAreaProps> = ({
         autoComplete="off"
         id={name}
         {...register(name)}
-        type="text"
         {...rest}
       ></textarea>
       {isError && errors?.message && (
-        <span className="mt-2 block text-sm text-red-600 dark:text-red-500">
-          {errors.message}
-        </span>
+        <span className="mt-2 block text-sm text-red-600 dark:text-red-500">{errors.message}</span>
       )}
     </div>
-  );
-};
+  )
+}
 
-export default TextArea;
+export default TextArea

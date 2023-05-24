@@ -11,6 +11,7 @@ import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { funcKeyRole } from "@/common/ConfigSelectOption"
 import { isEmptyObj } from "@/common/functions"
+import SendFormData from "@/components/FormHandel/SendFormData"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -65,8 +66,8 @@ const EditUser = () => {
           }
 
           if (!isEmptyObj(avatar)) {
-            console.log(data)
             data = { ...data, avatar }
+            data = SendFormData(data)
           }
 
           return data

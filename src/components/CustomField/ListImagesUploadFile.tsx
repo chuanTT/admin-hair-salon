@@ -41,6 +41,7 @@ interface ListImagesProps {
   isDisable?: string
   title?: string
   isRequire?: boolean
+  isMultiple?: boolean
 }
 
 function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
@@ -58,7 +59,8 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
     classWapper,
     isDisable,
     title,
-    isRequire
+    isRequire,
+    isMultiple
   } = props
   const dataFile = useRef(new DataTransfer())
   const [isOpen, setIsOpen] = useState(false)
@@ -78,17 +80,18 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
           }
         },
         setSrc: (src: string | undefined) => {
-          const newSrc = [...listImages, { src }]
+          const newSrc = [{ src }]
           setListImages(() => newSrc)
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [listImages]
   )
 
   useEffect(() => {
     if (listImages?.length === 0) {
-      if(listImagesViews) {
+      if (listImagesViews) {
         setListImages(listImagesViews)
       }
     }
@@ -117,7 +120,6 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
     if (file) {
       if (validType && !(validType ?? ["image/jpg", "image/jpeg", "image/png"])?.includes(file?.type as never)) {
         inputFile && (inputFile.value = "")
-        console.log(1)
         typeof setFieldError === "function" && setFieldError(name, { type: "custom", message: msgType })
         return
       }
@@ -134,7 +136,11 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
     } else if (dataFile.current.files.length > 0 && inputFile) {
       file = dataFile.current.files[0]
       if (file && inputFile?.files) {
-        inputFile.files[0] = file
+        if (!isMultiple) {
+          inputFile.files[0] = file
+        } else {
+          inputFile.files = dataFile.current.files
+        }
       }
     }
 
@@ -143,36 +149,54 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
       preview = URL.createObjectURL(file)
     }
 
-    setListImages((prev) => {
-      if (prev) {
-        const newPrev = [...prev]
-        let uniArr = []
-        const option = { src: preview, del: true }
-
-        if (newPrev[0]?.del) {
-          const [, ...spread] = newPrev
-          uniArr = [option, ...spread]
-        } else {
-          uniArr = [option, ...newPrev]
-        }
-
-        return uniArr
-      }
-      return [{ src: preview, del: true }]
-    })
-    // setImages(file)
-    typeof setValue === "function" && setValue(name, file)
+    return preview
   }
 
   const handelPreview = (e: ChangeEvent<HTMLInputElement>) => {
     if (e.target) {
-      const file = e.target?.files?.[0]
+      let newPreview: optListImages[] = []
+      if (isMultiple) {
+        const listFile = e.target.files
 
-      if (!isDisable && file) {
-        VaildateUploadFiles(file, e.target)
+        if (listFile) {
+          Array.from(listFile).forEach((file) => {
+            const src = VaildateUploadFiles(file, e.target)
+            newPreview = [...newPreview, { src, del: true }]
+          })
+        }
       } else {
-        e.target.value = ""
+        const file = e.target?.files?.[0]
+
+        if (!isDisable && file) {
+          const src = VaildateUploadFiles(file, e.target)
+          newPreview = [...newPreview, { src, del: true }]
+        } else {
+          e.target.value = ""
+        }
       }
+
+      setListImages((prev) => {
+        if (prev) {
+          const newPrev = [...prev]
+          let uniArr = []
+
+          if (newPrev[0]?.del) {
+            const [, ...spread] = newPrev
+            uniArr = [...newPreview, ...spread]
+          } else {
+            uniArr = [...newPreview, ...newPrev]
+          }
+
+          return uniArr
+        }
+        return newPreview
+      })
+      if (isMultiple) {
+        typeof setValue === "function" && setValue(name, dataFile.current.files)
+      } else {
+        typeof setValue === "function" && setValue(name, dataFile.current.files[0])
+      }
+      // setImages(file)
     }
   }
 
@@ -309,6 +333,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
               {...register(name)}
               onChange={handelPreview}
               ref={InputFile}
+              multiple
             />
           </div>
         </div>

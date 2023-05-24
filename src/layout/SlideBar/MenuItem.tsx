@@ -1,19 +1,19 @@
 import { FC, Fragment } from "react"
 import { NavLink, useLocation } from "react-router-dom"
-
-import { configSildeBarList } from "@/types"
 import config from "@/config"
 import AccordionWapper from "@/components/AccordionWapper"
+import { CustomRouteConfig } from "@/router/router"
 
 interface MenuItemProps {
-  item: configSildeBarList
+  item: CustomRouteConfig
+  titleDefault?: string
 }
 
-const MenuItem: FC<MenuItemProps> = ({ item }) => {
+const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
   const checkChildren = item?.children && Array.isArray(item?.children) && item?.children.length > 0
   const Icon = item?.icon || Fragment
   const location = useLocation()
-  const path = item?.to || config.router.home
+  const path = item?.path || config.router.home
   const pathname =
     path.length === config.router.home.length ? location?.pathname : location?.pathname?.substring(0, path.length)
   const active = pathname === path
@@ -65,7 +65,7 @@ const MenuItem: FC<MenuItemProps> = ({ item }) => {
               <div className="menu-icon">
                 <Icon />
               </div>
-              <div>{item.title}</div>
+              <div>{item.title ?? titleDefault}</div>
             </NavLink>
 
             {checkChildren && (
@@ -73,13 +73,18 @@ const MenuItem: FC<MenuItemProps> = ({ item }) => {
                 {item?.children &&
                   item?.children.map((child, count) => {
                     const acceptPath = path === config.router.home
-                    const pathChild = `${path}${child?.to ? (acceptPath ? child.to : "/" + child.to) : ""}`
+                    const pathChild = `${path}${child?.path ? (acceptPath ? child.path : "/" + child.path) : ""}`
+                    const isRenderChil = child?.isNoRender
                     return (
-                      <NavLink end to={pathChild} className="menu-item" key={`${item.title}-${count}`}>
-                        <span className="menu-link">
-                          <div data-i18n="Without navbar">{child.title}</div>
-                        </span>
-                      </NavLink>
+                      <Fragment key={`${item.title}-${count}`}>
+                        {!isRenderChil && (
+                          <NavLink end to={pathChild} className="menu-item">
+                            <span className="menu-link">
+                              <div data-i18n="Without navbar">{child.title}</div>
+                            </span>
+                          </NavLink>
+                        )}
+                      </Fragment>
                     )
                   })}
               </div>

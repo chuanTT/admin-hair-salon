@@ -2,10 +2,13 @@ import { Fragment } from "react"
 
 import config from "@/config"
 import { NavLink } from "react-router-dom"
-import { configSildeBar } from "./configSlideBar"
 import MenuItem from "./MenuItem"
+import { router, typeRouter } from "@/router/router"
 
 const SlideBar = () => {
+  const privateRole = router.find((itemRouter) => itemRouter?.type === typeRouter.private)
+  const childrenRouter = privateRole ? privateRole?.children : []
+
   return (
     <aside id="layout-menu" className="layout-menu menu-vertical menu bg-menu-theme">
       <div className="app-brand demo mb-4 pt-5 flex justify-center items-center">
@@ -70,10 +73,11 @@ const SlideBar = () => {
       <div className="menu-inner-shadow"></div>
 
       <ul className="menu-inner py-1 overflow-y-auto overflow-x-hidden">
-        {configSildeBar?.map((item, index) => {
+        {childrenRouter?.map((item, index) => {
+          const isRender = item?.isNoRender
           return (
             <Fragment key={index}>
-              {!item?.isHeader && <MenuItem item={item} />}
+              {!isRender && !item?.isHeader && <MenuItem item={item} titleDefault={privateRole?.title} />}
 
               {item?.isHeader && (
                 <li className="menu-header small text-uppercase">

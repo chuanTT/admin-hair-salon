@@ -1,6 +1,6 @@
 import { useNavigate } from "react-router-dom"
 import config from "@/config"
-import { FC, createContext, useContext, useEffect } from "react"
+import { FC, createContext, useContext, useEffect, useState } from "react"
 import { RoleResponsive, defaultProps } from "@/types"
 import useFetchingApi from "@/hooks/useFetchingApi"
 import { verifyToken } from "@/api/authApi"
@@ -28,6 +28,7 @@ export interface dataInter {
 
 const ProtectedLayout: FC<defaultProps> = ({ children }) => {
   const token = localStorage?.getItem("token")
+  const [isUpdate, setIsUpdate] = useState(false)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -48,7 +49,7 @@ const ProtectedLayout: FC<defaultProps> = ({ children }) => {
   useEffect(() => {
     if (data?.code === 401) {
       localStorage?.removeItem("token")
-      navigate(config.router.login)
+      setIsUpdate(!isUpdate)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data])

@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import * as Yup from "yup"
 import Button from "@/components/Button"
 import FormHandel from "@/components/FormHandel"
@@ -14,6 +14,7 @@ const schema = Yup.object().shape({
 })
 
 const Login = () => {
+  const [isUpdate, setIsUpdate] = useState(false)
   const token = localStorage?.getItem("token")
   const navigate = useNavigate()
 
@@ -45,7 +46,8 @@ const Login = () => {
                 sussFuc={(data) => {
                   if (data?.data) {
                     localStorage.setItem("token", data?.data?.token)
-                    navigate(config.router.home)
+                    setIsUpdate(!isUpdate)
+                    // navigate(config.router.home)
                   }
                 }}
                 errorFuc={(reset) => {

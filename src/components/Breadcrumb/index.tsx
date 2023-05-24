@@ -1,8 +1,8 @@
 import { FC, Fragment, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
-import { configSildeBarList, defaultProps } from "@/types"
+import { defaultProps } from "@/types"
 import { removeLink } from "@/common/functions"
-import { configSildeBar } from "@/layout/SlideBar/configSlideBar"
+import { CustomRouteConfig, router, typeRouter } from "@/router/router"
 
 interface optPath {
   title?: string
@@ -18,7 +18,9 @@ const Breadcrumb: FC<defaultProps> = ({ children }) => {
       const string = removeLink(pathName?.pathname || "")
       if (string) {
         const arrPt = string.split("/")
-        let arrResult: configSildeBarList[] = [...configSildeBar]
+        const privateRole = router.find((itemRouter) => itemRouter?.type === typeRouter.private)
+        const childrenRouter = privateRole ? privateRole.children ?? [] : []
+        let arrResult: CustomRouteConfig[] = [...childrenRouter]
         const arrNav: optPath[] = []
 
         if (Array.isArray(arrPt)) {
@@ -26,8 +28,8 @@ const Breadcrumb: FC<defaultProps> = ({ children }) => {
           let url: string = ""
           arrPt.forEach((path) => {
             const result = arrResult.find((asider) => {
-              const isPath = asider?.to?.indexOf("/") !== -1 ? `/${path}` : path
-              return asider?.to === isPath
+              const isPath = asider?.path?.indexOf("/") !== -1 ? `/${path}` : path
+              return asider?.path === isPath
             })
 
             if (result !== undefined) {
@@ -35,21 +37,35 @@ const Breadcrumb: FC<defaultProps> = ({ children }) => {
                 title: result?.title
               }
 
-              const c = result?.to || "/"
-              url += c.indexOf("/") === 0 ? result?.to : `/${result?.to}`
+              const c = result?.path || "/"
+              url += c.indexOf("/") === 0 ? result?.path : `/${result?.path}`
               opt = { ...opt, path: url }
-              arrNav.push(opt)
+              const isCheck = arrNav.find((item) => item?.title === result?.title)
+              if (!isCheck) {
+                arrNav.push(opt)
+              }
               if (result?.children) {
                 arrResult = result?.children
-                if (arrPt?.length === 1) {
-                  const result = arrResult.find((asider) => {
-                    return asider?.to === (null || undefined)
+                if (arrPt?.length > 0) {
+                  const resultCheck = arrResult.find((asider) => {
+                    const indexPath = asider?.path?.search(/\/:[a-z]*/)
+                    const newPath = indexPath !== -1 ? asider?.path?.substring(0, indexPath) : asider?.path
+                    return arrPt.includes(newPath || "") && !asider?.index
                   })
 
-                  if (result !== undefined) {
+                  if (resultCheck === undefined) {
+                    const dataNav = arrResult.find((item) => !item?.path)
                     arrNav.push({
-                      title: result?.title
+                      title: dataNav?.title
                     })
+                  } else {
+                    const isCheck = arrNav.find((item) => item?.title === resultCheck.title)
+
+                    if (!isCheck) {
+                      arrNav.push({
+                        title: resultCheck?.title
+                      })
+                    }
                   }
                 }
               }

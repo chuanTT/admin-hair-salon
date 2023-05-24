@@ -43,18 +43,11 @@ const requestAnimationFrameAccordion = ({
 }
 
 const isEmptyObj = (obj: { [key: string]: number | string | [] | object }) => {
-  let error = true
+  let emty = true
   if (obj) {
-    for (const key in obj) {
-      console.log(key)
-      // eslint-disable-next-line no-prototype-builtins
-      if (obj.hasOwnProperty(key)) {
-        error = false
-        break;
-      }
-    }
+    emty = Object.keys(obj).length === 0 && obj.constructor === Object
   }
-  return error
+  return emty
 }
 
 interface RenderValueProps {

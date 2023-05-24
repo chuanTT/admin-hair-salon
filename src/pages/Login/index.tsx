@@ -46,9 +46,11 @@ const Login = () => {
                 sussFuc={(data) => {
                   if (data?.data) {
                     localStorage.setItem("token", data?.data?.token)
-                    setIsUpdate(!isUpdate)
                     // navigate(config.router.home)
                   }
+                }}
+                closeFuncSucc={() => {
+                  setIsUpdate(!isUpdate)
                 }}
                 errorFuc={(reset) => {
                   if (typeof reset === "function") {

@@ -47,7 +47,7 @@ const ProtectedLayout: FC<defaultProps> = ({ children }) => {
   })
 
   useEffect(() => {
-    if (data?.code === 401) {
+    if (data?.code === 401 && isFetched) {
       localStorage?.removeItem("token")
       setIsUpdate(!isUpdate)
     }

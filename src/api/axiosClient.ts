@@ -39,10 +39,6 @@ axiosClient.interceptors.response.use(
     return response.data
   },
   function (error) {
-    if (error.response.status === 401) {
-      // lsRemoveAuth();
-      document.location.replace("/login")
-    }
     // if (error.response.status === 422) {
     //   return error.response.data;
     // }

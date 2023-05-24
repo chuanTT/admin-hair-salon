@@ -143,7 +143,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
         msgToast.current = MsgType(msgObj?.erorr ?? "Thêm thất bại")
         typeof errorFuc === "function" && errorFuc(propForm.reset)
       } else {
-        msgToast.current = MsgType(msgObj?.erorr ?? "Thêm thành công", false)
+        msgToast.current = MsgType(context?.msg ?? msgObj?.suss ?? "Thêm thành công", false)
         nameTable && QueryClient.invalidateQueries([nameTable])
         typeof sussFuc === "function" && sussFuc(context)
       }

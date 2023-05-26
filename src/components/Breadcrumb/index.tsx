@@ -83,7 +83,7 @@ const Breadcrumb: FC<defaultProps> = ({ children }) => {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      <div className="flex items-center justify-between flex-wrap">
         <h2 className="text-xl font-medium">{breadNav[breadNav?.length - 1]?.title || ""}</h2>
 
         <nav aria-label="breadcrumb">

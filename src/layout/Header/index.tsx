@@ -6,6 +6,7 @@ import { HiPower } from "react-icons/hi2"
 import "./header.css"
 import Images from "@/components/Images"
 import { useProtectedLayout } from "../ProtectedLayout"
+import { layoutMenuFucRemove } from "../DefaultLayout"
 
 const Header = () => {
   const { user, removeAuth } = useProtectedLayout()
@@ -14,7 +15,7 @@ const Header = () => {
   useEffect(() => {
     const initPadding = () => {
       const Header = document.getElementById("layout-navbar")
-      const content = document.querySelector(".container") as HTMLDivElement
+      const content = document.querySelector(".container-content") as HTMLDivElement
       const layoutMenu = document.querySelector(".layout-menu")
       const y = window.scrollY
       const wWindown = window.innerWidth
@@ -62,7 +63,15 @@ const Header = () => {
       className="layout-navbar max-1200:!top-0 max-1200:!w-full !max-w-none !fixed 1200:right-[26px] transition-all duration-150 container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme flex items-center"
       id="layout-navbar"
     >
-      <div className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none">
+      <div
+        className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
+        onClick={() => {
+          const html = document.querySelector("html")
+          html?.classList?.add("layout-menu-expanded", "layout-transitioning")
+          layoutMenuFucRemove(html)
+        }}
+        aria-hidden="true"
+      >
         <div className="nav-item nav-link px-0 me-xl-4 text-xl">
           <RiMenu2Fill />
         </div>

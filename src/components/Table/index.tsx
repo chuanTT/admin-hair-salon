@@ -12,7 +12,7 @@ const Table: FC<TableProps> = ({ configDetail, isFuc, isStt, selectCheck, data, 
     <CustomScrollTable isNoResult={!(data?.data && Array.isArray(data?.data) && data?.data?.length > 0)}>
       {(refTable) => {
         return (
-          <table className="table-auto max-md:w-[1000px]  md:w-[900px] lg:w-[1100px] xl:w-full" ref={refTable}>
+          <table className="table-auto max-md:w-[1100px] md:w-[1200px] lg:w-[1300px] xl:w-full" ref={refTable}>
             <Thead config={configDetail} isFuc={isFuc} isStt={isStt} selectCheck={selectCheck} />
             <Tbody
               data={data}

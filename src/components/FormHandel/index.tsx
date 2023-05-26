@@ -8,7 +8,7 @@ import { ObjectSchema } from "yup"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 // end react query
 
-import { typeObject } from "@/types"
+import { dataInter, typeObject } from "@/types"
 // import useFetchingApi from "../../hooks/useFetchingApi"
 import ToastCustom, { TypeToast } from "../ToastCustom"
 import Loading from "../Loading"
@@ -50,6 +50,8 @@ interface FormHandelProps {
     remove?: () => void
     refetch?: () => void
     setResertForm?: Dispatch<SetStateAction<boolean>>
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    data?: dataInter | any
   }) => void
   customDefaultValue?: (obj: typeObject) => void
   customValue?: (obj: {
@@ -230,7 +232,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
           closeToastEvent({ data, propForm, remove })
         }
         if (msgToast.current.type === "success") {
-          typeof closeFuncSucc === "function" && closeFuncSucc({ propForm, remove, refetch, setResertForm })
+          typeof closeFuncSucc === "function" && closeFuncSucc({ propForm, remove, refetch, setResertForm, data })
           isEdit && refetch()
         }
       }}

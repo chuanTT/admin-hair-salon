@@ -1,77 +1,53 @@
 import { useNavigate } from "react-router-dom"
 import config from "@/config"
-import { FC, createContext, useContext, useEffect, useState } from "react"
-import { RoleResponsive, defaultProps } from "@/types"
-import useFetchingApi from "@/hooks/useFetchingApi"
-import { verifyToken } from "@/api/authApi"
-import Loading from "@/components/Loading"
+import { FC, createContext, useContext, useEffect, useMemo, useState } from "react"
+import { dataInter, dataProvider, defaultProps, userProps } from "@/types"
+import { lsAuth, lsRemoveAuth } from "@/common/functions"
+import { useLocalstorageState } from "rooks"
+import { AUTH_LS_KEY } from "@/constants/LocalStorage"
+import { LogoutApi } from "@/api/authApi"
+import { AxiosResponse } from "axios"
 
 const protectedLayoutContext = createContext({})
 
-interface userProps {
-  id?: number
-  user_name?: string
-  full_name?: string
-  avatar?: string
-  role?: RoleResponsive
+interface ProtectedLayoutProps extends defaultProps {
+  userData?: userProps
 }
 
-interface valueProps {
-  data?: userProps
-}
-
-export interface dataInter {
-  code?: number
-  msg?: string
-  data?: userProps
-}
-
-const ProtectedLayout: FC<defaultProps> = ({ children }) => {
-  const token = localStorage?.getItem("token")
-  const [isUpdate, setIsUpdate] = useState(false)
+const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
+  const [user, setUser] = useState(userData)
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (!token) {
+    if (!user?.id) {
       navigate(config.router.login)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
-
-  const { data, isFetched } = useFetchingApi({
-    nameTable: "auth/verify-token",
-    CallAPi: verifyToken,
-    customUrl: ({ nameTable, query }) => {
-      return query?.for(nameTable)?.url()
-    }
-  })
-
-  useEffect(() => {
-    if (data?.code === 401 && isFetched) {
-      localStorage?.removeItem("token")
-      setIsUpdate(!isUpdate)
-    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [user])
 
-  const values: valueProps = {
-    data: data?.data as userProps
+  const removeAuth = async () => {
+    const data: dataInter = await LogoutApi()
+    if (data?.code === 200) {
+      setUser({})
+      lsRemoveAuth()
+      navigate("/login", { replace: true })
+    }
   }
 
-  return (
-    <protectedLayoutContext.Provider value={values}>
-      {!isFetched && (
-        <div className="flex justify-center items-center [&>*]:scale-50 fixed inset-0">
-          <Loading />
-        </div>
-      )}
-      {isFetched && children}
-    </protectedLayoutContext.Provider>
+  const value = useMemo(
+    () => ({
+      user,
+      removeAuth
+    }),
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [user]
   )
+
+  return <protectedLayoutContext.Provider value={value}>{children}</protectedLayoutContext.Provider>
 }
 
 export const useProtectedLayout = () => {
-  const data: valueProps = useContext(protectedLayoutContext)
+  const data: dataProvider = useContext(protectedLayoutContext)
 
   return data
 }

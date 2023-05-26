@@ -1,4 +1,5 @@
 import { TypeToast } from "@/components/ToastCustom"
+import { AUTH_LS_KEY } from "@/constants/LocalStorage"
 import { requestAnimationFrameAccordionInterFace } from "@/types"
 import moment from "moment"
 
@@ -221,6 +222,39 @@ const NowDate = () => {
   return d
 }
 
+export const lsAuth = () => {
+  if (!localStorage) {
+    return;
+  }
+
+  const lsValue = localStorage.getItem(AUTH_LS_KEY);
+  if (!lsValue) {
+    return;
+  }
+
+  try {
+    const auth = JSON.parse(lsValue);
+    if (auth) {
+      // You can easily check auth_token expiration also
+      return auth;
+    }
+  } catch (error) {
+    console.error("AUTH LOCAL STORAGE PARSE ERROR", error);
+  }
+};
+
+export const lsRemoveAuth = () => {
+  if (!localStorage) {
+    return;
+  }
+
+  try {
+    localStorage.removeItem(AUTH_LS_KEY);
+  } catch (error) {
+    console.error("AUTH LOCAL STORAGE REMOVE ERROR", error);
+  }
+};
+
 
 export {
   requestAnimationFrameAccordion,
@@ -236,5 +270,5 @@ export {
   convertNumber,
   convertViToEn,
   sliceRouteDynamic,
-  NowDate
+  NowDate,
 }

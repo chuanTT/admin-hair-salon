@@ -1,5 +1,5 @@
 import { FC, Fragment, useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, useMatches } from "react-router-dom"
 import { defaultProps } from "@/types"
 import { removeLink } from "@/common/functions"
 import { CustomRouteConfig, router, typeRouter } from "@/router/router"
@@ -11,6 +11,9 @@ interface optPath {
 
 const Breadcrumb: FC<defaultProps> = ({ children }) => {
   const pathName = useLocation()
+  const check = useMatches() 
+
+  console.log(check)
   const [breadNav, setBreadNav] = useState<optPath[]>([])
 
   useEffect(() => {

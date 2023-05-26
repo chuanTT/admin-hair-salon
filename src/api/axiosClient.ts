@@ -1,5 +1,6 @@
 import axios from "axios"
 import config from "@/config"
+import { lsAuth, lsRemoveAuth } from "@/common/functions"
 // import { lsAuth, lsRemoveAuth } from "../utils/Utils";
 
 // export const API_BASE = process.env.API_BASE
@@ -14,13 +15,10 @@ const axiosClient = axios.create({
 // Add a request interceptor
 axiosClient.interceptors.request.use(
   function (configInterceptors) {
-    if (configInterceptors.url !== config.router.login) {
-      // Do something before request is sent
-      const token = localStorage?.getItem("token")
+    const token = lsAuth()
 
-      if (token) {
-        configInterceptors.headers.Authorization = `Bearer ${token}`
-      }
+    if (token) {
+      configInterceptors.headers.Authorization = `Bearer ${token}`
     }
 
     return configInterceptors
@@ -34,6 +32,10 @@ axiosClient.interceptors.request.use(
 // Add a response interceptor
 axiosClient.interceptors.response.use(
   function (response) {
+    // if (response?.data?.code === 401) {
+    //   lsRemoveAuth()
+    //   document.location.replace("/login")
+    // }
     // Any status code that lie within the range of 2xx cause this function to trigger
     // Do something with response data
     return response.data

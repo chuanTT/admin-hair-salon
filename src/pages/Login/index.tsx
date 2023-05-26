@@ -7,6 +7,8 @@ import { LoginApi } from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
 import config from "@/config"
 import "../../assets/css/pages/page-auth.css"
+import { AUTH_LS_KEY } from "@/constants/LocalStorage"
+import { useLocalstorageState } from "rooks"
 
 const schema = Yup.object().shape({
   account: Yup.string().required("Vui lòng nhập tên đăng nhập"),
@@ -14,16 +16,17 @@ const schema = Yup.object().shape({
 })
 
 const Login = () => {
+  const [auth, setAuth] = useLocalstorageState(AUTH_LS_KEY, "")
+  const [isLoged, setIsLoged] = useState(false)
   const [isUpdate, setIsUpdate] = useState(false)
-  const token = localStorage?.getItem("token")
   const navigate = useNavigate()
-
+  
   useEffect(() => {
-    if (token) {
+    if (isLoged && auth) {
       navigate(config.router.home)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [token])
+  }, [isLoged, auth])
 
   return (
     <div className="container-xxl">
@@ -43,13 +46,11 @@ const Login = () => {
 
               <FormHandel
                 msgObj={{ erorr: "Đăng nhập thất bại", suss: "Đăng nhập thành công" }}
-                sussFuc={(data) => {
+                closeFuncSucc={({ data }) => {
                   if (data?.data) {
-                    localStorage.setItem("token", data?.data?.token)
-                    // navigate(config.router.home)
+                    setAuth(data?.data?.token)
+                    setIsLoged(true)
                   }
-                }}
-                closeFuncSucc={() => {
                   setIsUpdate(!isUpdate)
                 }}
                 errorFuc={(reset) => {

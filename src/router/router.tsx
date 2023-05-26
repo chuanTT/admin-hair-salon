@@ -15,6 +15,8 @@ import { BsFillPeopleFill } from "react-icons/bs"
 import { FaProductHunt } from "react-icons/fa"
 import { GiOpenBook } from "react-icons/gi"
 import AddProducts from "@/pages/Products/AddProducts"
+import { verifyToken } from "@/api/authApi"
+import AuthLayout from "@/layout/AuthLayout"
 
 export enum typeRouter {
   public = "public",
@@ -25,7 +27,7 @@ type CustomRouteObjectParams = {
   type?: typeRouter
   title?: string
   isHeader?: boolean
-  icon?: () => JSX.Element,
+  icon?: () => JSX.Element
   isNoRender?: boolean
 }
 
@@ -43,10 +45,11 @@ export const router: CustomRouteConfig[] = [
     path: config.router.home,
     type: typeRouter.private,
     title: "Trang chủ",
+    loader: () => verifyToken(),
     element: (
-      <DefaultLayout>
+      <AuthLayout>
         <Outlet />
-      </DefaultLayout>
+      </AuthLayout>
     ),
     errorElement: <NotFound />,
     children: [
@@ -93,7 +96,7 @@ export const router: CustomRouteConfig[] = [
           {
             index: true,
             title: "Danh sách sản phẩm",
-            element: <Product />,
+            element: <Product />
           },
 
           {

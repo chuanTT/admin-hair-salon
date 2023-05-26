@@ -8,7 +8,7 @@ import Images from "@/components/Images"
 import { useProtectedLayout } from "../ProtectedLayout"
 
 const Header = () => {
-  const { data } = useProtectedLayout()
+  const { user, removeAuth } = useProtectedLayout()
   const [isOpen, setIsOpen] = useState(false)
 
   useEffect(() => {
@@ -73,7 +73,7 @@ const Header = () => {
           <li className="nav-item navbar-dropdown dropdown-user dropdown">
             <div className="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
               <div className="avatar avatar-online select-none" onClick={() => setIsOpen(!isOpen)} aria-hidden="true">
-                <Images src={data?.avatar} w={"100%"} h={"100%"} alt="avatar" classNameImg="w-px-40 h-auto" isRounded />
+                <Images src={user?.avatar} w={"100%"} h={"100%"} alt="avatar" classNameImg="w-px-40 h-auto" isRounded />
               </div>
             </div>
             <ul
@@ -87,7 +87,7 @@ const Header = () => {
                     <div className="flex-shrink-0 me-3">
                       <div className="avatar avatar-online">
                         <Images
-                          src={data?.avatar}
+                          src={user?.avatar}
                           w={"100%"}
                           h={"100%"}
                           alt="avatar"
@@ -97,8 +97,8 @@ const Header = () => {
                       </div>
                     </div>
                     <div className="flex-grow-1">
-                      <span className="fw-semibold d-block">{data?.full_name || "Mặc định"}</span>
-                      <small className="text-muted">{data?.role?.name}</small>
+                      <span className="fw-semibold d-block">{user?.full_name || "Mặc định"}</span>
+                      <small className="text-muted">{user?.role?.name}</small>
                     </div>
                   </div>
                 </NavLink>
@@ -114,13 +114,19 @@ const Header = () => {
                   <span className="align-middle">Thông tin cá nhân</span>
                 </Link>
               </li>
-              <li>
-                <a className="dropdown-item !flex items-center" href="auth-login-basic.html">
+              <li className="cursor-pointer">
+                <span
+                  className="dropdown-item !flex items-center"
+                  onClick={() => {
+                    typeof removeAuth === "function" && removeAuth()
+                  }}
+                  aria-hidden="true"
+                >
                   <div className="mr-2 text-lg">
                     <HiPower />
                   </div>
                   <span className="align-middle">Đăng xuất</span>
-                </a>
+                </span>
               </li>
             </ul>
           </li>

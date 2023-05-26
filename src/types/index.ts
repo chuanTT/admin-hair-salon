@@ -198,3 +198,27 @@ export interface SelectDefault {
   value?: string | number
   label?: string | number
 }
+
+export interface userProps {
+  id?: number
+  user_name?: string
+  full_name?: string
+  avatar?: string
+  role?: RoleResponsive
+}
+
+export interface dataProvider {
+  user?: userProps
+  token?: string
+  saveAuth?: () => void
+  removeAuth?: () => void
+}
+
+export interface valueProps {
+  data?: userProps
+}
+
+export interface dataInter extends valueProps {
+  code?: number
+  msg?: string
+}

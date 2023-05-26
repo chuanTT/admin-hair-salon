@@ -9,7 +9,7 @@ const AuthLayout: FC<defaultProps> = ({children}) => {
   const userPromise = useLoaderData()
 
   return (
-    <Suspense fallback={<Loading />}>
+    <Suspense fallback={<div className="flex justify-center items-center [&>*]:scale-50 fixed inset-0"><Loading /></div>}>
       <Await resolve={userPromise} errorElement={<Navigate to="/login" replace={true} />}>
         {(userData: dataInter) => {
           return (

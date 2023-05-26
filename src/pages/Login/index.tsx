@@ -51,6 +51,11 @@ const Login = () => {
                     setIsLoged(true)
                   }
                 }}
+                closeFuncSucc={({propForm}) => {
+                  if(propForm?.reset) {
+                    propForm?.reset()
+                  }
+                }}
                 errorFuc={(reset) => {
                   if (typeof reset === "function") {
                     reset({

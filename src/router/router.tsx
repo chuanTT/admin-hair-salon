@@ -1,7 +1,6 @@
 import { createBrowserRouter, IndexRouteObject, NonIndexRouteObject, Outlet } from "react-router-dom"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
-import DefaultLayout from "@/layout/DefaultLayout"
 import Product from "@/pages/Products"
 import Users from "@/pages/Users"
 import Blog from "@/pages/Blog"

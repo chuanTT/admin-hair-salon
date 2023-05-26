@@ -2,11 +2,8 @@ import { useNavigate } from "react-router-dom"
 import config from "@/config"
 import { FC, createContext, useContext, useEffect, useMemo, useState } from "react"
 import { dataInter, dataProvider, defaultProps, userProps } from "@/types"
-import { lsAuth, lsRemoveAuth } from "@/common/functions"
-import { useLocalstorageState } from "rooks"
-import { AUTH_LS_KEY } from "@/constants/LocalStorage"
+import { lsRemoveAuth } from "@/common/functions"
 import { LogoutApi } from "@/api/authApi"
-import { AxiosResponse } from "axios"
 
 const protectedLayoutContext = createContext({})
 

@@ -18,9 +18,8 @@ const schema = Yup.object().shape({
 const Login = () => {
   const [auth, setAuth] = useLocalstorageState(AUTH_LS_KEY, "")
   const [isLoged, setIsLoged] = useState(false)
-  const [isUpdate, setIsUpdate] = useState(false)
   const navigate = useNavigate()
-  
+
   useEffect(() => {
     if (isLoged && auth) {
       navigate(config.router.home)
@@ -46,12 +45,11 @@ const Login = () => {
 
               <FormHandel
                 msgObj={{ erorr: "Đăng nhập thất bại", suss: "Đăng nhập thành công" }}
-                closeFuncSucc={({ data }) => {
+                sussFuc={(data) => {
                   if (data?.data) {
                     setAuth(data?.data?.token)
                     setIsLoged(true)
                   }
-                  setIsUpdate(!isUpdate)
                 }}
                 errorFuc={(reset) => {
                   if (typeof reset === "function") {

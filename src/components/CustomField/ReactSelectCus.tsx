@@ -1,9 +1,10 @@
 /* eslint-disable @typescript-eslint/no-empty-function */
-import Select, { MultiValue, SingleValue } from "react-select"
+import Select from "react-select"
+import { useDebounce } from "rooks"
 import { Dispatch, FC, HTMLAttributes, SetStateAction, useState } from "react"
 import { FieldValues, UseFormSetValue, UseFormGetValues, UseFormClearErrors, FieldError } from "react-hook-form"
 import { convertViToEn } from "@/common/functions"
-import { useDebounce } from "rooks"
+import { SelectDefault } from "@/types"
 
 export interface optionType {
   value?: number | string
@@ -12,13 +13,14 @@ export interface optionType {
 
 interface ReactSelectCusProps {
   name: string
-  options: optionType[] | []
+  options?: SelectDefault[] | []
   parenSelect?: HTMLAttributes<HTMLElement>["className"]
   isMultiple?: boolean
   setValue?: UseFormSetValue<FieldValues>
-  getValue: UseFormGetValues<FieldValues>
+  getValue?: UseFormGetValues<FieldValues>
   clearErrors?: UseFormClearErrors<FieldValues>
-  changeSelected?: (value: MultiValue<optionType> | SingleValue<optionType>) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  changeSelected?: (value: any) => void
   setValueSearch?: Dispatch<SetStateAction<string>>
   timeDelay?: number
   height?: string | number
@@ -27,6 +29,9 @@ interface ReactSelectCusProps {
   title?: string
   isRequire?: boolean
   placeholder?: string
+  rest?: {
+    [key: string]: number | string | SelectDefault[] | SelectDefault | []
+  }
 }
 
 const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
@@ -47,7 +52,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
     title,
     isRequire,
     placeholder,
-    ...rest
+    rest
   } = prop
   // const [valueSearch, setValueSearch] = useState("");
   const setValueDebounced = useDebounce<Dispatch<SetStateAction<string>>>(
@@ -55,7 +60,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
     timeDelay ?? 800
   )
   const [, setRender] = useState(false)
-  const value = getValue(name)
+  const value = typeof getValue === "function" ? getValue(name) : []
 
   const ValueSelectd = options?.filter((item: optionType) => item.value === value)
 
@@ -113,14 +118,14 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
 
     const serching = labelConvert.includes(inputValueConvert)
 
-    const searching = options.filter((item) => {
+    const searching = options?.filter((item) => {
       const label = convertViToEn(item?.label || "")
       const inputVl = convertViToEn(inputValue)
 
       return label.includes(inputVl.replace(/^\s+|\s+$/gm, ""))
     })
 
-    if (searching.length <= 0) {
+    if (searching && searching?.length <= 0) {
       setValueDebounced((inputValueConvert && inputValueConvert.replace(/^\s+|\s+$/gm, "")) || "")
     }
     return serching
@@ -142,7 +147,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
   return (
     <div className={parenSelect}>
       {title && (
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor={name}>
+        <label className="block mb-2 text-sm font-medium text-gray-900 " htmlFor={name}>
           {title} {isRequire && <span className="text-red-500">*</span>}
         </label>
       )}
@@ -150,8 +155,8 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
       <Select
         id={name}
         name={name}
-        // menuPortalTarget={document?.body}
-        value={ValueSelectd}
+        menuPortalTarget={document?.body}
+        value={ValueSelectd && ValueSelectd?.length > 0 ? ValueSelectd : []}
         onChange={handleSelectedOptionChange}
         filterOption={customFilter}
         styles={customStyles}

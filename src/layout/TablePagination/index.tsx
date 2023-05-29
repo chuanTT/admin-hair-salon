@@ -7,6 +7,7 @@ import Table from "@/components/Table"
 import Loading from "@/components/Loading"
 import ModalDeleteCus from "@/components/ModalDeleteCus"
 import Portal from "@/components/Portal"
+import { LIMIT_SELECT } from "@/common/ConfigSelectOption"
 
 const TablePaginationContext = createContext({})
 
@@ -29,18 +30,19 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
   } = prop
 
   // search nâng cao
-  const [searchValue, setSearchValue] = useState<{ [key: string]: string | number }>({})
+  const [searchValue, setSearchValue] = useState<{ [key: string]: string | number | boolean }>({})
   // const [updated, setUpdated] = useState(false)
 
   // paging
   const [page, setPage] = useState(pageStart)
-  const [limit] = useState(LimitPages)
+  const [limit] = useState(LimitPages || LIMIT_SELECT)
 
   // modal
   const [isOpen, setIsOpen] = useState(false)
 
   // get id
   const idItem = useRef<number | string>()
+  const [listIDs, setListIDs] = useState<(number | string)[]>([])
 
   const { data, isFetched, invalidateQueriesQueryClient } = useFetchingApi({
     nameTable: nameTable || "",
@@ -50,15 +52,44 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
     retry: 1,
     customUrl: (object: customUrlProps) => {
       return (typeof customUrl === "function" && customUrl(object)) || ""
-    }
-    // searchValue
+    },
+    searchValue
+    //
   })
 
   const pagination: paginationType = data?.data?.pagination
 
-  const handelDelete = (id: number | string) => {
-    setIsOpen((prev) => !prev)
-    idItem.current = id
+  const handelDelete = (id: number | string, isPush?: boolean) => {
+    if (isPush) {
+      setListIDs((prev) => {
+        const newData = [...prev]
+        if (newData?.includes(id)) {
+          return newData?.filter((item) => item !== id)
+        }
+        return [...newData, id]
+      })
+    } else {
+      setListIDs([id])
+      setIsOpen((prev) => !prev)
+    }
+  }
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+  const handelDeleteAll = (data: any) => {
+    if (data?.data) {
+      const { data: result } = data
+      if (result) {
+        const maxLength = result?.length
+        const itemLength = listIDs?.length
+
+        if (maxLength === itemLength) {
+          setListIDs([])
+        } else {
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          setListIDs(() => result?.map((item: any) => item?.id))
+        }
+      }
+    }
   }
 
   const handelFilter = (value: typeObject) => {
@@ -76,10 +107,13 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       handelFilter,
       searchValue,
       isOpen,
-      setIsOpen
+      setIsOpen,
+      limit,
+      listIDs,
+      handelDeleteAll
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data])
+  }, [data, listIDs, searchValue])
 
   typeof callBack === "function" && callBack(values)
 
@@ -88,7 +122,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       {isDelete && callApiDelete && (
         <Portal>
           <ModalDeleteCus
-            id={idItem.current || 0}
+            id={listIDs}
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             callApiDelete={callApiDelete}
@@ -138,7 +172,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
 }
 
 export const useTablePagination = () => {
-  const data: TypeValue  = useContext(TablePaginationContext)
+  const data: TypeValue = useContext(TablePaginationContext)
   return data
 }
 

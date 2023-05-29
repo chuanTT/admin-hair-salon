@@ -11,7 +11,8 @@ export interface customUrlProps {
   limit?: number
   query?: QueryRequest
   RestProps?: typeObject
-  [key: string]: string | number | undefined | QueryRequest | typeObject
+  searchValue?: typeObject
+  [key: string]: string | number | undefined | QueryRequest | typeObject | object | boolean
 }
 
 
@@ -27,6 +28,7 @@ export interface useFetchingApiParmeter {
   isConfig?: boolean
   retry?: number
   RestProps?: typeObject
+  searchValue?: typeObject
 }
 
 const useFetchingApi = ({

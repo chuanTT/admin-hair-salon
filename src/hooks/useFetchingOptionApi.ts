@@ -10,7 +10,7 @@ interface useFetchingOptionApiProps extends useFetchingApiParmeter {
   keySearching?: string
   isOptionAll?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  customOptionAll?: (obj: { data: [] }) => []
+  customOptionAll?: (obj: { data: [] }) => [] | { [key: string]: number | string }[]
   customFucKey?: (arr: []) => SelectDefault[]
   keyUnine?: string
   limit?: number
@@ -59,7 +59,12 @@ const useFethingOptionApi = ({
   useEffect(() => {
     if (data?.data?.data) {
       const { data: dataResult } = data.data
-      const result = isOptionAll ? customOptionAll({ data: dataResult }) || optionAddAll(dataResult) : dataResult
+      let result = isOptionAll ? customOptionAll({ data: dataResult }) : dataResult
+
+      if (isOptionAll && result?.length === 0) {
+        result = optionAddAll(dataResult)
+      }
+
       let newResult: SelectDefault[] = []
 
       if (result) {

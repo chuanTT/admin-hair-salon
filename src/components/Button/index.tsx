@@ -19,7 +19,7 @@ interface iconConfig {
   views?: boolean
 }
 
-interface ButtonProps extends ToolTipProps, defaultProps, HTMLAttributes<HTMLElement> {
+export interface ButtonProps extends ToolTipProps, defaultProps, HTMLAttributes<HTMLElement> {
   tag?:
     | keyof JSX.IntrinsicElements
     | ComponentType

@@ -73,10 +73,10 @@ const EditUser = () => {
           return data
         }}
       >
-        {({ propForm, isPending }) => {
+        {({ propForm, isPending, setResertForm }) => {
           const {
             register,
-            reset,
+            clearErrors,
             setValue,
             getValues,
             formState: { errors }
@@ -155,7 +155,8 @@ const EditUser = () => {
                 <Button
                   onClick={(e) => {
                     e.preventDefault()
-                    reset()
+                    clearErrors()
+                    typeof setResertForm === "function" && setResertForm(prev => !prev)
                   }}
                   customClass="bg-white border-solid text-black font-bold py-2 px-4 border !rounded "
                 >

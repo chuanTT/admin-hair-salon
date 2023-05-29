@@ -9,6 +9,7 @@ import FormHandel from "@/components/FormHandel"
 import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { funcKeyRole } from "@/common/ConfigSelectOption"
+import ButtonLoading from "@/components/ButtonLoading"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -146,22 +147,16 @@ const AddUser = () => {
               </div>
 
               <div className="flex items-center space-x-2">
-                <Button
-                  isPending={isPending}
-                  customClass="font-bold py-2 px-4 border !rounded bg-blue-icon bg-indigo-600 hover:bg-indigo-500 text-white"
-                >
+                <ButtonLoading isPending={isPending} isPrimary>
                   Thêm
-                </Button>
+                </ButtonLoading>
 
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault()
-                    reset()
-                  }}
-                  customClass="bg-white border-solid text-black font-bold py-2 px-4 border !rounded "
-                >
+                <ButtonLoading onClick={(e) => {
+                  e.preventDefault()
+                  reset()
+                }}>
                   Hủy
-                </Button>
+                </ButtonLoading>
               </div>
             </>
           )

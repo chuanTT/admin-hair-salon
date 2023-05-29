@@ -11,9 +11,7 @@ interface optPath {
 
 const Breadcrumb: FC<defaultProps> = ({ children }) => {
   const pathName = useLocation()
-  const check = useMatches() 
-
-  console.log(check)
+  // const check = useMatches() 
   const [breadNav, setBreadNav] = useState<optPath[]>([])
 
   useEffect(() => {

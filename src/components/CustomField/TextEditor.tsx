@@ -35,7 +35,7 @@ const TextEditor = ({ placeholder, name, title, classAreaContainer, setValue, is
   return (
     <div className={classAreaContainer ?? ""}>
       {title && (
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor={name}>
+        <label className="block mb-2 text-sm font-medium text-gray-900 " htmlFor={name}>
           {title} {isRequire && <span className="text-red-500">*</span>}
         </label>
       )}

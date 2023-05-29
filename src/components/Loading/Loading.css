@@ -1,4 +1,4 @@
-@keyframes ldio-fz324hr5et9 {
+/* @keyframes ldio-fz324hr5et9 {
   0% {
     top: 96px;
     left: 96px;
@@ -43,8 +43,30 @@
   position: relative;
   transform: translateZ(0) scale(1);
   backface-visibility: hidden;
-  transform-origin: 0 0; /* see note above */
+  transform-origin: 0 0; 
 }
 .ldio-fz324hr5et9 div {
   box-sizing: content-box;
+} */
+
+
+.spinner {
+  /* Size */
+  height: 40px;
+  width: 40px;
+
+  border: 4px solid #d1d5db;
+  border-top-color: #3b82f6;
+  border-radius: 50%;
+
+  animation: spinner 800ms linear infinite;
+}
+
+@keyframes spinner {
+  from {
+      transform: rotate(0deg);
+  }
+  to {
+      transform: rotate(360deg);
+  }
 }

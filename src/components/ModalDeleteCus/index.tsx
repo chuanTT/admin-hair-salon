@@ -11,11 +11,11 @@ import Button from "../Button"
 
 interface ModalDeleteCusProps {
   isOpen: boolean
-  id: string | number
+  id: (string | number)[]
   setIsOpen: Dispatch<SetStateAction<boolean>>
   closeToastEvent?: () => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callApiDelete: (url: number | string) => Promise<AxiosResponse<any, any>>
+  callApiDelete: (data: (string | number)[]) => Promise<AxiosResponse<any, any>>
   msgObj?: {
     erorr?: string
     suss?: string
@@ -48,7 +48,7 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
 
   // delete
   const { mutate } = useMutation({
-    mutationFn: (values: string | number) => {
+    mutationFn: (values: (string | number)[]) => {
       return callApiDelete(values)
     },
     onError: () => {
@@ -61,7 +61,7 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
       if (context) {
         if (context?.code === 400 || context?.code === 403) {
           msgToast.current = MsgType(context?.msg ?? msgObj?.erorr ?? "Xóa thất bại")
-        } 
+        }
       }
 
       msgToast.current.type === TypeToast.SUCCESS && typeof SuccessModal == "function" && SuccessModal()

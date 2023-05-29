@@ -1,22 +1,28 @@
-import { Await, Navigate, useLoaderData } from "react-router-dom"
-import { FC, Suspense } from "react"
+import { Suspense } from "react"
+import { Await, Navigate, useLoaderData, useOutlet } from "react-router-dom"
 import Loading from "@/components/Loading"
-import { dataInter, defaultProps } from "@/types"
+import { dataInter } from "@/types"
 import ProtectedLayout from "../ProtectedLayout"
 import DefaultLayout from "../DefaultLayout"
 
-const AuthLayout: FC<defaultProps> = ({children}) => {
+
+const AuthLayout = () => {
   const userPromise = useLoaderData()
+  const outlet = useOutlet()
 
   return (
-    <Suspense fallback={<div className="flex justify-center items-center [&>*]:scale-50 fixed inset-0"><Loading /></div>}>
+    <Suspense
+      fallback={
+        <div className="flex justify-center items-center [&>*]:scale-50 fixed inset-0">
+          <Loading />
+        </div>
+      }
+    >
       <Await resolve={userPromise} errorElement={<Navigate to="/login" replace={true} />}>
         {(userData: dataInter) => {
           return (
             <ProtectedLayout userData={userData?.data}>
-              <DefaultLayout>
-                {children}
-              </DefaultLayout>
+              <DefaultLayout>{outlet}</DefaultLayout>
             </ProtectedLayout>
           )
         }}

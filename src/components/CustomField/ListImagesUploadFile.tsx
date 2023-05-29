@@ -230,7 +230,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
   return (
     <div>
       {title && (
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor={name}>
+        <label className="block mb-2 text-sm font-medium text-gray-900 " htmlFor={name}>
           {title} {isRequire && <span className="text-red-500">*</span>}
         </label>
       )}

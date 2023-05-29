@@ -74,7 +74,7 @@ const InputPrice: ForwardRefRenderFunction<RefType, InputPriceProps> = (
     <div className={`${classInput ?? ""}`}>
       {title && (
         <label
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+          className="block mb-2 text-sm font-medium text-gray-900 "
           htmlFor={name}
         >
           {title} {isRequire && <span className="text-red-500">*</span>}

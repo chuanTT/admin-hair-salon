@@ -4,7 +4,7 @@ import { FieldValues, UseFormRegister } from "react-hook-form"
 interface InputFieldPops extends InputHTMLAttributes<HTMLElement> {
   title?: string
   name: string
-  register: UseFormRegister<FieldValues>
+  register?: UseFormRegister<FieldValues>
   isError?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errors?: any
@@ -25,7 +25,7 @@ const InputField: FC<InputFieldPops> = ({
   return (
     <div className={` ${classInputContainer ?? ""}`}>
       {title && (
-        <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-white" htmlFor={name}>
+        <label className="block mb-2 text-sm font-medium text-gray-900 " htmlFor={name}>
           {title} {isRequire && <span className="text-red-500">*</span>}
         </label>
       )}
@@ -33,7 +33,7 @@ const InputField: FC<InputFieldPops> = ({
         className="bg-gray-50 border outline-none border-gray-300 text-gray-900 text-sm rounded block w-full p-2"
         autoComplete="off"
         id={name}
-        {...register(name)}
+        {...register?.(name)}
         type="text"
         {...rest}
       />

@@ -22,7 +22,7 @@ const Header = () => {
 
       if (Header && content && layoutMenu) {
         const { height: heaightHeader } = Header.getBoundingClientRect()
-        const { width: widthLayout } = layoutMenu.getBoundingClientRect()
+        // const { width: widthLayout } = layoutMenu.getBoundingClientRect()
 
         const maxHeight = heaightHeader + 12
         if (wWindown >= 1200) {
@@ -30,16 +30,16 @@ const Header = () => {
           if (maxHeight <= y) {
             topH = "0px"
           }
-          const styleContent = getComputedStyle(content)
-          const marginLeft = parseFloat(styleContent.marginLeft)
-          const marginRight = parseFloat(styleContent.marginRight)
-          const paddingRight = parseFloat(styleContent.paddingRight)
-          const paddingLeft = parseFloat(styleContent.paddingLeft)
+          // const styleContent = getComputedStyle(content)
+          // const marginLeft = parseFloat(styleContent.marginLeft)
+          // const marginRight = parseFloat(styleContent.marginRight)
+          // const paddingRight = parseFloat(styleContent.paddingRight)
+          // const paddingLeft = parseFloat(styleContent.paddingLeft)
           Header.style.top = topH
-          Header.style.width = `${wWindown - marginLeft - marginRight - widthLayout - paddingRight - paddingLeft}px`
-          Header.style.right = `${marginRight + paddingLeft}px`
+          // Header.style.width = `${wWindown - marginLeft - marginRight - widthLayout - paddingRight - paddingLeft}px`
+          // Header.style.right = `${marginRight + paddingLeft}px`
         } else {
-          Header.style.width = `100%`
+          // Header.style.width = `100%`
           Header.style.right = `0px`
         }
 

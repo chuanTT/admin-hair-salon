@@ -13,7 +13,7 @@ const Table: FC<TableProps> = ({ configDetail, isFuc, isStt, selectCheck, data, 
       {(refTable) => {
         return (
           <table className="table-auto max-md:w-[1100px] md:w-[1200px] lg:w-[1300px] xl:w-full" ref={refTable}>
-            <Thead config={configDetail} isFuc={isFuc} isStt={isStt} selectCheck={selectCheck} />
+            <Thead config={configDetail} isFuc={isFuc} isStt={isStt} selectCheck={selectCheck} provider={provider} />
             <Tbody
               data={data}
               config={configDetail}

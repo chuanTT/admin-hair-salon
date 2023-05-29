@@ -85,7 +85,7 @@ export interface configFucProps {
 }
 
 export interface typeObject {
-  [key: string]: string | number
+  [key: string]: string | number | boolean
 }
 
 export interface typeObjectAdv {
@@ -95,18 +95,22 @@ export interface typeObjectAdv {
 export interface TypeValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: AxiosResponse<any, any> | undefined
-  handelDelete?: (id: number | string) => void
+  handelDelete?: (id: number | string, isPush?: boolean) => void
   setSearchValue?: Dispatch<
     SetStateAction<{
-      [key: string]: string | number
+      [key: string]: string | number | boolean
     }>
   >
   id?: number | string | undefined
   setPage?: Dispatch<SetStateAction<number | undefined>>
   handelFilter?: (value: typeObject) => void
   searchValue?: {
-    [key: string]: string | number
+    [key: string]: string | number | boolean
   }
+  limit?: number
+  listIDs?: (number | string)[]
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  handelDeleteAll?: (data: any) => void
 }
 
 export interface typeEventClick {
@@ -134,7 +138,7 @@ export interface TablePaginationProps extends TableProps {
   isDelete?: boolean
   customUrl?: (obj: customUrlProps) => string | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callApiDelete?: (id: number | string) => Promise<AxiosResponse<any, any>>
+  callApiDelete?: (id: (number | string)[]) => Promise<AxiosResponse<any, any>>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callApi?: (url: string) => Promise<AxiosResponse<any, any>>
   callBack?: (values: TypeValue) => void

@@ -1,15 +1,14 @@
-import { configProps, selectCheckProps } from "@/types"
 import { FC, Fragment, memo } from "react"
-// import { configProps } from "../Types";
-
+import { TypeValue, configProps, selectCheckProps } from "@/types"
 interface TheadProps {
   config?: configProps[][]
   isStt?: boolean
   isFuc?: boolean
   selectCheck?: selectCheckProps
+  provider?: TypeValue
 }
 
-const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck }) => {
+const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider }) => {
   return (
     <thead className="text-sm font-semibold text-slate-500 bg-slate-50 border-t border-b border-slate-200">
       {config?.map((thead, index) => {
@@ -28,8 +27,16 @@ const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck }) => {
                           <input
                             className="form-check-input cursor-pointer"
                             type="checkbox"
-                            value=""
-                            id="defaultCheck3"
+                            id="defaultCheck1"
+                            checked={provider?.listIDs ? provider?.listIDs?.length > 1 : false}
+                            onChange={() => {
+                              if (provider) {
+                                const { data, handelDeleteAll } = provider
+                                if(data?.data) {
+                                  typeof handelDeleteAll === "function" && handelDeleteAll(data?.data)
+                                }
+                              }
+                            }}
                           />
                         </label>
                       </div>

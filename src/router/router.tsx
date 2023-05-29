@@ -1,8 +1,10 @@
-import { createBrowserRouter, IndexRouteObject, NonIndexRouteObject, Outlet } from "react-router-dom"
+/* eslint-disable react/display-name */
+import { createBrowserRouter, IndexRouteObject, NonIndexRouteObject } from "react-router-dom"
+import { lazy, Suspense } from "react"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
 import Product from "@/pages/Products"
-import Users from "@/pages/Users"
+// import Users from "@/pages/Users"
 import Blog from "@/pages/Blog"
 import AddUser from "@/pages/Users/AddUser"
 import EditUser from "@/pages/Users/EditUser"
@@ -16,6 +18,17 @@ import { GiOpenBook } from "react-icons/gi"
 import AddProducts from "@/pages/Products/AddProducts"
 import { verifyToken } from "@/api/authApi"
 import AuthLayout from "@/layout/AuthLayout"
+import Loading from "@/components/Loading"
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
+export const Loadable = (Component: () => JSX.Element) => (props: any) =>
+  (
+    <Suspense fallback={<Loading />}>
+      <Component {...props} />
+    </Suspense>
+  )
+
+const Users = Loadable(lazy(() => import("@/pages/Users")))
 
 export enum typeRouter {
   public = "public",
@@ -45,11 +58,7 @@ export const router: CustomRouteConfig[] = [
     type: typeRouter.private,
     title: "Trang chủ",
     loader: () => verifyToken(),
-    element: (
-      <AuthLayout>
-        <Outlet />
-      </AuthLayout>
-    ),
+    element: <AuthLayout />,
     errorElement: <NotFound />,
     children: [
       {

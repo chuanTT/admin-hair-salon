@@ -63,11 +63,11 @@ const Tbody: FC<TbodyProps> = ({ data, config, selectCheck, isStt, isFuc, config
                   })
                   const maxTbody = tbody.length - 1
                   const classBody = "px-2 py-3 whitespace-nowrap"
-                  // let idSelect = RenderValue({
-                  //   key: selectCheck?.key || "id",
-                  //   data: items
-                  // })
-                  // idSelect = idSelect != "-" ? idSelect : 0
+                  let idSelect = RenderValue({
+                    key: selectCheck?.key || "id",
+                    data: items
+                  })
+                  idSelect = idSelect != "-" ? idSelect : 0
 
                   return (
                     <Fragment key={i}>
@@ -75,7 +75,19 @@ const Tbody: FC<TbodyProps> = ({ data, config, selectCheck, isStt, isFuc, config
                         <td className="px-3 py-3 whitespace-nowrap w-px">
                           <div className="flex items-center">
                             <label className="inline-flex">
-                              <input className="form-check-input cursor-pointer" type="checkbox" value="" />
+                              <input
+                                className="form-check-input cursor-pointer"
+                                type="checkbox"
+                                checked={provider?.listIDs ? provider?.listIDs?.includes(idSelect) : false}
+                                onChange={() => {
+                                  if (provider) {
+                                    const { handelDelete } = provider
+                                    if (handelDelete) {
+                                      handelDelete(idSelect, true)
+                                    }
+                                  }
+                                }}
+                              />
                             </label>
                           </div>
                         </td>
@@ -121,7 +133,9 @@ const Tbody: FC<TbodyProps> = ({ data, config, selectCheck, isStt, isFuc, config
                                       id={`id-${index}-${i}-${iFuc}`}
                                       to={checkTo}
                                       onClick={(e) => {
-                                        item?.onClick && typeof item.onClick === "function" && item.onClick({ id, e, provider })
+                                        item?.onClick &&
+                                          typeof item.onClick === "function" &&
+                                          item.onClick({ id, e, provider })
                                       }}
                                     />
                                   )}

@@ -31,13 +31,13 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
     if (accordionContentRef.current) {
       const element: HTMLDivElement = accordionContentRef.current
 
-      element.style.transition = "height .3s ease"
-      const height = element.scrollHeight
-      element.style.height = `${height}px`
+      element.style.transition = "height .2s ease"
+      const sectionHeight = 1 * element.scrollHeight
+      element.style.height = `${sectionHeight}px`
       typeof customProgressOpen === "function" && customProgressOpen(element)
 
       element.ontransitionend = () => {
-        element.style.transition = ""
+        element.style.removeProperty("transition")
         typeof customFucOpenDone === "function" && customFucOpenDone(element)
         element.onanimationend = null
       }
@@ -49,15 +49,14 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
     if (accordionContentRef.current) {
       const element: HTMLDivElement = accordionContentRef.current
 
-      element.style.transition = "height .3s ease"
+      element.style.transition = "height .2s ease"
       element.style.height = `0px`
 
       element.ontransitionend = () => {
-        element.style.transition = ""
+        element.style.removeProperty("transition")
         typeof customFucCloseDone === "function" && customFucCloseDone(element)
         element.onanimationend = null
       }
-
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])

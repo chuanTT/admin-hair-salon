@@ -119,7 +119,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
 
   return (
     <TablePaginationContext.Provider value={values}>
-      {isDelete && callApiDelete && (
+      {isFetched && isDelete && callApiDelete && (
         <Portal>
           <ModalDeleteCus
             id={listIDs}

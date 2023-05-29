@@ -13,7 +13,6 @@ export interface AccordionWapperProps {
   customFucCloseDone?: (element: HTMLDivElement | null) => void
   callBackUpdate?: (toggleAccordion: () => void, active: boolean) => void
   isUpdate?: boolean
-
 }
 
 const AccordionWapper: FC<AccordionWapperProps> = ({
@@ -31,39 +30,34 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
   const expandAccordion = useCallback(() => {
     if (accordionContentRef.current) {
       const element: HTMLDivElement = accordionContentRef.current
-      requestAnimationFrameAccordion({
-        element,
-        callBackDone: () => {
-          element.style.height = "auto"
-          element.style.overflow = "initial"
-          typeof customFucOpenDone === "function" && customFucOpenDone(element)
-        },
-        callProgress: (process, element) => {
-          incrementHeight(process, element)
-          typeof customProgressOpen === "function" && customProgressOpen(element)
-        }
-      })
+
+      element.style.transition = "height .2s ease"
+      const sectionHeight = 1 * element.scrollHeight
+      element.style.height = `${sectionHeight}px`
+      typeof customProgressOpen === "function" && customProgressOpen(element)
+
+      element.ontransitionend = () => {
+        element.style.removeProperty("transition")
+        typeof customFucOpenDone === "function" && customFucOpenDone(element)
+        element.onanimationend = null
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const collapseAccordion = useCallback(() => {
     if (accordionContentRef.current) {
       const element: HTMLDivElement = accordionContentRef.current
-      requestAnimationFrameAccordion({
-        element,
-        callBackDone: () => {
-          element.style.height = ""
-          element.style.overflow = ""
-          element.style.padding = ""
-          typeof customFucCloseDone === "function" && customFucCloseDone(element)
-        },
-        callProgress: (process, element) => {
-          decrementHeight(process, element)
-        }
-      })
+
+      element.style.transition = "height .2s ease"
+      element.style.height = `0px`
+      
+      element.ontransitionend = () => {
+        element.style.removeProperty("transition")
+        typeof customFucCloseDone === "function" && customFucCloseDone(element)
+        element.onanimationend = null
+      }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   const updateUi = useCallback(
@@ -85,10 +79,10 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
   }, [active, updateUi])
 
   useEffect(() => {
-    if(typeof callBackUpdate === "function") {
+    if (typeof callBackUpdate === "function") {
       callBackUpdate(toggleAccordion, active)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpdate])
 
   return <>{children({ refButton: divActive, active, toggleAccordion, refContent: accordionContentRef })}</>

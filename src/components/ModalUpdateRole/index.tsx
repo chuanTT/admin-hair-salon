@@ -4,11 +4,11 @@ import _ from "lodash"
 import ToastCustom, { TypeToast } from "../ToastCustom"
 import Modal from "../Modal"
 import { MsgType } from "@/common/functions"
-import Button from "../Button"
 import useFetchingApi from "@/hooks/useFetchingApi"
 import { getPermissionsList, getRoles, tableRole, updatePermissions } from "@/api/rolesApi"
 import { PermissionDefault, RoleDefault, UpdateRole } from "@/types"
 import Loading from "../Loading"
+import ButtonLoading from "../ButtonLoading"
 
 interface ModalDeleteCusProps {
   isOpen: boolean
@@ -130,21 +130,21 @@ const ModalUpdateRole: FC<ModalDeleteCusProps> = ({
       }}
     >
       <Modal
-        classModalWidth="max-sm:w-[90%] sm:w-[80%] !max-w-none"
+        classModalWidth="max-sm:w-[90%] lg:!w-[70%] !max-w-none max-h-[90%] overflow-y-auto"
         isOpen={isOpen}
         setIsOpen={setIsOpen}
         isClose={isPending}
       >
         {!isFetched && (
-          <div className="flex justify-center [&>*]:scale-50 items-start">
-            <Loading />
-          </div>
+          <Loading classNameDiv="flex justify-center items-start py-4" />
         )}
+
+        <div className=""></div>
 
         {isFetched && (
           <div>
             <div className="overflow-x-auto">
-              <table className="w-full">
+              <table className="w-full max-sm:w-[800px]">
                 <thead className="text-sm font-semibold text-slate-500 bg-slate-50 border-t border-b border-slate-200">
                   <tr className="[&>*]:border [&>*]:border-solid">
                     <th className="px-2 py-3 whitespace-nowrap border border-solid font-semibold text-center">
@@ -225,15 +225,11 @@ const ModalUpdateRole: FC<ModalDeleteCusProps> = ({
                 </tbody>
               </table>
             </div>
-            <div className="bg-gray-50 px-4 py-3 flex max-sm:justify-center flex-row-reverse gap-2">
+            <div className="bg-gray-50 px-4 py-3 flex justify-end gap-2">
               <span className="flex rounded-md shadow-sm sm:mt-0 sm:w-fit ">
-                <Button
-                  isPending={isPending}
-                  onClick={submitUpdate}
-                  customClass="flex items-center space-x-2  font-bold py-2 px-4 border !rounded bg-blue-icon bg-indigo-600 hover:bg-indigo-500 text-white"
-                >
+                <ButtonLoading onClick={submitUpdate} isPending={isPending} isPrimary>
                   Lưu lại
-                </Button>
+                </ButtonLoading>
               </span>
             </div>
           </div>

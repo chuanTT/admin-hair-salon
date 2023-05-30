@@ -2,14 +2,13 @@ import { useRef } from "react"
 import * as Yup from "yup"
 import { AddUser as AddUserApi } from "@/api/usersApi"
 import Breadcrumb from "@/components/Breadcrumb"
-import Button from "@/components/Button"
 import { InputField, ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { funcKeyRole } from "@/common/ConfigSelectOption"
-import ButtonLoading from "@/components/ButtonLoading"
+import LayoutFormDefault from "@/layout/LayoutFormDefault"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -61,104 +60,91 @@ const AddUser = () => {
           } = propForm
 
           return (
-            <>
-              <div className="row">
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Họ và tên"
-                  placeholder="Nhập họ và tên"
-                  name="full_name"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                />
+            <LayoutFormDefault isPending={isPending} clickButtonCancel={() => {
+              reset()
+            }}>
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Họ và tên"
+                placeholder="Nhập họ và tên"
+                name="full_name"
+                register={register}
+                isRequire
+                isError
+                errors={errors}
+              />
 
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Tên đăng nhập"
-                  placeholder="Nhập tên đăng nhập"
-                  name="user_name"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Tên đăng nhập"
+                placeholder="Nhập tên đăng nhập"
+                name="user_name"
+                register={register}
+                isRequire
+                isError
+                errors={errors}
+              />
 
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Số điện thoại"
-                  placeholder="Nhập số điện thoại"
-                  name="phone"
-                  register={register}
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Số điện thoại"
+                placeholder="Nhập số điện thoại"
+                name="phone"
+                register={register}
+              />
 
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Email"
-                  placeholder="Nhập địa chỉ email"
-                  name="email"
-                  register={register}
-                  isError
-                  errors={errors}
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Email"
+                placeholder="Nhập địa chỉ email"
+                name="email"
+                register={register}
+                isError
+                errors={errors}
+              />
 
-                <InputField
-                  type="password"
-                  classInputContainer="col-md-6 mb-3"
-                  title="Mật khẩu"
-                  placeholder="Nhập mật khẩu"
-                  name="password"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                />
+              <InputField
+                type="password"
+                classInputContainer="col-md-6 mb-3"
+                title="Mật khẩu"
+                placeholder="Nhập mật khẩu"
+                name="password"
+                register={register}
+                isRequire
+                isError
+                errors={errors}
+              />
 
-                <InputField
-                  type="password"
-                  classInputContainer="col-md-6 mb-3"
-                  title="Xác nhận mật khẩu"
-                  placeholder="Nhập xác nhận mật khẩu"
-                  name="confirm_password"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                />
+              <InputField
+                type="password"
+                classInputContainer="col-md-6 mb-3"
+                title="Xác nhận mật khẩu"
+                placeholder="Nhập xác nhận mật khẩu"
+                name="confirm_password"
+                register={register}
+                isRequire
+                isError
+                errors={errors}
+              />
 
-                <ReactSelectCus
-                  title="Vai trò"
-                  parenSelect="mb-3 col-md-12"
-                  placeholder="Chọn vai trò"
-                  name="role_id"
-                  options={optionRole}
-                  getValue={getValues}
-                  setValue={setValue}
-                />
+              <ReactSelectCus
+                title="Vai trò"
+                parenSelect="mb-3 col-md-12"
+                placeholder="Chọn vai trò"
+                name="role_id"
+                options={optionRole}
+                getValue={getValues}
+                setValue={setValue}
+              />
 
-                <ListImagesUploadFile
-                  ref={ImgRef}
-                  setValue={setValue}
-                  title="Hình ảnh đại diện"
-                  name="avatar"
-                  register={register}
-                />
-              </div>
-
-              <div className="flex items-center space-x-2">
-                <ButtonLoading isPending={isPending} isPrimary>
-                  Thêm
-                </ButtonLoading>
-
-                <ButtonLoading onClick={(e) => {
-                  e.preventDefault()
-                  reset()
-                }}>
-                  Hủy
-                </ButtonLoading>
-              </div>
-            </>
+              <ListImagesUploadFile
+                ref={ImgRef}
+                setValue={setValue}
+                title="Hình ảnh đại diện"
+                name="avatar"
+                register={register}
+              />
+            </LayoutFormDefault>
           )
         }}
       </FormHandel>

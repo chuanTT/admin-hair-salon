@@ -2,7 +2,6 @@ import { useRef } from "react"
 import * as Yup from "yup"
 import { UpdateUser, getUser, tableUser } from "@/api/usersApi"
 import Breadcrumb from "@/components/Breadcrumb"
-import Button from "@/components/Button"
 import { InputField, ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
@@ -12,6 +11,7 @@ import { getRoles, tableRole } from "@/api/rolesApi"
 import { funcKeyRole } from "@/common/ConfigSelectOption"
 import { isEmptyObj } from "@/common/functions"
 import SendFormData from "@/components/FormHandel/SendFormData"
+import LayoutFormDefault from "@/layout/LayoutFormDefault"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -82,88 +82,71 @@ const EditUser = () => {
             formState: { errors }
           } = propForm
           return (
-            <>
-              <div className="row">
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Họ và tên"
-                  placeholder="Nhập họ và tên"
-                  name="full_name"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                />
+            <LayoutFormDefault isPending={isPending} txtButtonPrimary="Chỉnh sửa" clickButtonCancel={() => {
+              clearErrors()
+              typeof setResertForm === "function" && setResertForm(prev => !prev)
+            }}>
 
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Tên đăng nhập"
-                  placeholder="Nhập tên đăng nhập"
-                  name="user_name"
-                  register={register}
-                  isRequire
-                  isError
-                  errors={errors}
-                  readOnly
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Họ và tên"
+                placeholder="Nhập họ và tên"
+                name="full_name"
+                register={register}
+                isRequire
+                isError
+                errors={errors}
+              />
 
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Số điện thoại"
-                  placeholder="Nhập số điện thoại"
-                  name="phone"
-                  register={register}
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Tên đăng nhập"
+                placeholder="Nhập tên đăng nhập"
+                name="user_name"
+                register={register}
+                isRequire
+                isError
+                errors={errors}
+                readOnly
+              />
 
-                <InputField
-                  classInputContainer="col-md-6 mb-3"
-                  title="Email"
-                  placeholder="Nhập địa chỉ email"
-                  name="email"
-                  register={register}
-                  isError
-                  errors={errors}
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Số điện thoại"
+                placeholder="Nhập số điện thoại"
+                name="phone"
+                register={register}
+              />
 
-                <ReactSelectCus
-                  title="Vai trò"
-                  parenSelect="mb-3 col-md-12"
-                  placeholder="Chọn vai trò"
-                  name="role_id"
-                  options={optionRole}
-                  getValue={getValues}
-                  setValue={setValue}
-                />
+              <InputField
+                classInputContainer="col-md-6 mb-3"
+                title="Email"
+                placeholder="Nhập địa chỉ email"
+                name="email"
+                register={register}
+                isError
+                errors={errors}
+              />
 
-                <ListImagesUploadFile
-                  ref={ImgRef}
-                  setValue={setValue}
-                  title="Hình ảnh đại diện"
-                  name="avatar"
-                  register={register}
-                />
-              </div>
+              <ReactSelectCus
+                title="Vai trò"
+                parenSelect="mb-3 col-md-12"
+                placeholder="Chọn vai trò"
+                name="role_id"
+                options={optionRole}
+                getValue={getValues}
+                setValue={setValue}
+              />
 
-              <div className="flex items-center space-x-2">
-                <Button
-                  isPending={isPending}
-                  customClass="font-bold py-2 px-4 border !rounded bg-blue-icon bg-indigo-600 hover:bg-indigo-500 text-white"
-                >
-                  Chỉnh sửa
-                </Button>
+              <ListImagesUploadFile
+                ref={ImgRef}
+                setValue={setValue}
+                title="Hình ảnh đại diện"
+                name="avatar"
+                register={register}
+              />
 
-                <Button
-                  onClick={(e) => {
-                    e.preventDefault()
-                    clearErrors()
-                    typeof setResertForm === "function" && setResertForm(prev => !prev)
-                  }}
-                  customClass="bg-white border-solid text-black font-bold py-2 px-4 border !rounded "
-                >
-                  Hủy
-                </Button>
-              </div>
-            </>
+            </LayoutFormDefault>
           )
         }}
       </FormHandel>

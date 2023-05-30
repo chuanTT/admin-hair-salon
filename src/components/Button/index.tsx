@@ -93,6 +93,7 @@ const Button: FC<ButtonProps> = ({
       className={`rounded-full flex justify-center items-center ${
         isPending ? "opacity-50 cursor-default" : "cursor-pointer"
       } ${customClass ?? ""}`}
+      disabled={isPending}
       {...props}
     >
       {isToolTips && <ToolTip id={id} content={content} position={position} />}

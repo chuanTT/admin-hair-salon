@@ -1,6 +1,4 @@
 import { useCallback, useRef, useState, FC, MutableRefObject, useEffect } from "react"
-import { decrementHeight, requestAnimationFrameAccordion } from "@/common/functions"
-
 export interface AccordionWapperProps {
   children: (obj: {
     refButton: MutableRefObject<HTMLDivElement | null>

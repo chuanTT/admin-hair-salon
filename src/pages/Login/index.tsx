@@ -21,7 +21,7 @@ const Login = () => {
   const navigate = useNavigate()
 
   useEffect(() => {
-    if (isLoged && auth) {
+    if (isLoged || auth) {
       navigate(config.router.home)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

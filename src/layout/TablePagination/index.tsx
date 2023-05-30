@@ -4,7 +4,6 @@ import Breadcrumb from "@/components/Breadcrumb"
 import { TablePaginationProps, TypeValue, paginationType, typeObject } from "@/types"
 import Pagination from "@/components/Pagination"
 import Table from "@/components/Table"
-import Loading from "@/components/Loading"
 import ModalDeleteCus from "@/components/ModalDeleteCus"
 import Portal from "@/components/Portal"
 import { LIMIT_SELECT } from "@/common/ConfigSelectOption"
@@ -110,10 +109,11 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       setIsOpen,
       limit,
       listIDs,
-      handelDeleteAll
+      handelDeleteAll,
+      isFetched
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [data, listIDs, searchValue])
+  }, [data, listIDs, searchValue, isFetched])
 
   typeof callBack === "function" && callBack(values)
 
@@ -134,26 +134,16 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       )}
 
       <Breadcrumb>
-        {!isFetched && (
-          <div className="flex justify-center [&>*]:scale-50 items-start">
-            <Loading />
-          </div>
-        )}
-
-        {isFetched && (
-          <>
-            {children}
-            <Table
-              data={data?.data}
-              isStt={isStt}
-              configFuc={configFuc}
-              isFuc={isFuc}
-              selectCheck={selectCheck}
-              configDetail={configDetail}
-              provider={values}
-            />
-          </>
-        )}
+        {children}
+        <Table
+          data={data?.data}
+          isStt={isStt}
+          configFuc={configFuc}
+          isFuc={isFuc}
+          selectCheck={selectCheck}
+          configDetail={configDetail}
+          provider={values}
+        />
         {isFetched && pagination && (
           <div className="mt-8 flex justify-end">
             <Pagination

@@ -1,13 +1,16 @@
 import images from "@/assets/img"
 import { MutableRefObject, useEffect, useRef } from "react"
+import Loading from "../Loading"
 // import Table from "./Table";
 
 const CustomScrollTable = ({
   children,
-  isNoResult = true
+  isNoResult = true,
+  isFetched = false
 }: {
   children: (refTable: MutableRefObject<HTMLTableElement | null>) => JSX.Element
   isNoResult: boolean
+  isFetched: boolean
 }) => {
   const scrollContainer = useRef<HTMLDivElement | null>(null)
   const scrollThumb = useRef<HTMLDivElement | null>(null)
@@ -78,22 +81,27 @@ const CustomScrollTable = ({
   }, [])
 
   return (
-    <div className="bg-white shadow-lg rounded-sm relative">
-      <div className="absolute left-0 w-full h-2 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
-        <div className=" h-2" ref={scrollThumb}></div>
-      </div>
-      <div className="overflow-x-auto" ref={scrollContainer}>
-        {children(TableContainer)}
-      </div>
-
-      {isNoResult && (
-        <div className="[&>img]:w-16 flex flex-col items-center pb-7">
-          <img src={images.NoResult} alt="không có kết quả" />
-
-          <span className="block mt-3">Không tìm thấy dữ liệu</span>
+    <>
+      <div className="bg-white shadow-lg rounded-sm relative">
+        <div className="absolute left-0 w-full h-2 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
+          <div className=" h-2" ref={scrollThumb}></div>
         </div>
-      )}
-    </div>
+        <div className="overflow-x-auto overflow-y-hidden" ref={scrollContainer}>
+          {children(TableContainer)}
+        </div>
+
+        {!isFetched && <Loading classNameDiv="flex justify-center [&>*]:scale-50 items-start py-4" />}
+
+        {isFetched && isNoResult && (
+          <div className="[&>img]:w-16 flex flex-col items-center pb-7">
+            <img src={images.NoResult} alt="không có kết quả" />
+
+            <span className="block mt-3">Không tìm thấy dữ liệu</span>
+          </div>
+        )}
+      </div>
+
+    </>
   )
 }
 

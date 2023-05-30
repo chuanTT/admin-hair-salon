@@ -111,6 +111,7 @@ export interface TypeValue {
   listIDs?: (number | string)[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handelDeleteAll?: (data: any) => void
+  isFetched?: boolean
 }
 
 export interface typeEventClick {
@@ -164,13 +165,13 @@ export interface paginationType {
 
 export interface TbodyProps {
   data?: dataProps
-  config: configProps[][]
   selectCheck?: selectCheckProps
   isStt?: boolean
   isFuc?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   configFuc?: typeEvent[]
   provider?: TypeValue
+  render: configProps[]
 }
 
 export interface RoleDefault {

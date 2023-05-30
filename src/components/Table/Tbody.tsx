@@ -1,7 +1,4 @@
-import { FC, Fragment, useEffect, useState, memo } from "react"
-import * as _ from "lodash"
-
-// import { configProps, selectCheckProps } from "../Types";
+import { FC, Fragment } from "react"
 import { RenderValue, STT } from "@/common/functions"
 import { LoadValueCustomProps, TbodyProps, configProps, typeElment, typeEvent } from "@/types"
 import Button from "../Button"
@@ -25,43 +22,23 @@ const LoadValueCustom: FC<LoadValueCustomProps> = ({ data, type, element, curren
   }
 }
 
-const Tbody: FC<TbodyProps> = ({ data, config, selectCheck, isStt, isFuc, configFuc, provider }) => {
-  const [tbody, setTbody] = useState<configProps[] | []>([])
-
-  useEffect(() => {
-    if (config) {
-      const newArr = [...config]
-
-      const reduceArr: configProps[] | [] = _.reduce(
-        newArr,
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        (t: any, c: any) => {
-          if (Array.isArray(c)) c = _.filter(c, "key")
-          return _.concat(t, c)
-        },
-        []
-      )
-
-      setTbody(reduceArr)
-    }
-  }, [config])
-
+const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, configFuc, provider }) => {
   return (
     <tbody className="text-sm divide-y divide-slate-200 bg-white">
       {Array.isArray(data?.data) &&
         data?.data?.map((items, index) => {
           return (
             <tr key={index} className="[&>*]:border [&>*]:border-solid">
-              {tbody &&
-                tbody?.length > 0 &&
-                tbody.map((item: configProps, i: number) => {
+              {render &&
+                render?.length > 0 &&
+                render.map((item: configProps, i: number) => {
                   const v = RenderValue({
                     key: item?.key,
                     data: items,
                     customValue: item?.customValue,
                     customListValue: item?.customListValue
                   })
-                  const maxTbody = tbody.length - 1
+                  const maxTbody = render.length - 1
                   const classBody = "px-2 py-3 whitespace-nowrap"
                   let idSelect = RenderValue({
                     key: selectCheck?.key || "id",
@@ -155,4 +132,4 @@ const Tbody: FC<TbodyProps> = ({ data, config, selectCheck, isStt, isFuc, config
   )
 }
 
-export default memo(Tbody)
+export default Tbody

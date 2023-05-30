@@ -3,10 +3,10 @@ import { Link, NavLink } from "react-router-dom"
 import { RiMenu2Fill } from "react-icons/ri"
 import { BiUser } from "react-icons/bi"
 import { HiPower } from "react-icons/hi2"
-import "./header.css"
 import Images from "@/components/Images"
 import { useProtectedLayout } from "../ProtectedLayout"
 import { layoutMenuFucRemove } from "../DefaultLayout"
+import "./header.css"
 
 const Header = () => {
   const { user, removeAuth } = useProtectedLayout()
@@ -22,7 +22,7 @@ const Header = () => {
 
       if (Header && content && layoutMenu) {
         const { height: heaightHeader } = Header.getBoundingClientRect()
-        // const { width: widthLayout } = layoutMenu.getBoundingClientRect()
+        const { width, left } = content.getBoundingClientRect()
 
         const maxHeight = heaightHeader + 12
         if (wWindown >= 1200) {
@@ -30,17 +30,15 @@ const Header = () => {
           if (maxHeight <= y) {
             topH = "0px"
           }
-          // const styleContent = getComputedStyle(content)
-          // const marginLeft = parseFloat(styleContent.marginLeft)
-          // const marginRight = parseFloat(styleContent.marginRight)
-          // const paddingRight = parseFloat(styleContent.paddingRight)
-          // const paddingLeft = parseFloat(styleContent.paddingLeft)
+          const styleContent = getComputedStyle(content)
+          const paddingRight = parseFloat(styleContent.paddingRight)
+          const paddingLeft = parseFloat(styleContent.paddingLeft)
           Header.style.top = topH
-          // Header.style.width = `${wWindown - marginLeft - marginRight - widthLayout - paddingRight - paddingLeft}px`
-          // Header.style.right = `${marginRight + paddingLeft}px`
+          Header.style.width = `${width - paddingRight - paddingLeft}px`
+          Header.style.left = `${left + paddingLeft}px`
         } else {
-          // Header.style.width = `100%`
-          Header.style.right = `0px`
+          Header.style.width = `100%`
+          Header.style.left = `0px`
         }
 
         content.style.marginTop = `${maxHeight}px`
@@ -60,7 +58,7 @@ const Header = () => {
 
   return (
     <nav
-      className="layout-navbar max-1200:!top-0 max-1200:!w-full !max-w-none !fixed 1200:right-[26px] transition-all duration-150 container-xxl navbar navbar-expand-xl navbar-detached align-items-center bg-navbar-theme flex items-center"
+      className="layout-navbar !mx-0 max-1200:!top-0 !max-w-none !fixed transition-all duration-150 navbar navbar-expand-xl navbar-detached bg-navbar-theme flex items-center"
       id="layout-navbar"
     >
       <div

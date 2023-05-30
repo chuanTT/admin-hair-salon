@@ -5,19 +5,13 @@ import { dataInter } from "@/types"
 import ProtectedLayout from "../ProtectedLayout"
 import DefaultLayout from "../DefaultLayout"
 
-
 const AuthLayout = () => {
-  const userPromise = useLoaderData()
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const { userPromise } = useLoaderData() as { userPromise: any }
   const outlet = useOutlet()
 
   return (
-    <Suspense
-      fallback={
-        <div className="flex justify-center items-center [&>*]:scale-50 fixed inset-0">
-          <Loading />
-        </div>
-      }
-    >
+    <Suspense fallback={<Loading isCenterScreen/>}>
       <Await resolve={userPromise} errorElement={<Navigate to="/login" replace={true} />}>
         {(userData: dataInter) => {
           return (

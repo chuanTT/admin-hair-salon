@@ -1,10 +1,10 @@
 /* eslint-disable react/display-name */
-import { createBrowserRouter, IndexRouteObject, NonIndexRouteObject } from "react-router-dom"
-import { lazy, Suspense } from "react"
+import { createBrowserRouter, defer, IndexRouteObject, NonIndexRouteObject } from "react-router-dom"
+import { lazy, LazyExoticComponent, Suspense } from "react"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
 import Product from "@/pages/Products"
-// import Users from "@/pages/Users"
+import Users from "@/pages/Users"
 import Blog from "@/pages/Blog"
 import AddUser from "@/pages/Users/AddUser"
 import EditUser from "@/pages/Users/EditUser"
@@ -21,14 +21,15 @@ import AuthLayout from "@/layout/AuthLayout"
 import Loading from "@/components/Loading"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-export const Loadable = (Component: () => JSX.Element) => (props: any) =>
-  (
-    <Suspense fallback={<Loading />}>
-      <Component {...props} />
+export const Loadable = (Component: LazyExoticComponent<() => JSX.Element>) => () => {
+  return (
+    <Suspense fallback={<Loading isCenterScreen />}>
+      <Component />
     </Suspense>
   )
+}
 
-const Users = Loadable(lazy(() => import("@/pages/Users")))
+// const Users = Loadable(lazy(() => import("@/pages/Users")))
 
 export enum typeRouter {
   public = "public",
@@ -57,7 +58,7 @@ export const router: CustomRouteConfig[] = [
     path: config.router.home,
     type: typeRouter.private,
     title: "Trang chủ",
-    loader: () => verifyToken(),
+    loader: () => defer({ userPromise: verifyToken() }),
     element: <AuthLayout />,
     errorElement: <NotFound />,
     children: [

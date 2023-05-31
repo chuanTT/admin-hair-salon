@@ -1,10 +1,10 @@
 /* eslint-disable react/display-name */
 import { createBrowserRouter, defer, IndexRouteObject, NonIndexRouteObject } from "react-router-dom"
-import { lazy, LazyExoticComponent, Suspense } from "react"
+import { lazy, Suspense } from "react"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
 import Product from "@/pages/Products"
-import Users from "@/pages/Users"
+// import Users from "@/pages/Users"
 import Blog from "@/pages/Blog"
 import AddUser from "@/pages/Users/AddUser"
 import EditUser from "@/pages/Users/EditUser"
@@ -21,7 +21,8 @@ import AuthLayout from "@/layout/AuthLayout"
 import Loading from "@/components/Loading"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-export const Loadable = (Component: LazyExoticComponent<() => JSX.Element>) => () => {
+export const Loadable = (str: string) => () => {
+  const Component = lazy(() => import(str))
   return (
     <Suspense fallback={<Loading isCenterScreen />}>
       <Component />
@@ -29,7 +30,7 @@ export const Loadable = (Component: LazyExoticComponent<() => JSX.Element>) => (
   )
 }
 
-// const Users = Loadable(lazy(() => import("@/pages/Users")))
+const Users = Loadable("../pages/Users")
 
 export enum typeRouter {
   public = "public",

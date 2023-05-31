@@ -19,7 +19,7 @@ const SearchFilterForm: FC<SearchFilterFormProps> = ({ name, placeholder, setSea
     const valuesNew = !(typeof valueInput === "boolean") ? valueInput : ""
     return (<div className="flex items-center space-x-2">
         <InputField
-            classInputContainer="flex-1 h-full [&>input]:rounded-sm [&>input]:h-full"
+            classInputContainer="flex-1 h-full [&>input]:rounded-sm [&>input]:h-full [&>input]:bg-white"
             placeholder={placeholder ?? "Tìm kiếm..."}
             name={name}
             value={valuesNew}

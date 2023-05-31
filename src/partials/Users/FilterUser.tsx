@@ -36,6 +36,7 @@ const FilterUser = () => {
               user: data?.value
             })
         }}
+        backgroundColor="#FFFFFF"
       />
 
       <SearchFilterForm placeholder="Tìm kiếm theo họ tên" name="full_name" searchValue={searchValue} setSearchValue={setSearchValue} />

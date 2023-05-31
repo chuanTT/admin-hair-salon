@@ -29,6 +29,7 @@ interface ReactSelectCusProps {
   title?: string
   isRequire?: boolean
   placeholder?: string
+  backgroundColor?: string
   rest?: {
     [key: string]: number | string | SelectDefault[] | SelectDefault | []
   }
@@ -52,6 +53,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
     title,
     isRequire,
     placeholder,
+    backgroundColor,
     rest
   } = prop
   // const [valueSearch, setValueSearch] = useState("");
@@ -68,7 +70,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     control: (base: any, state: any) => ({
       ...base,
-      backgroundColor: "rgb(249 250 251 / 1)",
+      backgroundColor: backgroundColor ?? "rgb(249 250 251 / 1)",
       // Overwrittes the different states of border
       borderColor: "rgb(226 232 240 / 1)",
       textAlign: "left",

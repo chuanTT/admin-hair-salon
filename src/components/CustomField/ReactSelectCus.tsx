@@ -11,7 +11,7 @@ export interface optionType {
   label?: string | number
 }
 
-interface ReactSelectCusProps {
+export interface ReactSelectCusProps {
   name: string
   options?: SelectDefault[] | []
   parenSelect?: HTMLAttributes<HTMLElement>["className"]

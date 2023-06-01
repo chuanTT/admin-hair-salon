@@ -9,7 +9,7 @@ const Product = () => {
       nameTable={tableProduct}
       callApi={getProduct}
       isDelete
-      callApiDelete={deleletProduct}
+      // callApiDelete={deleletProduct}
       configFuc={configDefaultEvent}
       customUrl={({ nameTable, query, limit, page }) => {
         return query?.for(nameTable).page(page).limit(limit).url()

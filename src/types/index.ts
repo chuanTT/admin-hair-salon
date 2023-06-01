@@ -96,17 +96,11 @@ export interface TypeValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   data?: AxiosResponse<any, any> | undefined
   handelDelete?: (id: number | string, isPush?: boolean) => void
-  setSearchValue?: Dispatch<
-    SetStateAction<{
-      [key: string]: string | number | boolean
-    }>
-  >
+  setSearchValue?: Dispatch<SetStateAction<typeObject>>
   id?: number | string | undefined
   setPage?: Dispatch<SetStateAction<number | undefined>>
   handelFilter?: (value: typeObject) => void
-  searchValue?: {
-    [key: string]: string | number | boolean
-  }
+  searchValue?: typeObject
   limit?: number
   listIDs?: (number | string)[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -191,7 +185,6 @@ export interface UpdateRole {
   permission_id?: number
   event?: (number | undefined | string)[]
 }
-
 
 export enum RoleList {
   ROOT = "ROOT",

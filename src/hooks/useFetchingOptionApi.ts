@@ -5,7 +5,7 @@ import QueryRequest from "@/api/builder/QueryRequest"
 import { SelectDefault } from "@/types"
 import _ from "lodash"
 
-interface useFetchingOptionApiProps extends useFetchingApiParmeter {
+export interface useFetchingOptionApiProps extends useFetchingApiParmeter {
   isSearching?: boolean
   keySearching?: string
   isOptionAll?: boolean

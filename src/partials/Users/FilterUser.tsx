@@ -1,45 +1,30 @@
-import { getUser, tableUser } from "@/api/usersApi"
-import { configAll, funcUserKey } from "@/common/ConfigSelectOption"
 import { ReactSelectCus } from "@/components/CustomField"
 import SearchFilterForm from "@/components/SearchFilterForm"
+import SelectFilterForm from "@/components/SelectFilterForm"
 import config from "@/config"
-import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
+import { configUserAllApi } from "@/config/configCallApi"
 import LayoutDefaultFilter from "@/layout/LayoutDefaultFilter"
 import { useTablePagination } from "@/layout/TablePagination"
 
 const FilterUser = () => {
   const { searchValue, handelFilter, setSearchValue } = useTablePagination()
-  const { option } = useFethingOptionApi({
-    nameTable: tableUser,
-    CallAPi: getUser,
-    isSearching: true,
-    isOptionAll: true,
-    customFucKey: funcUserKey,
-    customOptionAll: ({ data }) => {
-      return [configAll(), ...data]
-    }
-  })
 
   return (
     <LayoutDefaultFilter isButton to={config.router.addUser} txtButton="Thêm nhân viên">
-      <ReactSelectCus
-        parenSelect="bg-white"
-        placeholder="Chọn nhân viên"
+      <SelectFilterForm
+        searchValue={searchValue}
+        handelFilter={handelFilter}
+        configApi={configUserAllApi}
+        placeholder="Vui lòng chọn nhân viên"
         name="user"
-        options={option}
-        rest={{
-          value: option?.filter((item) => item?.value === searchValue?.["user"]) || []
-        }}
-        changeSelected={(data) => {
-          typeof handelFilter === "function" &&
-            handelFilter({
-              user: data?.value
-            })
-        }}
-        backgroundColor="#FFFFFF"
       />
 
-      <SearchFilterForm placeholder="Tìm kiếm theo họ tên" name="full_name" searchValue={searchValue} setSearchValue={setSearchValue} />
+      <SearchFilterForm
+        placeholder="Tìm kiếm theo họ tên"
+        name="full_name"
+        searchValue={searchValue}
+        setSearchValue={setSearchValue}
+      />
     </LayoutDefaultFilter>
   )
 }

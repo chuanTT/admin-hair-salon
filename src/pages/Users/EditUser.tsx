@@ -7,11 +7,10 @@ import ListImagesUploadFile, { refListImage } from "@/components/CustomField/Lis
 import FormHandel from "@/components/FormHandel"
 import { useParams } from "react-router-dom"
 import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
-import { getRoles, tableRole } from "@/api/rolesApi"
-import { funcKeyRole } from "@/common/ConfigSelectOption"
 import { isEmptyObj } from "@/common/functions"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
+import { configRoleApi } from "@/config/configCallApi"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -31,12 +30,7 @@ const EditUser = () => {
   const { id } = useParams()
   const ImgRef = useRef<refListImage>(null)
   const { option: optionRole } = useFethingOptionApi({
-    CallAPi: getRoles,
-    nameTable: tableRole,
-    customFucKey: funcKeyRole,
-    customUrlOption: ({ query, limit, nameTable, page }) => {
-      return query?.for(nameTable)?.limit(limit).page(page).sort("1")
-    }
+    ...configRoleApi
   })
 
   return (
@@ -82,11 +76,14 @@ const EditUser = () => {
             formState: { errors }
           } = propForm
           return (
-            <LayoutFormDefault isPending={isPending} txtButtonPrimary="Chỉnh sửa" clickButtonCancel={() => {
-              clearErrors()
-              typeof setResertForm === "function" && setResertForm(prev => !prev)
-            }}>
-
+            <LayoutFormDefault
+              isPending={isPending}
+              txtButtonPrimary="Chỉnh sửa"
+              clickButtonCancel={() => {
+                clearErrors()
+                typeof setResertForm === "function" && setResertForm((prev) => !prev)
+              }}
+            >
               <InputField
                 classInputContainer="col-md-6 mb-3"
                 title="Họ và tên"
@@ -145,7 +142,6 @@ const EditUser = () => {
                 name="avatar"
                 register={register}
               />
-
             </LayoutFormDefault>
           )
         }}

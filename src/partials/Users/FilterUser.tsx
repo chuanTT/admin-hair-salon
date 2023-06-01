@@ -15,7 +15,15 @@ const FilterUser = () => {
         searchValue={searchValue}
         handelFilter={handelFilter}
         configApi={configUserAllApi}
-        placeholder="Vui lòng chọn nhân viên"
+        placeholder="Chọn nhân viên"
+        name="user"
+      />
+
+      <SelectFilterForm
+        searchValue={searchValue}
+        handelFilter={handelFilter}
+        configApi={configUserAllApi}
+        placeholder="Chọn vị trí"
         name="user"
       />
 

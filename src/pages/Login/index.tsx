@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react"
+import { useLocalstorageState } from "rooks"
 import * as Yup from "yup"
 import Button from "@/components/Button"
 import FormHandel from "@/components/FormHandel"
@@ -6,9 +7,8 @@ import { InputField } from "@/components/CustomField"
 import { LoginApi } from "@/api/authApi"
 import { useNavigate } from "react-router-dom"
 import config from "@/config"
-import "../../assets/css/pages/page-auth.css"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
-import { useLocalstorageState } from "rooks"
+import "@/assets/css/pages/page-auth.css"
 
 const schema = Yup.object().shape({
   account: Yup.string().required("Vui lòng nhập tên đăng nhập"),
@@ -51,8 +51,8 @@ const Login = () => {
                     setIsLoged(true)
                   }
                 }}
-                closeFuncSucc={({propForm}) => {
-                  if(propForm?.reset) {
+                closeFuncSucc={({ propForm }) => {
+                  if (propForm?.reset) {
                     propForm?.reset()
                   }
                 }}

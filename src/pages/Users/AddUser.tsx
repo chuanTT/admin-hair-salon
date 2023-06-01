@@ -67,7 +67,6 @@ const AddUser = () => {
                 name="full_name"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -78,7 +77,6 @@ const AddUser = () => {
                 name="user_name"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -96,7 +94,6 @@ const AddUser = () => {
                 placeholder="Nhập địa chỉ email"
                 name="email"
                 register={register}
-                isError
                 errors={errors}
               />
 
@@ -108,7 +105,6 @@ const AddUser = () => {
                 name="password"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -120,7 +116,6 @@ const AddUser = () => {
                 name="confirm_password"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 

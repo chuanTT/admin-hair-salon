@@ -91,7 +91,6 @@ const EditUser = () => {
                 name="full_name"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -102,7 +101,6 @@ const EditUser = () => {
                 name="user_name"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
                 readOnly
               />
@@ -121,7 +119,6 @@ const EditUser = () => {
                 placeholder="Nhập địa chỉ email"
                 name="email"
                 register={register}
-                isError
                 errors={errors}
               />
 

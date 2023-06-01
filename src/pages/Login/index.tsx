@@ -83,7 +83,6 @@ const Login = () => {
                         placeholder="Nhập tên đăng nhập"
                         register={register}
                         title="Tên đăng nhập"
-                        isError
                         errors={errors}
                       />
                       <InputField
@@ -94,7 +93,6 @@ const Login = () => {
                         register={register}
                         title="Mật khẩu"
                         placeholder="Nhập mật khẩu"
-                        isError
                         errors={errors}
                       />
 

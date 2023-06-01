@@ -2,7 +2,7 @@
 import Select from "react-select"
 import { useDebounce } from "rooks"
 import { Dispatch, FC, HTMLAttributes, SetStateAction, useState } from "react"
-import { FieldValues, UseFormSetValue, UseFormGetValues, UseFormClearErrors, FieldError } from "react-hook-form"
+import { FieldValues, UseFormSetValue, UseFormGetValues, UseFormClearErrors } from "react-hook-form"
 import { convertViToEn } from "@/common/functions"
 import { SelectDefault } from "@/types"
 
@@ -24,8 +24,8 @@ export interface ReactSelectCusProps {
   setValueSearch?: Dispatch<SetStateAction<string>>
   timeDelay?: number
   height?: string | number
-  isError?: boolean
-  errors?: FieldError
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errors?: any
   title?: string
   isRequire?: boolean
   placeholder?: string
@@ -48,7 +48,6 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
     height,
     setValueSearch,
     timeDelay,
-    isError,
     errors,
     title,
     isRequire,
@@ -168,7 +167,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
         {...rest}
       />
 
-      {isError && errors && <span className="text-sm text-red-600 block mt-px">{errors?.message}</span>}
+      {errors?.[name]?.message && <span className="text-sm text-red-600 block mt-px">{errors?.[name]?.message}</span>}
     </div>
   )
 }

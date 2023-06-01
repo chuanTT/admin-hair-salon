@@ -6,9 +6,8 @@ import { InputField, ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
-import { getRoles, tableRole } from "@/api/rolesApi"
-import { funcKeyRole } from "@/common/ConfigSelectOption"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
+import { configRoleApi } from "@/config/configCallApi"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -24,12 +23,7 @@ const schema = Yup.object().shape({
 const AddUser = () => {
   const ImgRef = useRef<refListImage>(null)
   const { option: optionRole } = useFethingOptionApi({
-    CallAPi: getRoles,
-    nameTable: tableRole,
-    customFucKey: funcKeyRole,
-    customUrlOption: ({ query, limit, nameTable, page }) => {
-      return query?.for(nameTable)?.limit(limit).page(page).sort('1')
-    }
+    ...configRoleApi
   })
   return (
     <Breadcrumb>
@@ -60,9 +54,12 @@ const AddUser = () => {
           } = propForm
 
           return (
-            <LayoutFormDefault isPending={isPending} clickButtonCancel={() => {
-              reset()
-            }}>
+            <LayoutFormDefault
+              isPending={isPending}
+              clickButtonCancel={() => {
+                reset()
+              }}
+            >
               <InputField
                 classInputContainer="col-md-6 mb-3"
                 title="Họ và tên"
@@ -70,7 +67,6 @@ const AddUser = () => {
                 name="full_name"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -81,7 +77,6 @@ const AddUser = () => {
                 name="user_name"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -99,7 +94,6 @@ const AddUser = () => {
                 placeholder="Nhập địa chỉ email"
                 name="email"
                 register={register}
-                isError
                 errors={errors}
               />
 
@@ -111,7 +105,6 @@ const AddUser = () => {
                 name="password"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 
@@ -123,7 +116,6 @@ const AddUser = () => {
                 name="confirm_password"
                 register={register}
                 isRequire
-                isError
                 errors={errors}
               />
 

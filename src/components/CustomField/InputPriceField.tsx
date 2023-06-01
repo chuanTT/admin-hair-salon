@@ -10,8 +10,6 @@ import {
 import {
   UseFormRegister,
   FieldValues,
-  // UseFormSetValue,
-  FieldError,
 } from "react-hook-form";
 
 interface InputPriceProps extends InputHTMLAttributes<HTMLElement> {
@@ -19,8 +17,8 @@ interface InputPriceProps extends InputHTMLAttributes<HTMLElement> {
   register: UseFormRegister<FieldValues>;
   classInput?: HTMLAttributes<HTMLDivElement>["className"];
   classCustomInput?: HTMLAttributes<HTMLDivElement>["className"];
-  isError?: boolean;
-  errors?: FieldError;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errors?: any;
   // setValue?: UseFormSetValue<FieldValues>;
   isFormatPrice?: boolean;
   onChangePrice?: (value: string | number) => void;
@@ -42,7 +40,6 @@ const InputPrice: ForwardRefRenderFunction<RefType, InputPriceProps> = (
     name,
     classInput,
     classCustomInput,
-    isError,
     errors,
     // setValue,
     isFormatPrice,
@@ -120,9 +117,9 @@ const InputPrice: ForwardRefRenderFunction<RefType, InputPriceProps> = (
         }}
       />
 
-      {isError && errors && (
+      {errors?.[name]?.message && (
         <span className="text-sm text-red-600 block mt-px">
-          {errors?.message}
+          {errors?.[name]?.message}
         </span>
       )}
     </div>

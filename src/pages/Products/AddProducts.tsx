@@ -62,7 +62,6 @@ const AddProducts = () => {
                   name="name"
                   register={register}
                   isRequire
-                  isError
                   errors={errors}
                 />
 

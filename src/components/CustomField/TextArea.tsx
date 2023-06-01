@@ -1,26 +1,17 @@
 import { FC, HTMLAttributes, TextareaHTMLAttributes } from "react"
-import { FieldError, FieldValues, UseFormRegister } from "react-hook-form"
+import { FieldValues, UseFormRegister } from "react-hook-form"
 
 interface TextAreaProps extends TextareaHTMLAttributes<HTMLElement> {
   title?: string
   name: string
   register: UseFormRegister<FieldValues>
-  isError?: boolean
-  errors?: FieldError | undefined
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errors?: any
   classAreaContainer?: HTMLAttributes<HTMLElement>["className"]
   isRequire?: boolean
 }
 
-const TextArea: FC<TextAreaProps> = ({
-  title,
-  name,
-  register,
-  isError,
-  errors,
-  classAreaContainer,
-  isRequire,
-  ...rest
-}) => {
+const TextArea: FC<TextAreaProps> = ({ title, name, register, errors, classAreaContainer, isRequire, ...rest }) => {
   return (
     <div className={`${classAreaContainer ?? ""}`}>
       {title && (
@@ -35,8 +26,8 @@ const TextArea: FC<TextAreaProps> = ({
         {...register(name)}
         {...rest}
       ></textarea>
-      {isError && errors?.message && (
-        <span className="mt-2 block text-sm text-red-600 dark:text-red-500">{errors.message}</span>
+      {errors?.[name]?.message && (
+        <span className="mt-2 block text-sm text-red-600 dark:text-red-500">{errors?.[name]?.message}</span>
       )}
     </div>
   )

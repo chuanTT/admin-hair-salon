@@ -10,7 +10,7 @@ const Blog = () => {
       nameTable={tableBlog}
       callApi={getBlog}
       isDelete
-      callApiDelete={deleleteBlog}
+      // callApiDelete={deleleteBlog}
       configFuc={configDefaultEvent}
       customUrl={({ nameTable, query, limit, page }) => {
         return query?.for(nameTable).page(page).limit(limit).url()

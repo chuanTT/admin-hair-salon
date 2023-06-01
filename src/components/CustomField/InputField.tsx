@@ -5,7 +5,6 @@ interface InputFieldPops extends InputHTMLAttributes<HTMLElement> {
   title?: string
   name: string
   register?: UseFormRegister<FieldValues>
-  isError?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   errors?: any
   classInputContainer?: string
@@ -16,7 +15,6 @@ const InputField: FC<InputFieldPops> = ({
   title,
   name,
   register,
-  isError,
   errors,
   classInputContainer,
   isRequire,
@@ -37,7 +35,7 @@ const InputField: FC<InputFieldPops> = ({
         type="text"
         {...rest}
       />
-      {isError && errors && (
+      {errors?.[name]?.message && (
         <span className="mt-2 block text-sm text-red-600 dark:text-red-500">{errors?.[name]?.message}</span>
       )}
     </div>

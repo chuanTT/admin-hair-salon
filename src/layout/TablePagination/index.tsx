@@ -126,7 +126,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             callApiDelete={callApiDelete}
-            sussFucMsg={() => {
+            SuccessModal={() => {
               invalidateQueriesQueryClient()
             }}
           />

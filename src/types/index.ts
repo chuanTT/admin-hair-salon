@@ -106,6 +106,7 @@ export interface TypeValue {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handelDeleteAll?: (data: any) => void
   isFetched?: boolean
+  setIsOpen?: Dispatch<SetStateAction<boolean>>
 }
 
 export interface typeEventClick {
@@ -131,6 +132,7 @@ export interface TablePaginationProps extends TableProps {
   pageStart?: number
   LimitPages?: number
   isDelete?: boolean
+  is_force?: number | string
   customUrl?: (obj: customUrlProps) => string | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callApiDelete?: (id: (number | string)[]) => Promise<AxiosResponse<any, any>>

@@ -85,7 +85,7 @@ const Modal: FC<ModalProps> = ({
         ref={containerModal}
       >
         <div
-          className="fixed inset-0 transition-opacity opacity-0 duration-200"
+          className="fixed inset-0 transition-opacity opacity-0  duration-200"
           ref={visbibleElement}
           onClick={VisbOpacity}
           aria-hidden="true"

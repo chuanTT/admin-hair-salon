@@ -4,7 +4,8 @@ import { lazy, Suspense } from "react"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
 import Product from "@/pages/Products"
-// import Users from "@/pages/Users"
+import Users from "@/pages/Users"
+import UserListTrash from "@/pages/Users/UserListTrash"
 import Blog from "@/pages/Blog"
 import AddUser from "@/pages/Users/AddUser"
 import EditUser from "@/pages/Users/EditUser"
@@ -30,7 +31,7 @@ export const Loadable = (str: string) => () => {
   )
 }
 
-const Users = Loadable("../pages/Users")
+// const Users = Loadable("../pages/Users")
 
 export enum typeRouter {
   public = "public",
@@ -83,6 +84,12 @@ export const router: CustomRouteConfig[] = [
             index: true,
             title: "Danh sách nhân viên",
             element: <Users />
+          },
+
+          {
+            path: config.router.userTrash,
+            title: "Danh sách nhân viên đã xóa",
+            element: <UserListTrash />
           },
           {
             path: config.router.addUser,

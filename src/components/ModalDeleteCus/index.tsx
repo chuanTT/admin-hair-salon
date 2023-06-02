@@ -15,7 +15,7 @@ interface ModalDeleteCusProps {
   setIsOpen: Dispatch<SetStateAction<boolean>>
   closeToastEvent?: () => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callApiDelete: (data: (string | number)[]) => Promise<AxiosResponse<any, any>>
+  callApiDelete: (data: (string | number)[], is_force?: number | string) => Promise<AxiosResponse<any, any>>
   msgObj?: {
     erorr?: string
     suss?: string
@@ -23,6 +23,7 @@ interface ModalDeleteCusProps {
   onSuccessModal?: () => void
   SuccessModal?: () => void
   sussFucMsg?: () => void
+  is_force?: number | string
 }
 
 const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
@@ -34,7 +35,8 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
   msgObj,
   onSuccessModal,
   SuccessModal,
-  sussFucMsg
+  sussFucMsg,
+  is_force
 }) => {
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [isPending, setIsPending] = useState(false)
@@ -49,7 +51,7 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
   // delete
   const { mutate } = useMutation({
     mutationFn: (values: (string | number)[]) => {
-      return callApiDelete(values)
+      return callApiDelete(values, is_force)
     },
     onError: () => {
       msgToast.current = MsgType(msgObj?.erorr ?? "Xóa thất bại")

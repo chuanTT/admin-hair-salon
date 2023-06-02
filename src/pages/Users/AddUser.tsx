@@ -8,6 +8,8 @@ import FormHandel from "@/components/FormHandel"
 import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
 import { configRoleApi } from "@/config/configCallApi"
+import { isEmptyObj } from "@/common/functions"
+import SendFormData from "@/components/FormHandel/SendFormData"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -42,6 +44,20 @@ const AddUser = () => {
           typeof remove === "function" && remove()
           propForm && propForm.reset()
           ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
+        }}
+        customValuesData={(value) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { avatar, ...spread } = value
+          let data = {
+            ...spread
+          }
+
+          if (!isEmptyObj(avatar)) {
+            data = { ...data, avatar }
+            data = SendFormData(data)
+          }
+
+          return data
         }}
       >
         {({ propForm, isPending }) => {

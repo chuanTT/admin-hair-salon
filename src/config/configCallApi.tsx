@@ -20,6 +20,15 @@ const configUserApi: useFetchingOptionApiProps = {
   customFucKey: funcUserKey
 }
 
+const configDeletedApi: useFetchingOptionApiProps = {
+  nameTable: "",
+  customUrlOption: ({ query, page, limit, nameTable }) => {
+    return query?.for(nameTable)?.page(page)?.limit(limit)?.params({
+      is_deleted: 1
+    })
+  }
+}
+
 const configUserAllApi: useFetchingOptionApiProps = {
   ...configUserApi,
   isOptionAll: true,
@@ -28,4 +37,9 @@ const configUserAllApi: useFetchingOptionApiProps = {
   }
 }
 
-export { configRoleApi, configUserApi, configUserAllApi }
+const configUserAllTrashApi: useFetchingOptionApiProps = {
+  ...configDeletedApi,
+  ...configUserAllApi
+}
+
+export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi }

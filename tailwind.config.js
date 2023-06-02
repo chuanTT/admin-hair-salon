@@ -7,16 +7,16 @@ export default {
   theme: {
     extend: {
       width: {
-        16: '16.25rem'
+        16: "16.25rem"
       },
 
       screens: {
-        1200: '1200px'
+        1200: "1200px"
       }
     }
   },
   plugins: [
-    plugin(({ addComponents, theme }) => {
+    plugin(({ addComponents }) => {
       addComponents({
         ".zoomin": {
           "--tw-scale-x": "1 !important",
@@ -28,13 +28,12 @@ export default {
           "--tw-scale-x": "0.8",
           "--tw-scale-y": "0.8",
           transform: `translate(var(--tw-translate-x), var(--tw-translate-y)) rotate(var(--tw-rotate)) skewX(var(--tw-skew-x)) skewY(var(--tw-skew-y)) scaleX(var(--tw-scale-x)) scaleY(var(--tw-scale-y))`
-        },
+        }
 
         // '.content': {
         //   'width': `calc(100% - ${theme('width.16')} - 26px * 2)`,
 
-        
-      // },
+        // },
       })
     })
   ]

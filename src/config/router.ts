@@ -3,6 +3,7 @@ const router = {
   product: "/product",
   addProduct: "add-product",
   user: "/users",
+  userTrash: "trash",
   addUser: "add-user",
   editUser: "edit-user/:id",
   blog: "/blog",

@@ -11,8 +11,12 @@ const addProductApi = (data: unknown) => {
   return HTTP.post(`${tableProduct}`, data)
 }
 
-const deleletProduct = (id: number | string) => {
-  return HTTP.delete(`${tableProduct}/${id}`)
+const deleletProduct = (data: (string | number)[], is_force?: string | number) => {
+  return HTTP.delete(`${tableProduct}${!is_force ? "" : "?is_force=1"}`, {
+    data: {
+      ids: data
+    }
+  })
 }
 
 export { getProduct, deleletProduct, tableProduct, addProductApi }

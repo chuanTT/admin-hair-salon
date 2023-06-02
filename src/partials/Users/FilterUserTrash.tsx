@@ -1,21 +1,28 @@
 import SearchFilterForm from "@/components/SearchFilterForm"
 import SelectFilterForm from "@/components/SelectFilterForm"
-import config from "@/config"
-import { configUserAllApi } from "@/config/configCallApi"
+import { configUserAllApi, configUserAllTrashApi } from "@/config/configCallApi"
 import LayoutDefaultFilter from "@/layout/LayoutDefaultFilter"
 import { useTablePagination } from "@/layout/TablePagination"
 
-const FilterUser = () => {
-  const { searchValue, handelFilter, setSearchValue, setIsOpen, listIDs } = useTablePagination()
+const FilterUserTrash = () => {
+  const { searchValue, handelFilter, setSearchValue, listIDs, setIsOpen } = useTablePagination()
 
   return (
-    <LayoutDefaultFilter isButton to={config.router.addUser} txtButton="Thêm nhân viên" setIsOpen={setIsOpen} is_show={!!(listIDs && listIDs?.length > 1)}>
+    <LayoutDefaultFilter setIsOpen={setIsOpen} is_show={!!(listIDs && listIDs?.length > 1)}>
+      <SelectFilterForm
+        searchValue={searchValue}
+        handelFilter={handelFilter}
+        configApi={configUserAllTrashApi}
+        placeholder="Chọn nhân viên"
+        name="user"
+      />
+
       <SelectFilterForm
         searchValue={searchValue}
         handelFilter={handelFilter}
         configApi={configUserAllApi}
-        placeholder="Chọn nhân viên"
-        name="user"
+        placeholder="Chọn vị trí"
+        name="role"
       />
 
       <SearchFilterForm
@@ -28,4 +35,4 @@ const FilterUser = () => {
   )
 }
 
-export default FilterUser
+export default FilterUserTrash

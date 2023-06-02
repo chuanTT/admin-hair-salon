@@ -25,6 +25,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
     isStt,
     isFuc,
     selectCheck,
+    is_force,
     callBack
   } = prop
 
@@ -126,7 +127,9 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
             isOpen={isOpen}
             setIsOpen={setIsOpen}
             callApiDelete={callApiDelete}
+            is_force={is_force}
             SuccessModal={() => {
+              setListIDs([])
               invalidateQueriesQueryClient()
             }}
           />

@@ -117,6 +117,18 @@ export const router: CustomRouteConfig[] = [
           },
 
           {
+            path: config.router.userTrash,
+            title: "Danh sách sản phẩm đã xóa",
+            element: <UserListTrash />
+          },
+
+          {
+            path: config.router.userTrash,
+            title: "Trình chiếu sản phẩm",
+            element: <UserListTrash />
+          },
+
+          {
             path: config.router.addProduct,
             title: "Thêm sản phẩm",
             element: <AddProducts />
@@ -128,7 +140,19 @@ export const router: CustomRouteConfig[] = [
         path: config.router.blog,
         title: "Bài viết",
         icon: GiOpenBook,
-        element: <Blog />
+        children: [
+          {
+            index: true,
+            title: "Danh sách bài viết",
+            element: <Blog />,
+          },
+
+          {
+            path: config.router.userTrash,
+            title: "Danh sách bài viết đã xóa",
+            element: <UserListTrash />
+          }
+        ]
       },
 
       {

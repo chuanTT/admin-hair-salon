@@ -1,4 +1,4 @@
-import { useRef } from "react"
+import { useRef, useState } from "react"
 import * as Yup from "yup"
 import { UpdateUser, getUser, tableUser } from "@/api/usersApi"
 import Breadcrumb from "@/components/Breadcrumb"
@@ -28,6 +28,7 @@ const defaultValues = {
 
 const EditUser = () => {
   const { id } = useParams()
+  const [, setIsUpdated] = useState(false)
   const ImgRef = useRef<refListImage>(null)
   const { option: optionRole } = useFethingOptionApi({
     ...configRoleApi
@@ -49,6 +50,7 @@ const EditUser = () => {
             if (ImgRef.current) {
               ImgRef.current?.setSrc?.(data[key] ?? "")
             }
+            setIsUpdated((prev) => !prev)
             return true
           }
         }}

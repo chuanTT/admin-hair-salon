@@ -36,12 +36,12 @@ const Login = () => {
               <div className="app-brand justify-content-center">
                 <a href="index.html" className="app-brand-link gap-2">
                   <span className="app-brand-logo demo"></span>
-                  <span className="app-brand-text demo text-body fw-bolder">Sneat</span>
+                  <span className="app-brand-text demo text-body fw-bolder">Hair Salon</span>
                 </a>
               </div>
 
-              <h4 className="mb-2">Welcome to Sneat! 👋</h4>
-              <p className="mb-4">Please sign-in to your account and start the adventure</p>
+              <h4 className="mb-2 text-center">Phần Mềm Quản Lý</h4>
+              <p className="mb-4">Vui lòng đăng nhập tài khoản của bạn</p>
 
               <FormHandel
                 msgObj={{ erorr: "Đăng nhập thất bại", suss: "Đăng nhập thành công" }}

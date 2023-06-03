@@ -1,6 +1,6 @@
 import { TypeToast } from "@/components/ToastCustom"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
-import { requestAnimationFrameAccordionInterFace } from "@/types"
+import { requestAnimationFrameAccordionInterFace, typeObject } from "@/types"
 import moment from "moment"
 
 const incrementHeight = (progress: number, element?: HTMLDivElement) => {
@@ -43,7 +43,7 @@ const requestAnimationFrameAccordion = ({
   }
 }
 
-const isEmptyObj = (obj: { [key: string]: number | string | [] | object }) => {
+const isEmptyObj = (obj: typeObject) => {
   let emty = true
   if (obj) {
     emty = Object.keys(obj).length === 0 && obj.constructor === Object

@@ -22,4 +22,12 @@ const deleteUser = (data: (string | number)[], is_force?: string | number) => {
   })
 }
 
-export { getUser, deleteUser, AddUser, UpdateUser, tableUser }
+const RecoveryUser = (data: (string | number)[]) => {
+  return HTTP.patch(`${tableUser}"}`, {
+    data: {
+      ids: data
+    }
+  })
+}
+
+export { getUser, deleteUser, AddUser, UpdateUser, tableUser, RecoveryUser }

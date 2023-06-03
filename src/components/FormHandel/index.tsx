@@ -247,11 +247,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
         }`}
         // [&>*]:lg:!w-[84%] [&>*]:max-lg:!w-full
       >
-        {isEdit && !isFetched && (
-          <div className="flex justify-center [&>*]:scale-50 items-start">
-            <Loading />
-          </div>
-        )}
+        {isEdit && !isFetched && <Loading classNameDiv="flex justify-center [&>*]:scale-50 items-start py-4" />}
         {isEdit
           ? isFetched && children({ propForm, isPending, result: result || {}, setResertForm })
           : children({ propForm, isPending, result: result || {}, setResertForm })}

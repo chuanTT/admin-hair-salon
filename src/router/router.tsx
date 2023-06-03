@@ -20,6 +20,9 @@ import AddProducts from "@/pages/Products/AddProducts"
 import { verifyToken } from "@/api/authApi"
 import AuthLayout from "@/layout/AuthLayout"
 import Loading from "@/components/Loading"
+import ProductListTrash from "@/pages/Products/ProductListTrash"
+import BlogListTrash from "@/pages/Blog/BlogListTrash"
+import SlideshowProducts from "@/pages/Products/SlideshowProducts"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -119,13 +122,13 @@ export const router: CustomRouteConfig[] = [
           {
             path: config.router.userTrash,
             title: "Danh sách sản phẩm đã xóa",
-            element: <UserListTrash />
+            element: <ProductListTrash />
           },
 
           {
-            path: config.router.userTrash,
+            path: config.router.slideshowProduct,
             title: "Trình chiếu sản phẩm",
-            element: <UserListTrash />
+            element: <SlideshowProducts />
           },
 
           {
@@ -150,7 +153,7 @@ export const router: CustomRouteConfig[] = [
           {
             path: config.router.userTrash,
             title: "Danh sách bài viết đã xóa",
-            element: <UserListTrash />
+            element: <BlogListTrash />
           }
         ]
       },

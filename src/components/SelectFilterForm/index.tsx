@@ -27,7 +27,7 @@ const SelectFilterForm: FC<SelectFilterFormProps> = ({ handelFilter, searchValue
       changeSelected={(data) => {
         handelFilter &&
           handelFilter({
-            user: data?.value
+            [name]: data?.value
           })
       }}
       backgroundColor="#FFFFFF"

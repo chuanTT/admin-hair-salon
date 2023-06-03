@@ -6,8 +6,12 @@ const getBlog = (url: string) => {
   return HTTP.get(url)
 }
 
-const deleleteBlog = (id: number | string) => {
-  return HTTP.delete(`${tableBlog}/${id}`)
+const deleleteBlog = (data: (string | number)[], is_force?: string | number) => {
+  return HTTP.delete(`${tableBlog}${!is_force ? "" : "?is_force=1"}`, {
+    data: {
+      ids: data
+    }
+  })
 }
 
 export { getBlog, deleleteBlog, tableBlog }

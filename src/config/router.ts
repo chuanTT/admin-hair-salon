@@ -2,6 +2,7 @@ const router = {
   home: "/",
   product: "/product",
   addProduct: "add-product",
+  slideshowProduct: "slideshow",
   user: "/users",
   userTrash: "trash",
   addUser: "add-user",

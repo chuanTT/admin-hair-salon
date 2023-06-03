@@ -1,9 +1,14 @@
 import HTTP from "./axiosClient"
 
 const tableProduct = "product"
+const tableSliderProduct = "slider-product"
 
 const getProduct = (url: string) => {
   return HTTP.get(url)
+}
+
+const getSliderProduct = (url: string) => {
+  return HTTP.get(`/${tableProduct}${url}`)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
@@ -19,4 +24,4 @@ const deleletProduct = (data: (string | number)[], is_force?: string | number) =
   })
 }
 
-export { getProduct, deleletProduct, tableProduct, addProductApi }
+export { getProduct, deleletProduct, tableProduct, addProductApi, getSliderProduct, tableSliderProduct }

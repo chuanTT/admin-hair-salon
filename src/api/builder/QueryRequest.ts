@@ -1,3 +1,4 @@
+import { isEmptyObj } from "@/common/functions";
 import Parser from "./Parser";
 
 export const initialQueryRequest = {
@@ -221,7 +222,10 @@ export default class QueryRequest {
       );
     }
 
-    this.paramsObj = params;
+    if(!isEmptyObj(params)) {
+      this.paramsObj = params;
+    }
+
 
     return this;
   }

@@ -69,7 +69,7 @@ const configUsers: configProps[][] = [
       head: "Email"
     },
     {
-      key: ['roles', 'name'],
+      key: ["roles", "name"],
       head: "Vai trò"
     },
     {
@@ -136,4 +136,50 @@ const configPermission: configProps[][] = [
   ]
 ]
 
-export { configProduct, configUsers, configBlog, configPermission }
+const configProductSildeShow: configProps[][] = [
+  [
+    {
+      key: "big_thumb",
+      head: "Hình ảnh",
+      classCustom: "w-[80px]",
+      isCus: true,
+      element: ({ data }) => {
+        return (
+          <div className="flex justify-center items-center">
+            <Images w={60} h={60} className="" src={(data as string) ?? ""} alt={"hình ảnh"} />
+          </div>
+        )
+      }
+    },
+
+    {
+      key: ["user", "full_name"],
+      head: "Người tạo",
+      isCus: true,
+      element: ({ current }) => {
+        return (
+          <div className="flex items-center">
+            <div className="w-12 h-12 rounded-full overflow-hidden mr-3">
+              <Images isRounded src={current?.user?.avatar} alt={current?.user?.full_name} />
+            </div>
+            <span className="font-medium">{current?.user?.full_name}</span>
+          </div>
+        )
+      }
+    },
+    {
+      key: ["product", "name"],
+      head: "Tên sản phẩm"
+    },
+    {
+      key: "is_show",
+      head: "Trạng thái",
+      isCus: true,
+      element: ({ current }) => {
+        return <>{current?.is_show !== 0 ? "Hiển thị" : "Ẩn"}</>
+      }
+    }
+  ]
+]
+
+export { configProduct, configUsers, configBlog, configPermission, configProductSildeShow }

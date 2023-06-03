@@ -1,6 +1,6 @@
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { getUser, tableUser } from "@/api/usersApi"
-import { configAll, funcKeyRole, funcUserKey } from "@/common/ConfigSelectOption"
+import { configAll, funcKeyRole, funcUserIdKey, funcUserKey } from "@/common/ConfigSelectOption"
 import { useFetchingOptionApiProps } from "@/hooks/useFetchingOptionApi"
 
 const configRoleApi: useFetchingOptionApiProps = {
@@ -36,10 +36,17 @@ const configUserAllApi: useFetchingOptionApiProps = {
     return [configAll(), ...data]
   }
 }
+const configUserIdApi: useFetchingOptionApiProps = {
+  ...configUserAllApi,
+  customFucKey: funcUserIdKey,
+  customOptionAll: ({ data }) => {
+    return [configAll("full_name", "id"), ...data]
+  }
+}
 
 const configUserAllTrashApi: useFetchingOptionApiProps = {
   ...configDeletedApi,
   ...configUserAllApi
 }
 
-export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi }
+export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi, configUserIdApi }

@@ -39,6 +39,24 @@ const funcUserKey = (arr: any[]) => {
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
+const funcUserIdKey = (arr: any[]) => {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let option: any[] = []
+  if (Array.isArray(arr)) {
+    arr.forEach((item) => {
+      option = [
+        ...option,
+        {
+          value: item?.id,
+          label: item?.full_name
+        }
+      ]
+    })
+  }
+  return option
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 const funcKeyRole = (arr: any[]) => {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let option: any[] = []
@@ -59,9 +77,9 @@ const funcKeyRole = (arr: any[]) => {
   return option
 }
 
-const configAll = (key = "full_name") => {
+const configAll = (key = "full_name", keyValue = "user_name") => {
   return {
-    user_name: -1,
+    [keyValue]: -1,
     [key]: "Tất cả"
   }
 }
@@ -79,4 +97,4 @@ const optionAddAll = (
   return result
 }
 
-export { funcKey, LIMIT_SELECT, optionAddAll, funcKeyRole, funcUserKey, configAll }
+export { funcKey, LIMIT_SELECT, optionAddAll, funcKeyRole, funcUserKey, configAll, funcUserIdKey }

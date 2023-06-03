@@ -18,16 +18,8 @@ const Users = () => {
       configFuc={configDefaultEvent}
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
         let url = query?.for(nameTable).page(page).limit(limit)
-        if (searchValue?.user && searchValue?.user !== -1) {
-          url = url?.params({
-            user_name: searchValue?.user
-          })
-        }
-        if (searchValue?.full_name && searchValue?.submit) {
-          url = url?.params({
-            full_name: searchValue?.full_name
-          })
-        }
+        const obj = config.filter.user({ searchValue })
+        url = url?.params(obj)
 
         return url?.url()
       }}

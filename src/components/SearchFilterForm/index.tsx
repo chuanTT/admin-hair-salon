@@ -26,7 +26,7 @@ const SearchFilterForm: FC<SearchFilterFormProps> = ({ name, placeholder, setSea
             onChange={(e) => {
                 const elemet = e.target as HTMLInputElement
                 if (elemet && setSearchValue) {
-                    setSearchValue((prev) => ({ ...prev, [name]: elemet?.value?.toString()?.trim(), submit: false }))
+                    setSearchValue((prev) => ({ ...prev, [name]: elemet?.value?.toString()?.trimStart(), submit: false }))
                 }
             }}
         />

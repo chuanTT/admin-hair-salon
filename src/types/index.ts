@@ -89,7 +89,7 @@ export interface typeObject {
 }
 
 export interface typeObjectAdv {
-  [key: string]: string | number | Blob
+  [key: string]: string | number | Blob | FileList
 }
 
 export interface TypeValue {

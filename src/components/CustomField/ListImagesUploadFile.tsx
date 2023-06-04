@@ -14,15 +14,21 @@ import { UseFormRegister, FieldValues, UseFormSetValue } from "react-hook-form"
 import Portal from "../Portal"
 import Modal from "../Modal"
 import Images from "../Images"
+import { typeObject } from "@/types"
 
 interface optListImages {
   src?: string
   del?: boolean
+  is_store?: boolean
+  name?: string
+  [key: string]: string | number | boolean | undefined
 }
 
 export interface refListImage {
   clearImage?: () => void
   setSrc?: (str: string | undefined) => void
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setSrcList?: (obj: { arr?: typeObject[] | [], isDel?: boolean, key?: string, callBack?: (item?: any) => optListImages | undefined }) => void
 }
 
 interface ListImagesProps {
@@ -41,7 +47,8 @@ interface ListImagesProps {
   isDisable?: string
   title?: string
   isRequire?: boolean
-  isMultiple?: boolean
+  isMultiple?: boolean,
+  clickButtonDel?: (opt?: optListImages) => void
 }
 
 function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
@@ -60,7 +67,8 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
     isDisable,
     title,
     isRequire,
-    isMultiple
+    isMultiple,
+    clickButtonDel
   } = props
   const dataFile = useRef(new DataTransfer())
   const [isOpen, setIsOpen] = useState(false)
@@ -82,6 +90,29 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
         setSrc: (src: string | undefined) => {
           const newSrc = [{ src }]
           setListImages(() => newSrc)
+        },
+        setSrcList: ({ arr, isDel, key, callBack }) => {
+          let data: optListImages[] | [] = []
+          if (arr && Array.isArray(arr)) {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+            arr.forEach((item: any) => {
+              const k = key || "thumb"
+              if (item?.[k]) {
+                let opt = { src: item[k], del: isDel ?? false }
+
+                if (callBack) {
+                  const value = callBack(item)
+
+                  if (value) {
+                    opt = { ...opt, ...value }
+                  }
+                }
+
+                data = [...data, opt]
+              }
+            })
+          }
+          setListImages(data)
         }
       }
     },
@@ -98,18 +129,30 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [listImagesViews])
 
-  const delFiles = (e: MouseEvent<HTMLButtonElement>) => {
+  const delFiles = (e: MouseEvent<HTMLButtonElement>, item?: optListImages) => {
     e.stopPropagation()
-    dataFile.current.items.clear()
-    InputFile?.current && (InputFile.current.files = dataFile.current.files)
+    if (!isMultiple) {
+      dataFile.current.items.clear()
+      InputFile?.current && (InputFile.current.files = dataFile.current.files)
+    } else {
+      const files = dataFile.current.files
+      const dt = new DataTransfer()
+
+      if (files?.length > 0) {
+        for (const file of files) {
+          if (file?.name !== item?.name) {
+            dt.items.add(file)
+          }
+        }
+      }
+
+      dataFile.current = dt
+      InputFile?.current && (InputFile.current.files = dt.files)
+    }
     setListImages((prev) => {
       if (prev) {
-        const newPrev = [...prev]
-        const [oneItem, ...spread] = newPrev
-        if (oneItem?.del) {
-          return spread
-        }
-        return newPrev
+        const newArr = prev.filter((opt) => opt?.src !== item?.src)
+        return newArr
       }
       return prev
     })
@@ -131,7 +174,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
         return
       }
 
-      dataFile.current.items.clear()
+      !isMultiple && dataFile.current.items.clear()
       dataFile.current.items.add(file)
     } else if (dataFile.current.files.length > 0 && inputFile) {
       file = dataFile.current.files[0]
@@ -161,7 +204,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
         if (listFile) {
           Array.from(listFile).forEach((file) => {
             const src = VaildateUploadFiles(file, e.target)
-            newPreview = [...newPreview, { src, del: true }]
+            newPreview = [...newPreview, { src, del: true, is_store: true, name: file?.name }]
           })
         }
       } else {
@@ -169,7 +212,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
 
         if (!isDisable && file) {
           const src = VaildateUploadFiles(file, e.target)
-          newPreview = [...newPreview, { src, del: true }]
+          newPreview = [...newPreview, { src, del: true, is_store: true, name: file?.name }]
         } else {
           e.target.value = ""
         }
@@ -180,7 +223,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
           const newPrev = [...prev]
           let uniArr = []
 
-          if (newPrev[0]?.del) {
+          if (!isMultiple && newPrev[0]?.del) {
             const [, ...spread] = newPrev
             uniArr = [...newPreview, ...spread]
           } else {
@@ -192,9 +235,9 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
         return newPreview
       })
       if (isMultiple) {
-        typeof setValue === "function" && setValue(name, dataFile.current.files)
+        typeof setValue === "function" && setValue(name, e.target.files)
       } else {
-        typeof setValue === "function" && setValue(name, dataFile.current.files[0])
+        typeof setValue === "function" && setValue(name, e.target?.files?.[0])
       }
       // setImages(file)
     }
@@ -275,7 +318,10 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
                         </button>
 
                         {item?.del && (
-                          <button type="button" onClick={delFiles} aria-hidden="true">
+                          <button type="button" onClick={(e) => {
+                            delFiles(e, item)
+                            clickButtonDel && clickButtonDel(item)
+                          }} aria-hidden="true">
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
                               <path
                                 d="M10 2L9 3L4 3L4 5L7 5L17 5L20 5L20 3L15 3L14 2L10 2 z M 5 7L5 20C5 21.1 5.9 22 7 22L17 22C18.1 22 19 21.1 19 20L19 7L5 7 z"
@@ -311,9 +357,8 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
                 InputFile.current?.click()
               }
             }}
-            className={`flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg ${
-              isDisable ? "" : "cursor-pointer"
-            } bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 relative ${classWapper}`}
+            className={`flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg ${isDisable ? "" : "cursor-pointer"
+              } bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 relative ${classWapper}`}
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

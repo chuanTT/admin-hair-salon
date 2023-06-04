@@ -1,17 +1,24 @@
-import { useState, useRef, useMemo } from "react"
+import { useState, useRef, useMemo, forwardRef, ForwardedRef, useImperativeHandle } from "react"
 import JoditEditor from "jodit-react"
 import { FieldValues, UseFormSetValue } from "react-hook-form"
 
+export interface refTextEditor {
+  clearValue: () => void
+  setValue: (data?: string) => void
+}
+
 interface TextEditorProps {
   placeholder?: string
-  name?: string
+  name: string
   title?: string
   classAreaContainer?: string
   setValue?: UseFormSetValue<FieldValues>
   isRequire?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  errors?: any
 }
 
-const TextEditor = ({ placeholder, name, title, classAreaContainer, setValue, isRequire }: TextEditorProps) => {
+const TextEditor = ({ placeholder, name, title, classAreaContainer, setValue, isRequire, errors }: TextEditorProps, ref: ForwardedRef<refTextEditor>) => {
   const editor = useRef(null)
   const [content, setContent] = useState("")
 
@@ -19,9 +26,9 @@ const TextEditor = ({ placeholder, name, title, classAreaContainer, setValue, is
     () => ({
       readonly: false,
       placeholder: placeholder || "Start typings...",
-    //   uploader: {
-    //     insertImageAsBase64URI: true
-    //   },
+      //   uploader: {
+      //     insertImageAsBase64URI: true
+      //   },
       showCharsCounter: false,
       showWordsCounter: false,
       showXPathInStatusbar: false,
@@ -31,6 +38,17 @@ const TextEditor = ({ placeholder, name, title, classAreaContainer, setValue, is
     }),
     [placeholder]
   )
+
+  useImperativeHandle(ref, () => {
+    return {
+      clearValue: () => {
+        setContent("")
+      },
+      setValue: (data) => {
+        setContent(data || "")
+      }
+    }
+  }, [])
 
   return (
     <div className={classAreaContainer ?? ""}>
@@ -50,8 +68,17 @@ const TextEditor = ({ placeholder, name, title, classAreaContainer, setValue, is
           typeof setValue === "function" && setValue(name ?? "", newContent)
         }}
       />
+
+      {errors?.[name]?.message && (
+        <span className="text-sm text-red-600 block mt-2">
+          {errors?.[name]?.message}
+        </span>
+      )}
     </div>
   )
 }
 
-export default TextEditor
+
+const TextEditorCustom = forwardRef(TextEditor)
+
+export default TextEditorCustom

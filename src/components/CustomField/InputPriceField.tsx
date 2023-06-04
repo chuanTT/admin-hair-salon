@@ -26,7 +26,7 @@ interface InputPriceProps extends InputHTMLAttributes<HTMLElement> {
   isRequire?: boolean;
 }
 
-interface RefType {
+export interface RefType {
   clearValue?: () => void;
   setValue?: (value: string | number) => void;
 }
@@ -118,7 +118,7 @@ const InputPrice: ForwardRefRenderFunction<RefType, InputPriceProps> = (
       />
 
       {errors?.[name]?.message && (
-        <span className="text-sm text-red-600 block mt-px">
+        <span className="text-sm text-red-600 block mt-2">
           {errors?.[name]?.message}
         </span>
       )}

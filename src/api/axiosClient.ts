@@ -3,10 +3,10 @@ import config from "@/config"
 import { lsAuth, lsRemoveAuth } from "@/common/functions"
 // import { lsAuth, lsRemoveAuth } from "../utils/Utils";
 
-// export const API_BASE = process.env.API_BASE
+export const BASE_URL = import.meta.env.VITE_APP_BASE_URL
 
 const axiosClient = axios.create({
-  baseURL: "https://hair-salon-api.onrender.com/api/v1",
+  baseURL: BASE_URL,
   headers: {
     Accept: "application/json"
   }

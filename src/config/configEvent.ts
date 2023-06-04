@@ -30,4 +30,8 @@ export const DeteleFuc: typeEvent = {
   }
 }
 
+export const dynamicFucEvent = (to?: string, key?: string) => {
+  return [{ ...EditFuc, to: sliceRouteDynamic(to || ""), key: key || "alias" }, DeteleFuc]
+}
+
 export const configDefaultEvent: typeEvent[] = [EditFuc, DeteleFuc]

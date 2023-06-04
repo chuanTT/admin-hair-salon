@@ -1,8 +1,8 @@
 import TablePagination from "@/layout/TablePagination"
 import config from "@/config"
 import { configDefaultEvent } from "@/config/configEvent"
-import FilterBlog from "@/partials/Blog/FilterBlog"
 import { deleleteBlog, getBlog, tableBlog } from "@/api/blogsApi"
+import FilterBlogTrash from "@/partials/Blog/FilterBlogTrash"
 
 const BlogListTrash = () => {
   return (
@@ -10,7 +10,7 @@ const BlogListTrash = () => {
       selectCheck={{
         views: true
       }}
-      configDetail={config.table.configProduct}
+      configDetail={config.table.configBlog}
       nameTable={tableBlog}
       callApi={getBlog}
       isDelete
@@ -24,7 +24,7 @@ const BlogListTrash = () => {
         return url?.url()
       }}
     >
-      <FilterBlog />
+      <FilterBlogTrash />
     </TablePagination>
   )
 }

@@ -1,20 +1,18 @@
 import { useRef, useState } from "react"
 import * as Yup from "yup"
-
 import Breadcrumb from "@/components/Breadcrumb"
-import { InputField, InputPriceField, ReactSelectCus, TextArea } from "@/components/CustomField"
+import { InputField, ReactSelectCus, TextArea } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
-import TextEditorCustom, { refTextEditor } from "@/components/CustomField/TextEditor"
-import { addProductApi } from "@/api/productApi"
+import { useParams } from "react-router-dom"
+import { isEmptyObj } from "@/common/functions"
 import SendFormData from "@/components/FormHandel/SendFormData"
-import { convertNumber } from "@/common/functions"
-import { RefType } from "@/components/CustomField/InputPriceField"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
+import { UpdateProduct, getProduct, tableProduct } from "@/api/productApi"
+import TextEditorCustom, { refTextEditor } from "@/components/CustomField/TextEditor"
+import InputPriceField, { RefType } from "@/components/CustomField/InputPriceField"
 import { options, optionsStatus } from "@/common/optionStatic"
 import config from "@/config"
-
-
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -28,17 +26,35 @@ const schema = Yup.object().shape({
     return;
   }),
 })
-
-const defaultValue = {
-  isNegotiate: 0,
-  status: 1
+export enum valueDefaultProduct {
+  name = 'name',
+  thumb = 'thumb',
+  status = "status",
+  isNegotiate = "isNegotiate",
+  price = "price",
+  short_content = "short_content",
+  description = "description"
 }
 
-const AddProducts = () => {
+const defaultValues = {
+  [valueDefaultProduct.name]: "",
+  [valueDefaultProduct.thumb]: "",
+  [valueDefaultProduct.status]: "",
+  [valueDefaultProduct.isNegotiate]: "",
+  [valueDefaultProduct.price]: "",
+  [valueDefaultProduct.short_content]: "",
+  [valueDefaultProduct.description]: ""
+}
+
+const EditProducts = () => {
+  const { alias } = useParams()
+  const [, setIsUpdated] = useState(false)
   const ImgRef = useRef<refListImage>(null)
   const PriceRef = useRef<RefType>(null)
   const textEditorRef = useRef<refTextEditor>(null)
   const [showPrice, setShowPrice] = useState(true)
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const [deleteImages, setDeleteImages] = useState<any[] | []>([])
 
   return (
     <Breadcrumb>
@@ -50,46 +66,86 @@ const AddProducts = () => {
             showPrice
           }
         }}
-        defaultValues={defaultValue}
-        callApi={addProductApi}
-        closeFuncSucc={({ remove, propForm }) => {
-          typeof remove === "function" && remove()
-          propForm && propForm.reset()
-          ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
-          textEditorRef?.current && textEditorRef?.current?.clearValue()
-          PriceRef?.current && PriceRef?.current?.clearValue?.()
-        }}
-        customValuesData={(value) => {
-          const { price, thumb, ...spread } = value
-          const { value: cvPrice } = convertNumber(price)
-          const isNegotiate = spread?.isNegotiate === 0 ? '0' : spread?.isNegotiate
-
-          const data = {
-            ...spread,
-            price: cvPrice === 0 ? '0' : cvPrice,
-            isNegotiate
+        callApi={(data) => {
+          const { id, thumb, ...spread } = data
+          let result = {
+            ...spread
           }
 
-          const formData = SendFormData(data)
-          config.formDataFile(thumb, formData)
-          
-          return formData
+          if (deleteImages?.length > 0) {
+            result = { ...result, deleteImages }
+          }
+
+          if (!isEmptyObj(thumb)) {
+            result = SendFormData(result)
+            config.formDataFile(thumb, result)
+          }
+
+          return UpdateProduct(id ?? 0, result)
+        }}
+        defaultValues={defaultValues}
+        isEdit
+        nameTable={tableProduct}
+        id={alias}
+        callApiEdit={getProduct}
+        customValue={({ data, key, setValue }) => {
+          if (key === valueDefaultProduct.thumb) {
+            if (ImgRef.current) {
+              ImgRef.current?.setSrcList?.({
+                arr: data['list_images'] ?? "",
+                isDel: true,
+                callBack: (item) => ({ id: item?.id })
+              })
+            }
+            setIsUpdated((prev) => !prev)
+            return true
+          }
+
+          if (key === valueDefaultProduct.price) {
+            if (PriceRef?.current) {
+              PriceRef.current?.setValue?.(data[key])
+              setValue && setValue(key, data[key])
+              return true
+            }
+          }
+
+          if (key === valueDefaultProduct.isNegotiate) {
+            setShowPrice(data[key] === 0 ? true : false)
+          }
+
+          if (key === valueDefaultProduct.description) {
+            if (textEditorRef.current) {
+              textEditorRef.current?.setValue(data[key])
+            }
+          }
+        }}
+        customValuesData={(value, resultApi) => {
+          // eslint-disable-next-line @typescript-eslint/no-unused-vars
+          const { status, ...spread } = value
+          const data = {
+            ...spread,
+            status: status ?? 1,
+            id: resultApi?.data?.id
+          }
+
+          return data
         }}
       >
-        {({ propForm, isPending }) => {
+        {({ propForm, isPending, setResertForm }) => {
           const {
             register,
-            reset,
+            clearErrors,
             setValue,
             getValues,
             formState: { errors }
           } = propForm
-
           return (
             <LayoutFormDefault
               isPending={isPending}
+              txtButtonPrimary="Chỉnh sửa"
               clickButtonCancel={() => {
-                reset()
+                clearErrors()
+                typeof setResertForm === "function" && setResertForm((prev) => !prev)
               }}
             >
               <InputField
@@ -158,6 +214,11 @@ const AddProducts = () => {
                 name="thumb"
                 register={register}
                 isMultiple
+                clickButtonDel={(item) => {
+                  if (item?.id) {
+                    setDeleteImages(prev => ([...prev, item?.id]))
+                  }
+                }}
               />
 
               <TextEditorCustom
@@ -169,6 +230,7 @@ const AddProducts = () => {
                 isRequire
                 ref={textEditorRef}
                 errors={errors}
+
               />
             </LayoutFormDefault>
           )
@@ -178,4 +240,4 @@ const AddProducts = () => {
   )
 }
 
-export default AddProducts
+export default EditProducts

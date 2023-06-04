@@ -1,18 +1,14 @@
 import SearchFilterForm from "@/components/SearchFilterForm"
 import SelectFilterForm from "@/components/SelectFilterForm"
-import config from "@/config"
 import { configUserIdApi } from "@/config/configCallApi"
 import LayoutDefaultFilter from "@/layout/LayoutDefaultFilter"
 import { useTablePagination } from "@/layout/TablePagination"
 
-const FilterBlog = () => {
+const FilterBlogTrash = () => {
   const { searchValue, handelFilter, setSearchValue, setIsOpen, listIDs } = useTablePagination()
 
   return (
     <LayoutDefaultFilter
-      isButton
-      to={config.router.addBlog}
-      txtButton="Thêm bài viết"
       setIsOpen={setIsOpen}
       is_show={!!(listIDs && listIDs?.length > 1)}
     >
@@ -34,4 +30,4 @@ const FilterBlog = () => {
   )
 }
 
-export default FilterBlog
+export default FilterBlogTrash

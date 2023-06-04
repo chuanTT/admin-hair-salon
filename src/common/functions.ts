@@ -255,6 +255,9 @@ export const lsRemoveAuth = () => {
   }
 };
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const removeProperty = (propKey: string | number, { [propKey]: propValue, ...rest }) => rest;
+
 
 export {
   requestAnimationFrameAccordion,
@@ -271,4 +274,5 @@ export {
   convertViToEn,
   sliceRouteDynamic,
   NowDate,
+  removeProperty
 }

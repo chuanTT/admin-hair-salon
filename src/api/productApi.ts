@@ -11,10 +11,16 @@ const getSliderProduct = (url: string) => {
   return HTTP.get(`/${tableProduct}${url}`)
 }
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
-const addProductApi = (data: unknown) => {
+//  @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addProductApi = (data: any) => {
   return HTTP.post(`${tableProduct}`, data)
 }
+
+const UpdateProduct = (id: number | string, data: number | string | FormData | undefined) => {
+  return HTTP.post(`${tableProduct}/${id}`, data)
+}
+
 
 const deleletProduct = (data: (string | number)[], is_force?: string | number) => {
   return HTTP.delete(`${tableProduct}${!is_force ? "" : "?is_force=1"}`, {
@@ -24,4 +30,4 @@ const deleletProduct = (data: (string | number)[], is_force?: string | number) =
   })
 }
 
-export { getProduct, deleletProduct, tableProduct, addProductApi, getSliderProduct, tableSliderProduct }
+export { getProduct, deleletProduct, tableProduct, addProductApi, getSliderProduct, tableSliderProduct, UpdateProduct }

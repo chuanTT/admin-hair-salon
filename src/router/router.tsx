@@ -23,6 +23,7 @@ import Loading from "@/components/Loading"
 import ProductListTrash from "@/pages/Products/ProductListTrash"
 import BlogListTrash from "@/pages/Blog/BlogListTrash"
 import SlideshowProducts from "@/pages/Products/SlideshowProducts"
+import EditProducts from "@/pages/Products/EditProducts"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -135,6 +136,13 @@ export const router: CustomRouteConfig[] = [
             path: config.router.addProduct,
             title: "Thêm sản phẩm",
             element: <AddProducts />
+          },
+
+          {
+            path: config.router.editProduct,
+            title: "Chỉnh sửa sản phẩm",
+            element: <EditProducts />,
+            isNoRender: true
           }
         ]
       },

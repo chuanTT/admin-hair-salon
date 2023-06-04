@@ -22,16 +22,20 @@ const CustomScrollTable = ({
     function init() {
       if (scrollContainer.current && scrollBg.current && TableContainer.current && scrollThumb.current) {
         const heightWindow = window.innerHeight
-        const { top, height: heightContainer } = scrollContainer.current.getBoundingClientRect()
+        const { top } = scrollContainer.current.getBoundingClientRect()
         const { height: heightThumb } = scrollBg.current.getBoundingClientRect()
-        const { width: wTable } = TableContainer.current.getBoundingClientRect()
+        const { width: wTable, top: topTable, height: heightTable } = TableContainer.current.getBoundingClientRect()
+        const thead = TableContainer.current.querySelector('thead')
+        let hThead = 0
+        if(thead) {
+          hThead = thead?.clientHeight
+        }
         scrollThumb.current.style.width = `${wTable}px`
 
         const topElement = heightWindow - top - heightThumb
+        const maxScroll = top + heightTable - heightThumb
 
-        const check = heightContainer + top
-
-        if (check < heightWindow) {
+        if (!(heightWindow > topTable + hThead) ||  maxScroll < heightWindow ) {
           scrollBg.current.style.display = `none`
         } else {
           scrollBg.current.style.display = `block`
@@ -83,8 +87,8 @@ const CustomScrollTable = ({
   return (
     <>
       <div className="bg-white shadow-lg rounded-sm relative">
-        <div className="absolute left-0 w-full h-2 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
-          <div className=" h-2" ref={scrollThumb}></div>
+        <div className="absolute left-0 w-full h-5 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
+          <div className="h-5" ref={scrollThumb}></div>
         </div>
         <div className="overflow-x-auto overflow-y-hidden" ref={scrollContainer}>
           {children(TableContainer)}

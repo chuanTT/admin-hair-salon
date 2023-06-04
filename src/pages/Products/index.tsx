@@ -1,7 +1,7 @@
 import { deleletProduct, getProduct, tableProduct } from "@/api/productApi"
 import TablePagination from "@/layout/TablePagination"
 import config from "@/config"
-import { configDefaultEvent } from "@/config/configEvent"
+import { dynamicFucEvent } from "@/config/configEvent"
 import FilterProduct from "@/partials/Products/FilterProduct"
 const Product = () => {
   return (
@@ -14,7 +14,7 @@ const Product = () => {
       callApi={getProduct}
       isDelete
       callApiDelete={deleletProduct}
-      configFuc={configDefaultEvent}
+      configFuc={dynamicFucEvent(config.router.editProduct)}
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
         let url = query?.for(nameTable).page(page).limit(limit)
         const obj = config.filter.other({ searchValue, key: "name" })

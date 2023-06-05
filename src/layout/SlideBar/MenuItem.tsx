@@ -1,4 +1,4 @@
-import { FC, Fragment } from "react"
+import { FC, Fragment, useEffect, useState } from "react"
 import { NavLink, useLocation } from "react-router-dom"
 import config from "@/config"
 import AccordionWapper from "@/components/AccordionWapper"
@@ -47,7 +47,7 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
       }}
       isUpdate={active}
     >
-      {({ refButton, refContent, toggleAccordion }) => {
+      {({ refButton, refContent, toggleAccordion, setUpdated }) => {
         return (
           <li className={`menu-item ${active ? "active" : ""}`}>
             <NavLink
@@ -60,6 +60,7 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                   typeof toggleAccordion === "function" && toggleAccordion()
                   return
                 }
+                setUpdated && setUpdated((prev) => !prev)
               }}
             >
               <div className="menu-icon">
@@ -78,7 +79,14 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                     return (
                       <Fragment key={`${item.title}-${count}`}>
                         {!isRenderChil && (
-                          <NavLink end to={pathChild} className="menu-item">
+                          <NavLink
+                            end
+                            to={pathChild}
+                            className="menu-item"
+                            onClick={() => {
+                              setUpdated && setUpdated((prev) => !prev)
+                            }}
+                          >
                             <span className="menu-link">
                               <div data-i18n="Without navbar">{child.title}</div>
                             </span>

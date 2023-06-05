@@ -1,10 +1,11 @@
-import { useCallback, useRef, useState, FC, MutableRefObject, useEffect } from "react"
+import { useCallback, useRef, useState, FC, MutableRefObject, useEffect, Dispatch, SetStateAction } from "react"
 export interface AccordionWapperProps {
   children: (obj: {
     refButton: MutableRefObject<HTMLDivElement | null>
     refContent: MutableRefObject<HTMLDivElement | null>
     active?: boolean
     toggleAccordion?: () => void
+    setUpdated?: Dispatch<SetStateAction<boolean>>
   }) => JSX.Element
   customProgressOpen?: (element: HTMLDivElement | null | undefined) => void
   customFucOpenDone?: (element: HTMLDivElement | null) => void
@@ -22,6 +23,7 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
   isUpdate
 }) => {
   const [active, setActive] = useState(false)
+  const [updated, setUpdated] = useState(false)
   const accordionContentRef = useRef<HTMLDivElement | null>(null)
   const divActive = useRef<HTMLDivElement | null>(null)
 
@@ -82,9 +84,19 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
       callBackUpdate(toggleAccordion, active)
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isUpdate])
+  }, [isUpdate, updated])
 
-  return <>{children({ refButton: divActive, active, toggleAccordion, refContent: accordionContentRef })}</>
+  return (
+    <>
+      {children({
+        refButton: divActive,
+        active,
+        toggleAccordion,
+        refContent: accordionContentRef,
+        setUpdated: setUpdated
+      })}
+    </>
+  )
 }
 
 export default AccordionWapper

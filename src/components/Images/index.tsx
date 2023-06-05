@@ -38,6 +38,8 @@ const Images: FC<ImagesProps> = ({
         {...innerPropsImages}
         className={`w-full h-full object-cover relative z-[1] ${classNameImg}`}
         src={src || defaultSrc}
+        loading="eager"
+        decoding="async"
         onLoad={() => {
           setIsPending(false)
         }}

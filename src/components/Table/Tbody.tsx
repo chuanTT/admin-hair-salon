@@ -90,31 +90,55 @@ const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, config
                         <td className="px-2 py-3 whitespace-nowrap w-px">
                           <div className="space-x-3 flex justify-center">
                             {configFuc?.map((item: typeEvent, iFuc: number) => {
-                              const { key, isViews, ...rest } = item
+                              const { key, isViews, isCus, element, ...rest } = item
                               let id = RenderValue({
                                 key: key || "id",
                                 data: items
                               })
                               id = id != "-" ? id : 0
                               const checkTo = item?.to ? `${item?.to}/${id}` : ""
-
+                              const Element = element
                               return (
                                 <Fragment key={iFuc}>
                                   {isViews && (
-                                    <Button
-                                      {...rest}
-                                      customIcon={{
-                                        type: item?.type,
-                                        views: item?.isViews
-                                      }}
-                                      id={`id-${index}-${i}-${iFuc}`}
-                                      to={checkTo}
-                                      onClick={(e) => {
-                                        item?.onClick &&
-                                          typeof item.onClick === "function" &&
-                                          item.onClick({ id, e, provider })
-                                      }}
-                                    />
+                                    <>
+                                      {!isCus && !Element && (
+                                        <Button
+                                          {...rest}
+                                          customIcon={{
+                                            type: item?.type,
+                                            views: item?.isViews
+                                          }}
+                                          id={`id-${index}-${i}-${iFuc}`}
+                                          to={checkTo}
+                                          isToolTips
+                                          onClick={(e) => {
+                                            item?.onClick &&
+                                              typeof item.onClick === "function" &&
+                                              item.onClick({ id, e, provider, data: items })
+                                          }}
+                                        />
+                                      )}
+
+                                      {isCus && Element && (
+                                        <Element
+                                          {...rest}
+                                          customIcon={{
+                                            type: item?.type,
+                                            views: item?.isViews
+                                          }}
+                                          id={`id-${index}-${i}-${iFuc}`}
+                                          to={checkTo}
+                                          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                                          onClick={(e: any) => {
+                                            item?.onClick &&
+                                              typeof item.onClick === "function" &&
+                                              item.onClick({ id, e, provider })
+                                          }}
+                                          items={id}
+                                        />
+                                      )}
+                                    </>
                                   )}
                                 </Fragment>
                               )

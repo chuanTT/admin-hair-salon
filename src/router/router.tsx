@@ -24,6 +24,8 @@ import ProductListTrash from "@/pages/Products/ProductListTrash"
 import BlogListTrash from "@/pages/Blog/BlogListTrash"
 import SlideshowProducts from "@/pages/Products/SlideshowProducts"
 import EditProducts from "@/pages/Products/EditProducts"
+import AddBlog from "@/pages/Blog/AddBlog"
+import EditBlog from "@/pages/Blog/EditBlog"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -155,13 +157,26 @@ export const router: CustomRouteConfig[] = [
           {
             index: true,
             title: "Danh sách bài viết",
-            element: <Blog />,
+            element: <Blog />
           },
 
           {
             path: config.router.userTrash,
             title: "Danh sách bài viết đã xóa",
             element: <BlogListTrash />
+          },
+
+          {
+            path: config.router.addBlog,
+            title: "Thêm bài viết",
+            element: <AddBlog />
+          },
+
+          {
+            path: config.router.editBlog,
+            title: "Chỉnh sửa bài viết",
+            element: <EditBlog />,
+            isNoRender: true
           }
         ]
       },

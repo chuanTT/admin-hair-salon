@@ -1,9 +1,39 @@
 import { deleletProduct, getProduct, tableProduct } from "@/api/productApi"
 import TablePagination from "@/layout/TablePagination"
 import config from "@/config"
-import { dynamicFucEvent } from "@/config/configEvent"
+import { ViewsImagesFuc, dynamicFucEvent } from "@/config/configEvent"
 import FilterProduct from "@/partials/Products/FilterProduct"
+import { useMemo, useState } from "react"
+import { typeEventClick } from "@/types"
+import Portal from "@/components/Portal"
+import ModelSlider from "@/components/ModalImages"
 const Product = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [listImages, setListImages] = useState<string[]>([])
+
+  const configFuc = useMemo(
+    () => [
+      {
+        ...ViewsImagesFuc,
+        key: "list_images",
+        onClick: ({ data }: typeEventClick) => {
+          const { list_images } = data
+          if (list_images && Array.isArray(list_images)) {
+            let list = list_images
+
+            if (list.length > 0) {
+              list = list.map((item) => item?.thumb)
+              setListImages(list)
+            }
+          }
+          setIsOpen(true)
+        }
+      },
+      ...dynamicFucEvent(config.router.editProduct)
+    ],
+    []
+  )
+
   return (
     <TablePagination
       selectCheck={{
@@ -14,7 +44,7 @@ const Product = () => {
       callApi={getProduct}
       isDelete
       callApiDelete={deleletProduct}
-      configFuc={dynamicFucEvent(config.router.editProduct)}
+      configFuc={configFuc}
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
         let url = query?.for(nameTable).page(page).limit(limit)
         const obj = config.filter.other({ searchValue, key: "name" })
@@ -22,6 +52,7 @@ const Product = () => {
         return url?.url()
       }}
     >
+      <ModelSlider isOpen={isOpen} setIsOpen={setIsOpen} listImages={listImages} />
       <FilterProduct />
     </TablePagination>
   )

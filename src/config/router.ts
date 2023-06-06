@@ -10,6 +10,7 @@ const router = {
   editUser: "edit-user/:id",
   blog: "/blog",
   addBlog: "add-blog",
+  editBlog: "edit-blog/:alias",
   login: "/login",
   settings: "/settings",
   permission: "permission"

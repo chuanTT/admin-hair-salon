@@ -1,11 +1,21 @@
+import { useMemo, useState } from "react"
 import TablePagination from "@/layout/TablePagination"
 import config from "@/config"
-import { configDefaultEvent } from "@/config/configEvent"
-import { deleteUser } from "@/api/usersApi"
-import { deleletProduct, getProduct, tableProduct } from "@/api/productApi"
+import { DeteleFuc, EventClickButton, RestoreFuc } from "@/config/configEvent"
+import { RecoveryProduct, deleletProduct, getProduct, tableProduct } from "@/api/productApi"
 import FilterProductTrash from "@/partials/Products/FilterProductTrash"
 
 const ProductListTrash = () => {
+  const [isRestore, setIsRestore] = useState(false)
+
+  const configFuc = useMemo(
+    () => [
+      { ...RestoreFuc, onClick: EventClickButton(() => setIsRestore(true)) },
+      { ...DeteleFuc, onClick: EventClickButton(() => setIsRestore(false)) }
+    ],
+    []
+  )
+
   return (
     <TablePagination
       selectCheck={{
@@ -15,8 +25,9 @@ const ProductListTrash = () => {
       nameTable={tableProduct}
       callApi={getProduct}
       isDelete
-      callApiDelete={deleletProduct}
-      configFuc={configDefaultEvent}
+      callApiDelete={isRestore ? RecoveryProduct : deleletProduct}
+      configFuc={configFuc}
+      is_restore={isRestore}
       is_force={1}
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
         let url = query?.for(`${nameTable}`).page(page).limit(limit)

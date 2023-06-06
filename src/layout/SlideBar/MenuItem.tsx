@@ -32,16 +32,16 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
           parent?.classList.remove("open")
         }
       }}
-      callBackUpdate={(toggleAccordion, activeToggle) => {
+      callBackUpdate={({ active: activeToggle, collapseAccordion, expandAccordion, setActive }) => {
         if (active) {
-          if (checkChildren) {
-            if (!activeToggle) {
-              toggleAccordion()
-            }
+          if (!activeToggle) {
+            expandAccordion()
+            setActive(true)
           }
         } else {
-          if (activeToggle && checkChildren) {
-            toggleAccordion()
+          if (activeToggle) {
+            collapseAccordion()
+            setActive(false)
           }
         }
       }}

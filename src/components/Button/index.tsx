@@ -5,10 +5,14 @@ import { MdModeEditOutline } from "react-icons/md"
 import ToolTip, { ToolTipProps } from "../ToolTips"
 import { defaultProps } from "@/types"
 import { LoadingIcon } from "../Icon"
+import { BsImages } from "react-icons/bs"
+import { FaUndoAlt } from "react-icons/fa"
 
 export enum iconTypeEvent {
   edit = "edit",
-  delete = "delete"
+  delete = "delete",
+  viewsImage = "views_images",
+  restore = "restore"
 }
 
 interface iconConfig {
@@ -45,6 +49,12 @@ const LoadIcon = ({ customIcon }: { customIcon: iconConfig }) => {
 
     case iconTypeEvent.delete:
       Icon = TbTrashFilled
+      break
+    case iconTypeEvent.viewsImage:
+      Icon = BsImages
+      break
+    case iconTypeEvent.restore:
+      Icon = FaUndoAlt
       break
   }
 

@@ -1,4 +1,4 @@
-import { useState, useRef, useContext, createContext, FC, useMemo } from "react"
+import { useState, useContext, createContext, FC, useMemo } from "react"
 import useFetchingApi, { customUrlProps } from "@/hooks/useFetchingApi"
 import Breadcrumb from "@/components/Breadcrumb"
 import { TablePaginationProps, TypeValue, paginationType, typeObject } from "@/types"
@@ -26,6 +26,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
     isFuc,
     selectCheck,
     is_force,
+    is_restore,
     callBack
   } = prop
 
@@ -41,7 +42,6 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
   const [isOpen, setIsOpen] = useState(false)
 
   // get id
-  const idItem = useRef<number | string>()
   const [listIDs, setListIDs] = useState<(number | string)[]>([])
 
   const { data, isFetched, invalidateQueriesQueryClient } = useFetchingApi({
@@ -70,7 +70,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       })
     } else {
       setListIDs([id])
-      setIsOpen((prev) => !prev)
+      setIsOpen(true)
     }
   }
 
@@ -102,7 +102,6 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
       data,
       handelDelete,
       setSearchValue,
-      id: idItem?.current,
       setPage,
       handelFilter,
       searchValue,
@@ -128,6 +127,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
             setIsOpen={setIsOpen}
             callApiDelete={callApiDelete}
             is_force={is_force}
+            is_restore={is_restore}
             SuccessModal={() => {
               setListIDs([])
               invalidateQueriesQueryClient()

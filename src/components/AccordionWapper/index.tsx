@@ -6,11 +6,18 @@ export interface AccordionWapperProps {
     active?: boolean
     toggleAccordion?: () => void
     setUpdated?: Dispatch<SetStateAction<boolean>>
+    setActive?: Dispatch<SetStateAction<boolean>>
   }) => JSX.Element
   customProgressOpen?: (element: HTMLDivElement | null | undefined) => void
   customFucOpenDone?: (element: HTMLDivElement | null) => void
   customFucCloseDone?: (element: HTMLDivElement | null) => void
-  callBackUpdate?: (toggleAccordion: () => void, active: boolean) => void
+  callBackUpdate?: (obj: {
+    toggleAccordion: () => void
+    active: boolean
+    setActive: Dispatch<SetStateAction<boolean>>
+    expandAccordion: () => void
+    collapseAccordion: () => void
+  }) => void
   isUpdate?: boolean
 }
 
@@ -81,7 +88,13 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
 
   useEffect(() => {
     if (typeof callBackUpdate === "function") {
-      callBackUpdate(toggleAccordion, active)
+      callBackUpdate({
+        toggleAccordion,
+        active,
+        collapseAccordion,
+        expandAccordion,
+        setActive
+      })
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isUpdate, updated])
@@ -93,7 +106,8 @@ const AccordionWapper: FC<AccordionWapperProps> = ({
         active,
         toggleAccordion,
         refContent: accordionContentRef,
-        setUpdated: setUpdated
+        setUpdated: setUpdated,
+        setActive
       })}
     </>
   )

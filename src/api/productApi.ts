@@ -17,6 +17,12 @@ const addProductApi = (data: any) => {
   return HTTP.post(`${tableProduct}`, data)
 }
 
+const RecoveryProduct = (data: (string | number)[]) => {
+  return HTTP.patch(`${tableProduct}`, {
+    ids: data
+  })
+}
+
 const UpdateProduct = (id: number | string, data: number | string | FormData | undefined) => {
   return HTTP.post(`${tableProduct}/${id}`, data)
 }
@@ -30,4 +36,4 @@ const deleletProduct = (data: (string | number)[], is_force?: string | number) =
   })
 }
 
-export { getProduct, deleletProduct, tableProduct, addProductApi, getSliderProduct, tableSliderProduct, UpdateProduct }
+export { getProduct, deleletProduct, tableProduct, addProductApi, getSliderProduct, tableSliderProduct, UpdateProduct, RecoveryProduct }

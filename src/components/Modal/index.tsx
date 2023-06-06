@@ -52,7 +52,7 @@ const Modal: FC<ModalProps> = ({
 
     if (element && elementContainer) {
       if (!isClose) {
-        setIsOpen((prev) => !prev)
+        setIsOpen(false)
       }
     }
   }

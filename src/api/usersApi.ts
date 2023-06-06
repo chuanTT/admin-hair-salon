@@ -23,10 +23,8 @@ const deleteUser = (data: (string | number)[], is_force?: string | number) => {
 }
 
 const RecoveryUser = (data: (string | number)[]) => {
-  return HTTP.patch(`${tableUser}"}`, {
-    data: {
-      ids: data
-    }
+  return HTTP.patch(`${tableUser}`, {
+    ids: data
   })
 }
 

@@ -8,6 +8,7 @@ import ToastCustom, { TypeToast } from "../ToastCustom"
 import Modal from "../Modal"
 import { MsgType } from "@/common/functions"
 import Button from "../Button"
+import { FaUndoAlt } from "react-icons/fa"
 
 interface ModalDeleteCusProps {
   isOpen: boolean
@@ -24,6 +25,7 @@ interface ModalDeleteCusProps {
   SuccessModal?: () => void
   sussFucMsg?: () => void
   is_force?: number | string
+  is_restore?: boolean
 }
 
 const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
@@ -36,7 +38,8 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
   onSuccessModal,
   SuccessModal,
   sussFucMsg,
-  is_force
+  is_force,
+  is_restore
 }) => {
   const [isOpenToast, setIsOpenToast] = useState(false)
   const [isPending, setIsPending] = useState(false)
@@ -54,15 +57,17 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
       return callApiDelete(values, is_force)
     },
     onError: () => {
-      msgToast.current = MsgType(msgObj?.erorr ?? "Xóa thất bại")
+      msgToast.current = MsgType(msgObj?.erorr ?? (is_restore ? "khôi phục thất bại" : "Xóa thất bại"))
       resetPending()
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (context: any) => {
-      msgToast.current = MsgType(msgObj?.suss ?? "Xóa thành công", false)
+      msgToast.current = MsgType(msgObj?.suss ?? (is_restore ? "Khôi phục thành công" : "Xóa thành công"), false)
       if (context) {
         if (context?.code === 400 || context?.code === 403) {
-          msgToast.current = MsgType(context?.msg ?? msgObj?.erorr ?? "Xóa thất bại")
+          msgToast.current = MsgType(
+            context?.msg ?? msgObj?.erorr ?? (is_restore ? "khôi phục thất bại" : "Xóa thất bại")
+          )
         }
       }
 
@@ -98,20 +103,30 @@ const ModalDeleteCus: FC<ModalDeleteCusProps> = ({
       <Modal classModalWidth="max-sm:w-[90%]" isOpen={isOpen} setIsOpen={setIsOpen} isClose={isPending}>
         <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
           <div className="sm:flex sm:items-start">
-            <div className="mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-red-100 sm:mx-0 sm:h-10 sm:w-10">
-              <svg className="h-6 w-6 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
-                />
-              </svg>
+            <div
+              className={`mx-auto flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full ${
+                is_restore ? "bg-blue-100 text-blue-600 text-xl" : "bg-red-100"
+              } sm:mx-0 sm:h-10 sm:w-10`}
+            >
+              {!is_restore && (
+                <svg className="h-6 w-6 text-red-600" stroke="currentColor" fill="none" viewBox="0 0 24 24">
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth="2"
+                    d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                  />
+                </svg>
+              )}
+
+              {is_restore && <FaUndoAlt />}
             </div>
             <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
               <h3 className="text-lg leading-6 font-medium text-gray-900">Thông báo</h3>
               <div className="mt-2">
-                <p className="text-sm leading-5 text-gray-500">Bạn có chắc chắn muốn xóa không?</p>
+                <p className="text-sm leading-5 text-gray-500">
+                  Bạn có chắc chắn muốn {is_restore ? "khôi phục" : "xóa"} không?
+                </p>
               </div>
             </div>
           </div>

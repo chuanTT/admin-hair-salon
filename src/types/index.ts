@@ -97,7 +97,6 @@ export interface TypeValue {
   data?: AxiosResponse<any, any> | undefined
   handelDelete?: (id: number | string, isPush?: boolean) => void
   setSearchValue?: Dispatch<SetStateAction<typeObject>>
-  id?: number | string | undefined
   setPage?: Dispatch<SetStateAction<number | undefined>>
   handelFilter?: (value: typeObject) => void
   searchValue?: typeObject
@@ -113,6 +112,8 @@ export interface typeEventClick {
   id: number | string
   e?: MouseEvent<HTMLElement>
   provider?: TypeValue
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  data?: any
 }
 
 export interface typeEvent {
@@ -124,6 +125,9 @@ export interface typeEvent {
   to?: string
   type?: iconTypeEvent
   onClick?: (obj: typeEventClick) => void
+  isCus?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  element?: (props: any) => JSX.Element
 }
 
 export interface TablePaginationProps extends TableProps {
@@ -133,6 +137,7 @@ export interface TablePaginationProps extends TableProps {
   LimitPages?: number
   isDelete?: boolean
   is_force?: number | string
+  is_restore?: boolean
   customUrl?: (obj: customUrlProps) => string | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callApiDelete?: (id: (number | string)[]) => Promise<AxiosResponse<any, any>>

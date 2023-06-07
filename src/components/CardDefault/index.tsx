@@ -37,7 +37,7 @@ const CardDefault: FC<CardDefaultProps> = ({ full_name }) => {
   }, [])
 
   return (
-    <div className="card">
+    <div className="card h-full">
       <div className="d-flex items-center row">
         <div className="col-sm-7">
           <div className="card-body">

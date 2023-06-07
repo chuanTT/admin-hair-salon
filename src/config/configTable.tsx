@@ -1,4 +1,5 @@
 import { NowDate, formatDate, numberMoneyVND } from "@/common/functions"
+import SwitchRadio from "@/components/CustomField/SwitchRadio"
 import Images from "@/components/Images"
 import { configProps } from "@/types"
 
@@ -138,19 +139,19 @@ const configPermission: configProps[][] = [
 
 const configProductSildeShow: configProps[][] = [
   [
-    {
-      key: "big_thumb",
-      head: "Hình ảnh",
-      classCustom: "w-[80px]",
-      isCus: true,
-      element: ({ data }) => {
-        return (
-          <div className="flex justify-center items-center">
-            <Images w={60} h={60} className="" src={(data as string) ?? ""} alt={"hình ảnh"} />
-          </div>
-        )
-      }
-    },
+    // {
+    //   key: "big_thumb",
+    //   head: "Hình ảnh",
+    //   classCustom: "w-[80px]",
+    //   isCus: true,
+    //   element: ({ data }) => {
+    //     return (
+    //       <div className="flex justify-center items-center">
+    //         <Images w={60} h={60} className="" src={(data as string) ?? ""} alt={"hình ảnh"} />
+    //       </div>
+    //     )
+    //   }
+    // },
 
     {
       key: ["user", "full_name"],
@@ -162,7 +163,10 @@ const configProductSildeShow: configProps[][] = [
             <div className="w-12 h-12 rounded-full overflow-hidden mr-3">
               <Images isRounded src={current?.user?.avatar} alt={current?.user?.full_name} />
             </div>
-            <span className="font-medium">{current?.user?.full_name}</span>
+            <div className="flex flex-col justify-center items-start">
+              <span className="font-semibold text-gray-700 text-sm">{current?.user?.full_name}</span>
+              <span className="font-medium text-gray-400">{current?.user?.user_name}</span>
+            </div>
           </div>
         )
       }
@@ -176,7 +180,9 @@ const configProductSildeShow: configProps[][] = [
       head: "Trạng thái",
       isCus: true,
       element: ({ current }) => {
-        return <>{current?.is_show !== 0 ? "Hiển thị" : "Ẩn"}</>
+        const isShow = current?.is_show === 1 ? true : false
+
+        return <div className="flex justify-center items-center"><SwitchRadio isCheck={isShow} classChecked="#4f46e5" /></div>
       }
     }
   ]

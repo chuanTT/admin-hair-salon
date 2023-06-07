@@ -1,16 +1,20 @@
+import { Dispatch, FC, SetStateAction } from "react"
 import SearchFilterForm from "@/components/SearchFilterForm"
 import SelectFilterForm from "@/components/SelectFilterForm"
 import { configUserIdApi } from "@/config/configCallApi"
 import LayoutDefaultFilter from "@/layout/LayoutDefaultFilter"
 import { useTablePagination } from "@/layout/TablePagination"
+import { FilterTrashProps } from "@/types"
 
-const FilterProductTrash = () => {
+const FilterProductTrash: FC<FilterTrashProps> = ({ setIsRestore }) => {
   const { searchValue, handelFilter, setSearchValue, setIsOpen, listIDs } = useTablePagination()
 
   return (
     <LayoutDefaultFilter
       setIsOpen={setIsOpen}
+      setIsRestore={setIsRestore}
       is_show={!!(listIDs && listIDs?.length > 1)}
+      is_restore
     >
       <SelectFilterForm
         searchValue={searchValue}

@@ -1,15 +1,19 @@
+import { FC } from "react"
+import { FilterTrashProps } from "@/types"
 import SearchFilterForm from "@/components/SearchFilterForm"
 import SelectFilterForm from "@/components/SelectFilterForm"
 import { configUserIdApi } from "@/config/configCallApi"
 import LayoutDefaultFilter from "@/layout/LayoutDefaultFilter"
 import { useTablePagination } from "@/layout/TablePagination"
 
-const FilterBlogTrash = () => {
+const FilterBlogTrash: FC<FilterTrashProps> = ({ setIsRestore }) => {
   const { searchValue, handelFilter, setSearchValue, setIsOpen, listIDs } = useTablePagination()
 
   return (
     <LayoutDefaultFilter
       setIsOpen={setIsOpen}
+      setIsRestore={setIsRestore}
+      is_restore
       is_show={!!(listIDs && listIDs?.length > 1)}
     >
       <SelectFilterForm

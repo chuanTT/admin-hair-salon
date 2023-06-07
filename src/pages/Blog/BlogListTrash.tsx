@@ -36,7 +36,7 @@ const BlogListTrash = () => {
         return url?.url()
       }}
     >
-      <FilterBlogTrash />
+      <FilterBlogTrash setIsRestore={setIsRestore}/>
     </TablePagination>
   )
 }

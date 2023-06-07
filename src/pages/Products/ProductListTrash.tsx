@@ -36,7 +36,7 @@ const ProductListTrash = () => {
         return url?.url()
       }}
     >
-      <FilterProductTrash />
+      <FilterProductTrash setIsRestore={setIsRestore}/>
     </TablePagination>
   )
 }

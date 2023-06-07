@@ -227,3 +227,7 @@ export interface dataInter extends valueProps {
   code?: number
   msg?: string
 }
+
+export interface FilterTrashProps {
+  setIsRestore?: Dispatch<SetStateAction<boolean>>
+}

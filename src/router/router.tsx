@@ -26,6 +26,7 @@ import SlideshowProducts from "@/pages/Products/SlideshowProducts"
 import EditProducts from "@/pages/Products/EditProducts"
 import AddBlog from "@/pages/Blog/AddBlog"
 import EditBlog from "@/pages/Blog/EditBlog"
+import AddProductsSilder from "@/pages/Products/AddProductsSilder"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -122,18 +123,7 @@ export const router: CustomRouteConfig[] = [
             element: <Product />
           },
 
-          {
-            path: config.router.userTrash,
-            title: "Danh sách sản phẩm đã xóa",
-            element: <ProductListTrash />
-          },
-
-          {
-            path: config.router.slideshowProduct,
-            title: "Trình chiếu sản phẩm",
-            element: <SlideshowProducts />
-          },
-
+          
           {
             path: config.router.addProduct,
             title: "Thêm sản phẩm",
@@ -145,7 +135,28 @@ export const router: CustomRouteConfig[] = [
             title: "Chỉnh sửa sản phẩm",
             element: <EditProducts />,
             isNoRender: true
-          }
+          },
+
+          {
+            path: config.router.userTrash,
+            title: "Danh sách sản phẩm đã xóa",
+            element: <ProductListTrash />
+          },
+        
+
+          {
+            path: config.router.slideshowProduct,
+            title: "Trình chiếu sản phẩm",
+            element: <SlideshowProducts />
+          },
+
+          {
+            path: config.router.addSlideshowProduct,
+            title: "Thêm trình chiếu",
+            element: <AddProductsSilder />,
+            isNoRender: true
+          },
+
         ]
       },
 

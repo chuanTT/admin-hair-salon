@@ -1,6 +1,6 @@
 import { NowDate, formatDate, numberMoneyVND } from "@/common/functions"
-import SwitchRadio from "@/components/CustomField/SwitchRadio"
 import Images from "@/components/Images"
+import UpdateShowSlider from "@/partials/Products/UpdateShowSlider"
 import { configProps } from "@/types"
 
 const configProduct: configProps[][] = [
@@ -179,11 +179,7 @@ const configProductSildeShow: configProps[][] = [
       key: "is_show",
       head: "Trạng thái",
       isCus: true,
-      element: ({ current }) => {
-        const isShow = current?.is_show === 1 ? true : false
-
-        return <div className="flex justify-center items-center"><SwitchRadio isCheck={isShow} classChecked="#4f46e5" /></div>
-      }
+      element: UpdateShowSlider
     }
   ]
 ]

@@ -5,7 +5,7 @@ interface SwitchRadioProps {
     classChecked?: string
     w?: number
     h?: number
-    ClickRadio?: (checked?: boolean) => void
+    ClickRadio?: (checked: boolean) => void
     title?: string
 }
 

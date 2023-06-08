@@ -2,7 +2,7 @@ import { deleletProduct, getSliderProduct, tableSliderProduct } from "@/api/prod
 import TablePagination from "@/layout/TablePagination"
 import config from "@/config"
 import { configDefaultEvent } from "@/config/configEvent"
-import FilterProduct from "@/partials/Products/FilterProduct"
+import FilterProductSlide from "@/partials/Products/FilterProductSlide"
 const SlideshowProducts = () => {
   return (
     <TablePagination
@@ -22,7 +22,7 @@ const SlideshowProducts = () => {
         return url?.url()
       }}
     >
-      <FilterProduct />
+      <FilterProductSlide />
     </TablePagination>
   )
 }

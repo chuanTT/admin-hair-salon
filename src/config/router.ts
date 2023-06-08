@@ -4,6 +4,7 @@ const router = {
   addProduct: "add-product",
   editProduct: "edit-product/:alias",
   slideshowProduct: "slideshow",
+  addSlideshowProduct: "slideshow/add-slideshow",
   user: "/users",
   userTrash: "trash",
   addUser: "add-user",

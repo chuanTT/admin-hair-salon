@@ -1,3 +1,4 @@
+import { getProduct, tableProduct } from "@/api/productApi"
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { getUser, tableUser } from "@/api/usersApi"
 import { configAll, funcKeyRole, funcUserIdKey, funcUserKey } from "@/common/ConfigSelectOption"
@@ -10,6 +11,13 @@ const configRoleApi: useFetchingOptionApiProps = {
   customUrlOption: ({ query, limit, nameTable, page }) => {
     return query?.for(nameTable)?.limit(limit).page(page).sort("1")
   },
+  isSearching: true
+}
+
+const configProductApi: useFetchingOptionApiProps = {
+  CallAPi: getProduct,
+  nameTable: tableProduct,
+  keySearching: "name",
   isSearching: true
 }
 
@@ -49,4 +57,4 @@ const configUserAllTrashApi: useFetchingOptionApiProps = {
   ...configUserAllApi
 }
 
-export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi, configUserIdApi }
+export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi, configUserIdApi, configProductApi }

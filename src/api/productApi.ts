@@ -1,3 +1,4 @@
+import { typeObject } from "@/types"
 import HTTP from "./axiosClient"
 
 const tableProduct = "product"
@@ -17,6 +18,11 @@ const addProductApi = (data: any) => {
   return HTTP.post(`${tableProduct}`, data)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addProductSlideApi = (data: any) => {
+  return HTTP.post(`${tableProduct}/${tableSliderProduct}`, data)
+}
+
 const RecoveryProduct = (data: (string | number)[]) => {
   return HTTP.patch(`${tableProduct}`, {
     ids: data
@@ -27,6 +33,9 @@ const UpdateProduct = (id: number | string, data: number | string | FormData | u
   return HTTP.post(`${tableProduct}/${id}`, data)
 }
 
+const UpdateProductSlider = (id: number | string, data: number | string | FormData | undefined | typeObject) => {
+  return HTTP.post(`${tableProduct}/${tableSliderProduct}/${id}`, data)
+}
 
 const deleletProduct = (data: (string | number)[], is_force?: string | number) => {
   return HTTP.delete(`${tableProduct}${!is_force ? "" : "?is_force=1"}`, {
@@ -36,4 +45,15 @@ const deleletProduct = (data: (string | number)[], is_force?: string | number) =
   })
 }
 
-export { getProduct, deleletProduct, tableProduct, addProductApi, getSliderProduct, tableSliderProduct, UpdateProduct, RecoveryProduct }
+export {
+  getProduct,
+  deleletProduct,
+  tableProduct,
+  addProductApi,
+  getSliderProduct,
+  tableSliderProduct,
+  UpdateProduct,
+  RecoveryProduct,
+  UpdateProductSlider,
+  addProductSlideApi
+}

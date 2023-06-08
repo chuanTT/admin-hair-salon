@@ -1,11 +1,19 @@
+import { getOtherCount } from "@/api/otherApi"
 import images from "@/assets/img"
 import CardCouter from "@/components/CardCouter"
 import CardDefault from "@/components/CardDefault"
 import ChartDashboard from "@/components/ChartDashboard"
+import useFetchingApi from "@/hooks/useFetchingApi"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 
 const Dashboard = () => {
   const { user } = useProtectedLayout()
+  const { data } = useFetchingApi({
+    nameTable: "count",
+    CallAPi: getOtherCount
+  })
+
+  console.log(data)
   return (
     <>
       <div className="row">
@@ -15,8 +23,8 @@ const Dashboard = () => {
 
         <div className="col-lg-4 col-md-4 order-1">
           <div className="row h-full">
-            <CardCouter src={images.ChartSuccess} title="Sản phẩm" counter="20" desc="Số lượng sản phẩm trong ngày" />
-            <CardCouter src={images.walletInfo} title="Bài viết" counter="10" desc="Số lượng bài viết trong ngày" />
+            <CardCouter src={images.ChartSuccess} title="Sản phẩm" counter={data?.data?.countProduct || 0} desc="Số lượng sản phẩm trong ngày" />
+            <CardCouter src={images.walletInfo} title="Bài viết" counter={data?.data?.countBlog || 0} desc="Số lượng bài viết trong ngày" />
           </div>
         </div>
 

@@ -7,10 +7,20 @@ import {
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  Filler
 } from "chart.js"
 
-ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend)
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend,
+  Filler
+);
 
 interface LineChartProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,30 +31,32 @@ interface LineChartProps {
 
 export const options = {
   responsive: true,
+  interaction: {
+    mode: 'index' as const,
+    intersect: false,
+  },
   stacked: false,
   plugins: {
     title: {
-      display: false
-    }
-  },
-  options: {
-    scales: {
-      x: {
-        grid: {
-          display: false
-        }
-      }
-    },
-
-    "left-y-axis": {
-      type: "linear",
-      position: "right",
-      grid: {
-        display: false
-      },
+      display: false,
     },
   },
-}
+  // scales: {
+  //   y: {
+  //     type: 'linear' as const,
+  //     display: true,
+  //     position: 'left' as const,
+  //   },
+  //   y1: {
+  //     type: 'linear' as const,
+  //     display: true,
+  //     position: 'right' as const,
+  //     grid: {
+  //       drawOnChartArea: false,
+  //     },
+  //   },
+  // },
+};
 
 function LineChart({ data, width, height }: LineChartProps) {
   return <Line options={options} data={data} width={width} height={height} />

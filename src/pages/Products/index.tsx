@@ -5,7 +5,6 @@ import { ViewsImagesFuc, dynamicFucEvent } from "@/config/configEvent"
 import FilterProduct from "@/partials/Products/FilterProduct"
 import { useMemo, useState } from "react"
 import { typeEventClick } from "@/types"
-import Portal from "@/components/Portal"
 import ModelSlider from "@/components/ModalImages"
 const Product = () => {
   const [isOpen, setIsOpen] = useState(false)

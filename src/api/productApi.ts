@@ -45,6 +45,15 @@ const deleletProduct = (data: (string | number)[], is_force?: string | number) =
   })
 }
 
+const deleletProductSlide = (data: (string | number)[]) => {
+  return HTTP.delete(`${tableProduct}/${tableSliderProduct}`, {
+    data: {
+      ids: data
+    }
+  })
+}
+
+
 export {
   getProduct,
   deleletProduct,
@@ -55,5 +64,6 @@ export {
   UpdateProduct,
   RecoveryProduct,
   UpdateProductSlider,
-  addProductSlideApi
+  addProductSlideApi,
+  deleletProductSlide
 }

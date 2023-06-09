@@ -1,78 +1,93 @@
-import { useRef } from "react"
-import * as Yup from "yup"
-
+import { useRef, useState } from "react"
 import Breadcrumb from "@/components/Breadcrumb"
 import { ReactSelectCus } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
-import { addProductSlideApi } from "@/api/productApi"
+import { useParams } from "react-router-dom"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
+import { UpdateProductSlider, getSliderProduct, tableSliderProduct } from "@/api/productApi"
 import { optionShow } from "@/common/optionStatic"
-import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
-import { configProductApi } from "@/config/configCallApi"
+import { SelectDefault } from "@/types"
+import { removeProperty } from "@/common/functions"
 
-
-
-const schema = Yup.object().shape({
-  id_product: Yup.string().required('Vui lòng chọn sản phẩm')
-})
-
-const defaultValue = {
-  is_show: 0
+export enum valueDefaultProduct {
+  is_show = 'is_show',
+  big_thumb = 'big_thumb',
+  product = "product"
 }
 
-const AddProducts = () => {
-  const ImgRef = useRef<refListImage>(null)
-  const { option: optionProduct } = useFethingOptionApi({
-    ...configProductApi
-  })
+const defaultValues = {
+  [valueDefaultProduct.is_show]: "",
+  [valueDefaultProduct.big_thumb]: "",
+  [valueDefaultProduct.product]: "",
+}
 
+const EditProductsSlider = () => {
+  const { id } = useParams()
+  const [optionProduct, setOptionProduct] = useState<SelectDefault[]>([])
+  const [, setIsUpdated] = useState(false)
+  const ImgRef = useRef<refListImage>(null)
 
   return (
     <Breadcrumb>
       <FormHandel
-        isValidate
-        schema={schema}
-        defaultValues={defaultValue}
-        callApi={addProductSlideApi}
-        closeFuncSucc={({ remove, propForm }) => {
-          typeof remove === "function" && remove()
-          propForm && propForm.reset()
-          ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
-        }}
-        customValuesData={(value) => {
+        callApi={(value) => {
           const is_show = value?.is_show === 0 ? '0' : value?.is_show
-
-          const data = {
+          let data = {
             ...value,
             is_show
           }
+          data = removeProperty('product', data)
+          return UpdateProductSlider(id ?? 0, SendFormData(data))
+        }}
+        defaultValues={defaultValues}
+        isEdit
+        nameTable={tableSliderProduct}
+        id={id}
+        callApiEdit={getSliderProduct}
+        customValue={({ data, key, setValue }) => {
+          if (key === valueDefaultProduct.big_thumb) {
+            if (ImgRef.current) {
+              ImgRef.current?.setSrc?.(data[key])
+            }
+            setIsUpdated((prev) => !prev)
+            return true
+          }
 
-          return SendFormData(data)
+          if (key === valueDefaultProduct.product) {
+            const { id, name } = data[key]
+            setOptionProduct([{
+              value: id,
+              label: name
+            }])
+            setValue && setValue(key, id)
+            return true
+          }
         }}
       >
-        {({ propForm, isPending }) => {
+        {({ propForm, isPending, setResertForm }) => {
           const {
             register,
-            reset,
+            clearErrors,
             setValue,
             getValues,
             formState: { errors }
           } = propForm
-
           return (
             <LayoutFormDefault
               isPending={isPending}
+              txtButtonPrimary="Chỉnh sửa"
               clickButtonCancel={() => {
-                reset()
+                clearErrors()
+                typeof setResertForm === "function" && setResertForm((prev) => !prev)
               }}
             >
               <ReactSelectCus
                 title="Sản phẩm"
                 parenSelect="mb-3 col-md-6"
                 placeholder="Chọn sản phẩm"
-                name="id_product"
+                name="product"
                 options={optionProduct}
                 getValue={getValues}
                 setValue={setValue}
@@ -107,4 +122,4 @@ const AddProducts = () => {
   )
 }
 
-export default AddProducts
+export default EditProductsSlider

@@ -258,6 +258,22 @@ export const lsRemoveAuth = () => {
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const removeProperty = (propKey: string | number, { [propKey]: propValue, ...rest }) => rest;
 
+const fucPathName = (str: string) => {
+  const arr = str?.split('/')
+  const strNew = arr?.[arr?.length - 1] ?? str
+  return strNew
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const isObject = (obj: any) => {
+  let isCheck = false
+
+  if(typeof obj === "object" && !Array.isArray(obj)) {
+    isCheck = true
+  }
+
+  return isCheck
+}
 
 export {
   requestAnimationFrameAccordion,
@@ -274,5 +290,7 @@ export {
   convertViToEn,
   sliceRouteDynamic,
   NowDate,
-  removeProperty
+  removeProperty,
+  fucPathName,
+  isObject
 }

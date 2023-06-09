@@ -28,7 +28,13 @@ export interface refListImage {
   clearImage?: () => void
   setSrc?: (str: string | undefined) => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setSrcList?: (obj: { arr?: typeObject[] | [], isDel?: boolean, key?: string, callBack?: (item?: any) => optListImages | undefined }) => void
+  setSrcList?: (obj: {
+    arr?: typeObject[] | []
+    isDel?: boolean
+    key?: string
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    callBack?: (item?: any) => optListImages | undefined
+  }) => void
 }
 
 interface ListImagesProps {
@@ -40,6 +46,8 @@ interface ListImagesProps {
   sizeFile?: number | string
   validType?: []
   classParentImg?: string
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  styleImg?: any
   listImagesViews?: optListImages[]
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setFieldError?: any
@@ -47,7 +55,7 @@ interface ListImagesProps {
   isDisable?: string
   title?: string
   isRequire?: boolean
-  isMultiple?: boolean,
+  isMultiple?: boolean
   clickButtonDel?: (opt?: optListImages) => void
 }
 
@@ -68,7 +76,8 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
     title,
     isRequire,
     isMultiple,
-    clickButtonDel
+    clickButtonDel,
+    styleImg
   } = props
   const dataFile = useRef(new DataTransfer())
   const [isOpen, setIsOpen] = useState(false)
@@ -295,6 +304,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
                       classNameImg="rounded-md h-full w-full"
                       src={item?.src}
                       alt="images"
+                      innerPropsImages={styleImg}
                     />
 
                     <span
@@ -318,10 +328,14 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
                         </button>
 
                         {item?.del && (
-                          <button type="button" onClick={(e) => {
-                            delFiles(e, item)
-                            clickButtonDel && clickButtonDel(item)
-                          }} aria-hidden="true">
+                          <button
+                            type="button"
+                            onClick={(e) => {
+                              delFiles(e, item)
+                              clickButtonDel && clickButtonDel(item)
+                            }}
+                            aria-hidden="true"
+                          >
                             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="16" height="16">
                               <path
                                 d="M10 2L9 3L4 3L4 5L7 5L17 5L20 5L20 3L15 3L14 2L10 2 z M 5 7L5 20C5 21.1 5.9 22 7 22L17 22C18.1 22 19 21.1 19 20L19 7L5 7 z"
@@ -357,8 +371,9 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
                 InputFile.current?.click()
               }
             }}
-            className={`flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg ${isDisable ? "" : "cursor-pointer"
-              } bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 relative ${classWapper}`}
+            className={`flex flex-col items-center justify-center w-full border-2 border-gray-300 border-dashed rounded-lg ${
+              isDisable ? "" : "cursor-pointer"
+            } bg-gray-50 dark:hover:bg-bray-800 dark:bg-gray-700 hover:bg-gray-100 dark:border-gray-600 dark:hover:border-gray-500 dark:hover:bg-gray-600 relative ${classWapper}`}
           >
             <div className="flex flex-col items-center justify-center pt-5 pb-6">
               <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">

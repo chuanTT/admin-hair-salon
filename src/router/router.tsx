@@ -27,6 +27,8 @@ import EditProducts from "@/pages/Products/EditProducts"
 import AddBlog from "@/pages/Blog/AddBlog"
 import EditBlog from "@/pages/Blog/EditBlog"
 import AddProductsSilder from "@/pages/Products/AddProductsSilder"
+import EditProductsSlider from "@/pages/Products/EditProductsSlider"
+import GeneralSettings from "@/pages/Settings/GeneralSettings"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -157,6 +159,12 @@ export const router: CustomRouteConfig[] = [
             isNoRender: true
           },
 
+          {
+            path: config.router.editSlideshowProduct,
+            title: "Chỉnh sửa trình chiếu",
+            element: <EditProductsSlider />,
+            isNoRender: true
+          },
         ]
       },
 
@@ -201,6 +209,12 @@ export const router: CustomRouteConfig[] = [
             path: config.router.permission,
             title: "Phân quyền",
             element: <Permission />
+          },
+
+          {
+            path: config.router.generalSettings,
+            title: "Cài đặt chung",
+            element: <GeneralSettings />
           }
         ]
       }

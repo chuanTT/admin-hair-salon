@@ -1,3 +1,4 @@
+import { typeObject } from "@/types"
 import HTTP from "./axiosClient"
 
 const tableOther = "other"
@@ -7,4 +8,16 @@ const getOtherCount = (url?: string) => {
   return HTTP.get(`/${tableOther}/count` ?? url)
 }
 
-export { getOtherCount, tableOther }
+const getLoadSettingsLogo = (url?: string) => {
+  return HTTP.get(`/${tableOther}/${url}`)
+}
+
+const UpdateLogo = (data: number | string | FormData | undefined | typeObject) => {
+  return HTTP.post(`${tableOther}/settings/update_logo`, data)
+}
+
+const getSettings = (url?: string) => {
+  return HTTP.get(`${tableOther}/settings` ?? url)
+}
+
+export { getOtherCount, tableOther, getLoadSettingsLogo, UpdateLogo, getSettings }

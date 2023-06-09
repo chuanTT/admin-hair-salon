@@ -1,9 +1,31 @@
-import { deleletProduct, getSliderProduct, tableSliderProduct } from "@/api/productApi"
+import { useMemo, useState } from "react"
+import { typeEventClick } from "@/types"
+import { deleletProductSlide, getSliderProduct, tableSliderProduct } from "@/api/productApi"
 import TablePagination from "@/layout/TablePagination"
 import config from "@/config"
-import { configDefaultEvent } from "@/config/configEvent"
+import { ViewsImagesFuc, dynamicFucEvent } from "@/config/configEvent"
 import FilterProductSlide from "@/partials/Products/FilterProductSlide"
+import ModelSlider from "@/components/ModalImages"
+import { fucPathName } from "@/common/functions"
 const SlideshowProducts = () => {
+  const [isOpen, setIsOpen] = useState(false)
+  const [listImages, setListImages] = useState<string[]>([])
+
+  const configFuc = useMemo(
+    () => [
+      {
+        ...ViewsImagesFuc,
+        key: "big_thumb",
+        onClick: ({ data }: typeEventClick) => {
+          const { big_thumb } = data
+          setListImages([big_thumb])
+          setIsOpen(true)
+        }
+      },
+      ...dynamicFucEvent(config.router.editSlideshowProduct, 'id', fucPathName)
+    ],
+    []
+  )
   return (
     <TablePagination
       selectCheck={{
@@ -13,8 +35,8 @@ const SlideshowProducts = () => {
       nameTable={tableSliderProduct}
       callApi={getSliderProduct}
       isDelete
-      callApiDelete={deleletProduct}
-      configFuc={configDefaultEvent}
+      callApiDelete={deleletProductSlide}
+      configFuc={configFuc}
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
         let url = query?.for(nameTable).page(page).limit(limit)
         const obj = config.filter.other({ searchValue, key: "name" })
@@ -22,6 +44,7 @@ const SlideshowProducts = () => {
         return url?.url()
       }}
     >
+      <ModelSlider isOpen={isOpen} setIsOpen={setIsOpen} listImages={listImages} />
       <FilterProductSlide />
     </TablePagination>
   )

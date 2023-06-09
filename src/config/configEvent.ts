@@ -57,8 +57,12 @@ export const DeteleFuc: typeEvent = {
   onClick: EventClickButton()
 }
 
-export const dynamicFucEvent = (to?: string, key?: string) => {
-  return [{ ...EditFuc, to: sliceRouteDynamic(to || ""), key: key || "alias" }, DeteleFuc]
+export const dynamicFucEvent = (to?: string, key?: string, callBack?: (str: string) => string) => {
+  let str = sliceRouteDynamic(to || "")
+  if(callBack) {
+    str = callBack(str)
+  }
+  return [{ ...EditFuc, to: str , key: key || "alias" }, DeteleFuc]
 }
 
 export const configDefaultEvent: typeEvent[] = [EditFuc, DeteleFuc]

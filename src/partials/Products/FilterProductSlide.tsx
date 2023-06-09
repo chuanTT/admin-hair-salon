@@ -1,17 +1,18 @@
-import SearchFilterForm from "@/components/SearchFilterForm"
-import SelectFilterForm from "@/components/SelectFilterForm"
+import { fucPathName } from "@/common/functions"
 import config from "@/config"
-import { configUserIdApi } from "@/config/configCallApi"
 import LayoutDefaultFilter from "@/layout/LayoutDefaultFilter"
 import { useTablePagination } from "@/layout/TablePagination"
 
 const FilterProductSlide = () => {
+  const { setIsOpen, listIDs } = useTablePagination()
 
   return (
     <LayoutDefaultFilter
       isButton
-      to={config.router.addSlideshowProduct}
+      to={fucPathName(config.router.addSlideshowProduct)}
       txtButton="Thêm trình chiếu"
+      setIsOpen={setIsOpen}
+      is_show={!!(listIDs && listIDs?.length > 1)}
     />
   )
 }

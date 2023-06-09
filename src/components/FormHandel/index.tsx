@@ -18,14 +18,16 @@ import SendFormData from "./SendFormData"
 import useFetchingApi, { customUrlProps } from "@/hooks/useFetchingApi"
 // import SendFormData from "../CustomForm/SendFormData";
 
+export interface childrenFormHandel {
+  propForm: UseFormReturn
+  isPending?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  result?: any
+  setResertForm?: Dispatch<SetStateAction<boolean>>
+}
+
 interface FormHandelProps {
-  children: (obj: {
-    propForm: UseFormReturn
-    isPending?: boolean
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    result?: any
-    setResertForm?: Dispatch<SetStateAction<boolean>>
-  }) => JSX.Element
+  children: (obj: childrenFormHandel) => JSX.Element
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   customSubmitForm?: (data?: any) => void
   isValidate?: boolean
@@ -69,7 +71,7 @@ interface FormHandelProps {
   customUrl?: (obj: customUrlProps) => string | void | undefined
   isFormData?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  sussFuc?: (data: any) => void,
+  sussFuc?: (data: any) => void
   optionValidateRest?: UseFormProps
 }
 
@@ -111,13 +113,13 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
   const optionValidate: UseFormProps =
     isValidate && schema
       ? {
-        mode: "all",
-        reValidateMode: "onChange",
-        criteriaMode: "firstError",
-        defaultValues: defaultValues || {},
-        resolver: yupResolver(schema),
-        ...optionValidateRest
-      }
+          mode: "all",
+          reValidateMode: "onChange",
+          criteriaMode: "firstError",
+          defaultValues: defaultValues || {},
+          resolver: yupResolver(schema),
+          ...optionValidateRest
+        }
       : {}
 
   const propForm = useForm<FieldValues, UseFormReturn>(optionValidate)
@@ -196,7 +198,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
 
           if (arrKey?.length > 0) {
             arrKey.forEach((key) => {
-              ; (typeof customValue === "function" &&
+              ;(typeof customValue === "function" &&
                 customValue({ setValue: propForm.setValue, key, data: result?.data, propForm })) ||
                 propForm.setValue(key, result.data[key])
             })
@@ -242,11 +244,13 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
     >
       <form
         onSubmit={propForm.handleSubmit(SubmitForm)}
-        className={`${isEdit ? (!removeClassForm ? `${isFetched ? "bg-white" : ""} ` : "") : !removeClassForm ? `bg-white ` : ""
-          } ${!removeClassForm &&
+        className={`${
+          isEdit ? (!removeClassForm ? `${isFetched ? "bg-white" : ""} ` : "") : !removeClassForm ? `bg-white ` : ""
+        } ${
+          !removeClassForm &&
           ` [&>:not(:last-child)]:max-md:flex-col space-y-4 [&>*>span]:!w-44 [&>*>span]:!mb-0 [&>*>span]:!pt-0 py-6 px-6 rounded-sm  flex-shrink-0 ${ClassForm}`
-          }`}
-      // [&>*]:lg:!w-[84%] [&>*]:max-lg:!w-full
+        }`}
+        // [&>*]:lg:!w-[84%] [&>*]:max-lg:!w-full
       >
         {isEdit && !isFetched && <Loading classNameDiv="flex justify-center [&>*]:scale-50 items-start py-4" />}
         {isEdit

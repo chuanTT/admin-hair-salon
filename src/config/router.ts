@@ -5,6 +5,7 @@ const router = {
   editProduct: "edit-product/:alias",
   slideshowProduct: "slideshow",
   addSlideshowProduct: "slideshow/add-slideshow",
+  editSlideshowProduct: "slideshow/edit-slideshow/:id",
   user: "/users",
   userTrash: "trash",
   addUser: "add-user",
@@ -14,6 +15,7 @@ const router = {
   editBlog: "edit-blog/:alias",
   login: "/login",
   settings: "/settings",
+  generalSettings: "general-settings",
   permission: "permission"
 }
 

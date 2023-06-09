@@ -12,8 +12,6 @@ const Dashboard = () => {
     nameTable: "count",
     CallAPi: getOtherCount
   })
-
-  console.log(data)
   return (
     <>
       <div className="row">

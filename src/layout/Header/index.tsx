@@ -7,10 +7,14 @@ import Images from "@/components/Images"
 import { useProtectedLayout } from "../ProtectedLayout"
 import { layoutMenuFucRemove } from "../DefaultLayout"
 import "./header.css"
+import Modal from "@/components/Modal"
+import ButtonLoading from "@/components/ButtonLoading"
 
 const Header = () => {
   const { user, removeAuth } = useProtectedLayout()
   const [isOpen, setIsOpen] = useState(false)
+  const [isShow, setIsShow] = useState(false)
+  const [isPending, setIsPending] = useState(false)
 
   useEffect(() => {
     const initPadding = () => {
@@ -125,7 +129,7 @@ const Header = () => {
                 <span
                   className="dropdown-item !flex items-center"
                   onClick={() => {
-                    typeof removeAuth === "function" && removeAuth()
+                    setIsShow(true)
                   }}
                   aria-hidden="true"
                 >
@@ -139,6 +143,48 @@ const Header = () => {
           </li>
         </ul>
       </div>
+
+      <Modal isOpen={isShow} setIsOpen={setIsShow} classModalWidth="max-sm:w-[90%]">
+        <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
+          <div className="sm:flex sm:items-start">
+            <div
+              className={`flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-full bg-blue-100 text-blue-600 text-xl`}
+            >
+              <HiPower />
+            </div>
+            <div className="mt-3 text-center sm:mt-0 sm:ml-4 sm:text-left">
+              <h3 className="text-lg leading-6 font-medium text-gray-900">Thông báo</h3>
+              <div className="mt-2">
+                <p className="text-sm leading-5 text-gray-500">Bạn có chắc chắn muốn đăng xuất không?</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className="bg-gray-50 px-4 py-3 flex max-sm:justify-center flex-row-reverse gap-2">
+          <span className="flex rounded-md shadow-sm sm:w-fit">
+            <ButtonLoading
+              classCustom="bg-red-600 hover:bg-red-500 text-white"
+              onClick={() => {
+                !isPending && setIsShow(false)
+              }}
+            >
+              Huỷ
+            </ButtonLoading>
+          </span>
+          <span className="flex rounded-md shadow-sm sm:mt-0 sm:w-fit ">
+            <ButtonLoading
+              isPending={isPending}
+              isPrimary
+              onClick={() => {
+                setIsPending(true)
+                typeof removeAuth === "function" && removeAuth()
+              }}
+            >
+              Đồng ý
+            </ButtonLoading>
+          </span>
+        </div>
+      </Modal>
     </nav>
   )
 }

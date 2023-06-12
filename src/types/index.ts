@@ -193,12 +193,6 @@ export interface UpdateRole {
   event?: (number | undefined | string)[]
 }
 
-export enum RoleList {
-  ROOT = "ROOT",
-  ADMIN = "ADMIN",
-  USER = "USER"
-}
-
 export interface SelectDefault {
   value?: string | number
   label?: string | number
@@ -230,4 +224,32 @@ export interface dataInter extends valueProps {
 
 export interface FilterTrashProps {
   setIsRestore?: Dispatch<SetStateAction<boolean>>
+}
+
+export enum RoleList {
+  ROOT = "ROOT",
+  ADMIN = "ADMIN",
+  USER = "USER"
+}
+
+export enum Event {
+  READ = "READ",
+  CREATE = "CREATE",
+  UPDATE = "UPDATE",
+  DELETE = "DELETE"
+}
+
+export enum PermissionInterFace {
+  PRODUCT = "PRODUCT",
+  USER = "USER",
+  BLOG = "BLOG",
+  SILDE_PRODUCT = "SILDE_PRODUCT",
+  ROLE = "ROLE"
+}
+
+export interface TypeEventPermission {
+  [Event.CREATE]: boolean
+  [Event.READ]: boolean
+  [Event.UPDATE]: boolean
+  [Event.DELETE]: boolean
 }

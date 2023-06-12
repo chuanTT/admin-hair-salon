@@ -3,6 +3,8 @@ import { NavLink, useLocation } from "react-router-dom"
 import config from "@/config"
 import AccordionWapper from "@/components/AccordionWapper"
 import { CustomRouteConfig } from "@/router/router"
+import { usePermissions } from "../PermissonLayout"
+import { CheckRolePermissionFuc } from "@/common/fuctionPermission"
 
 interface MenuItemProps {
   item: CustomRouteConfig
@@ -17,6 +19,8 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
   const pathname =
     path.length === config.router.home.length ? location?.pathname : location?.pathname?.substring(0, path.length)
   const active = pathname === path
+  const { KeyPermission, permissionArr, nameRole } = usePermissions()
+  const keyItem = (Array.isArray(item?.key) ? "" : item?.key) ?? ""
 
   return (
     <AccordionWapper
@@ -61,6 +65,7 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                   return
                 }
                 setUpdated && setUpdated((prev) => !prev)
+                keyItem && KeyPermission && KeyPermission(keyItem)
               }}
             >
               <div className="menu-icon">
@@ -75,16 +80,19 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                   item?.children.map((child, count) => {
                     const acceptPath = path === config.router.home
                     const pathChild = `${path}${child?.path ? (acceptPath ? child.path : "/" + child.path) : ""}`
-                    const isRenderChil = child?.isNoRender
+                    const check = CheckRolePermissionFuc(permissionArr, child, nameRole)
+
                     return (
                       <Fragment key={`${item.title}-${count}`}>
-                        {!isRenderChil && (
+                        {check && (
                           <NavLink
                             end
                             to={pathChild}
                             className="menu-item"
                             onClick={() => {
                               setUpdated && setUpdated((prev) => !prev)
+                              const keyChild = (Array.isArray(child?.key) ? "" : child?.key) ?? ""
+                              KeyPermission && KeyPermission(keyChild || keyItem)
                             }}
                           >
                             <span className="menu-link">

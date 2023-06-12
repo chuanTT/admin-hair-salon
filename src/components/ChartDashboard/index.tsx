@@ -52,7 +52,9 @@ function ChartDashboard({ title }: ChartDashboardProps) {
 
   return (
     <div className="card h-100">
-      <h5 className="card-header m-0 me-2 pb-3">{title}</h5>
+      <h5 className="card-header m-0 pb-3">
+        <span>{title}</span>
+      </h5>
       <div className="card-body px-0">
         <div className="tab-content flex !p-0">
           <div className="tab-pane fade show active grow" id="navs-tabs-line-card-income" role="tabpanel">

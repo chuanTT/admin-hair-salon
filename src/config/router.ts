@@ -16,7 +16,8 @@ const router = {
   login: "/login",
   settings: "/settings",
   generalSettings: "general-settings",
-  permission: "permission"
+  permission: "permission",
+  404: "/404"
 }
 
 export default router

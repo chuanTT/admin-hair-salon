@@ -1,16 +1,18 @@
 import { Fragment, useEffect, useState } from "react"
-
-import config from "@/config"
 import { NavLink } from "react-router-dom"
+import config from "@/config"
 import MenuItem from "./MenuItem"
 import { getPrivateRouter, setStyleImageSettings } from "@/common/functions"
 import { useProviderSettings } from "../ProviderSettings"
 import Images from "@/components/Images"
+import { usePermissions } from "../PermissonLayout"
+import { CheckRolePermissionFuc } from "@/common/fuctionPermission"
 
 const SlideBar = () => {
   const { childrenRouter, privateRole } = getPrivateRouter()
   const { dataSettings } = useProviderSettings()
   const [settingsImg, setSettingsImg] = useState({})
+  const { nameRole, permissionArr } = usePermissions()
 
   useEffect(() => {
     if (dataSettings?.logo) {
@@ -27,12 +29,7 @@ const SlideBar = () => {
       <div className="app-brand demo mb-4 pt-5 flex justify-center items-center">
         <NavLink to={config.router.home} className="app-brand-link">
           <span className="app-brand-logo demo w-full">
-            <Images
-              src={dataSettings?.logo?.src}
-              h={80}
-              w={"auto"}
-              innerPropsImages={{ style: { ...settingsImg } }}
-            />
+            <Images src={dataSettings?.logo?.src} h={80} w={"auto"} innerPropsImages={{ style: { ...settingsImg } }} />
           </span>
         </NavLink>
       </div>
@@ -41,12 +38,12 @@ const SlideBar = () => {
 
       <ul className="menu-inner py-1 overflow-y-auto overflow-x-hidden">
         {childrenRouter?.map((item, index) => {
-          const isRender = item?.isNoRender
+          const isRender = CheckRolePermissionFuc(permissionArr, item, nameRole)
           return (
             <Fragment key={index}>
-              {!isRender && !item?.isHeader && <MenuItem item={item} titleDefault={privateRole?.title} />}
+              {isRender && !item?.isHeader && <MenuItem item={item} titleDefault={privateRole?.title} />}
 
-              {item?.isHeader && (
+              {item?.isHeader && isRender && (
                 <li className="menu-header small text-uppercase">
                   <span className="menu-header-text">{item?.title}</span>
                 </li>

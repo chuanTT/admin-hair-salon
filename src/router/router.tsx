@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { createBrowserRouter, defer, IndexRouteObject, NonIndexRouteObject, Outlet } from "react-router-dom"
+import { createBrowserRouter, defer, IndexRouteObject, Navigate, NonIndexRouteObject, Outlet } from "react-router-dom"
 import { lazy, Suspense } from "react"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
@@ -30,6 +30,7 @@ import AddProductsSilder from "@/pages/Products/AddProductsSilder"
 import EditProductsSlider from "@/pages/Products/EditProductsSlider"
 import GeneralSettings from "@/pages/Settings/GeneralSettings"
 import ProviderSettings from "@/layout/ProviderSettings"
+import { Event, PermissionInterFace, RoleList } from "@/types"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -54,6 +55,9 @@ type CustomRouteObjectParams = {
   isHeader?: boolean
   icon?: () => JSX.Element
   isNoRender?: boolean
+  key?: string | string[]
+  role?: string | string[]
+  isEvent?: boolean
 }
 
 type CustomIndexRouteObject = IndexRouteObject & CustomRouteObjectParams
@@ -72,6 +76,7 @@ export const router: CustomRouteConfig[] = [
         <Outlet />
       </ProviderSettings>
     ),
+    errorElement: <NotFound />,
     children: [
       {
         path: config.router.home,
@@ -79,7 +84,6 @@ export const router: CustomRouteConfig[] = [
         title: "Trang chủ",
         loader: () => defer({ userPromise: verifyToken() }),
         element: <AuthLayout />,
-        errorElement: <NotFound />,
         children: [
           {
             index: true,
@@ -89,28 +93,40 @@ export const router: CustomRouteConfig[] = [
 
           {
             title: "Quản lý",
-            isHeader: true
+            isHeader: true,
+            key: [
+              PermissionInterFace.PRODUCT,
+              PermissionInterFace.USER,
+              PermissionInterFace.BLOG,
+              PermissionInterFace.ROLE
+            ]
           },
 
           {
             path: config.router.user,
             title: "Nhân viên",
             icon: BsFillPeopleFill,
+            key: PermissionInterFace.USER,
             children: [
               {
                 index: true,
                 title: "Danh sách nhân viên",
+                key: [PermissionInterFace.USER, Event.READ],
+                isEvent: true,
                 element: <Users />
               },
 
               {
                 path: config.router.userTrash,
                 title: "Danh sách nhân viên đã xóa",
+                role: [RoleList.ROOT, RoleList.ADMIN],
                 element: <UserListTrash />
               },
               {
                 path: config.router.addUser,
                 title: "Thêm nhân viên",
+                key: [PermissionInterFace.USER, Event.CREATE],
+                isEvent: true,
                 element: <AddUser />
               },
               {
@@ -126,16 +142,28 @@ export const router: CustomRouteConfig[] = [
             path: config.router.product,
             title: "Sản phẩm",
             icon: FaProductHunt,
+            key: [PermissionInterFace.PRODUCT, PermissionInterFace.SILDE_PRODUCT],
             children: [
               {
                 index: true,
                 title: "Danh sách sản phẩm",
+                key: [PermissionInterFace.PRODUCT, Event.READ],
+                isEvent: true,
                 element: <Product />
+              },
+
+              {
+                path: config.router.userTrash,
+                title: "Danh sách sản phẩm đã xóa",
+                role: [RoleList.ROOT, RoleList.ADMIN],
+                element: <ProductListTrash />
               },
 
               {
                 path: config.router.addProduct,
                 title: "Thêm sản phẩm",
+                key: [PermissionInterFace.PRODUCT, Event.CREATE],
+                isEvent: true,
                 element: <AddProducts />
               },
 
@@ -147,14 +175,10 @@ export const router: CustomRouteConfig[] = [
               },
 
               {
-                path: config.router.userTrash,
-                title: "Danh sách sản phẩm đã xóa",
-                element: <ProductListTrash />
-              },
-
-              {
                 path: config.router.slideshowProduct,
                 title: "Trình chiếu sản phẩm",
+                key: [PermissionInterFace.SILDE_PRODUCT, Event.READ],
+                isEvent: true,
                 element: <SlideshowProducts />
               },
 
@@ -178,22 +202,28 @@ export const router: CustomRouteConfig[] = [
             path: config.router.blog,
             title: "Bài viết",
             icon: GiOpenBook,
+            key: PermissionInterFace.BLOG,
             children: [
               {
                 index: true,
                 title: "Danh sách bài viết",
+                key: [PermissionInterFace.BLOG, Event.READ],
+                isEvent: true,
                 element: <Blog />
               },
 
               {
                 path: config.router.userTrash,
                 title: "Danh sách bài viết đã xóa",
+                role: [RoleList.ROOT, RoleList.ADMIN],
                 element: <BlogListTrash />
               },
 
               {
                 path: config.router.addBlog,
                 title: "Thêm bài viết",
+                key: [PermissionInterFace.BLOG, Event.CREATE],
+                isEvent: true,
                 element: <AddBlog />
               },
 
@@ -210,17 +240,24 @@ export const router: CustomRouteConfig[] = [
             path: config.router.settings,
             title: "Cài đặt",
             icon: IoSettingsSharp,
+            key: [PermissionInterFace.ROLE],
             children: [
               {
-                path: config.router.permission,
-                title: "Phân quyền",
-                element: <Permission />
+                index: true,
+                element: <Navigate to={config.router.generalSettings} replace={true} />,
+                isNoRender: true
               },
-
               {
                 path: config.router.generalSettings,
                 title: "Cài đặt chung",
+                role: [RoleList.ROOT, RoleList.ADMIN],
                 element: <GeneralSettings />
+              },
+              {
+                path: config.router.permission,
+                key: [PermissionInterFace.ROLE, Event.READ],
+                title: "Phân quyền",
+                element: <Permission />
               }
             ]
           }
@@ -231,6 +268,12 @@ export const router: CustomRouteConfig[] = [
         path: config.router.login,
         type: typeRouter.public,
         element: <Login />
+      },
+
+      {
+        path: config.router[404],
+        type: typeRouter.public,
+        element: <NotFound />
       }
     ]
   }

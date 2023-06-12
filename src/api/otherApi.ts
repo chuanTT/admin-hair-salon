@@ -12,6 +12,10 @@ const getLoadSettingsLogo = (url?: string) => {
   return HTTP.get(`/${tableOther}/${url}`)
 }
 
+const getChartDoashBoard = (url?: string) => {
+  return HTTP.get(url ?? "")
+}
+
 const UpdateLogo = (data: number | string | FormData | undefined | typeObject) => {
   return HTTP.post(`${tableOther}/settings/update_logo`, data)
 }
@@ -24,4 +28,4 @@ const getSettings = (url?: string) => {
   return HTTP.get(`${tableOther}/settings` ?? url)
 }
 
-export { getOtherCount, tableOther, getLoadSettingsLogo, UpdateLogo, getSettings, UpdateIcon }
+export { getOtherCount, tableOther, getLoadSettingsLogo, UpdateLogo, getSettings, UpdateIcon, getChartDoashBoard }

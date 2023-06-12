@@ -1,16 +1,30 @@
 // Import utilities
+import useFetchingApi from "@/hooks/useFetchingApi"
 import LineChart from "../LineChart"
+import { getChartDoashBoard, tableOther } from "@/api/otherApi"
 
-function ChartDashboard() {
+interface ChartDashboardProps {
+  title?: string
+}
+
+function ChartDashboard({ title }: ChartDashboardProps) {
+  const { data: dataChart } = useFetchingApi({
+    nameTable: `${tableOther}/chart_product`,
+    CallAPi: getChartDoashBoard,
+    customUrl: ({ query, nameTable }) => {
+      return query
+        ?.for(nameTable)
+        .params({
+          m: "5",
+          y: "2023"
+        })
+        .url()
+    }
+  })
+
   const height = 150
   const chartData = {
-    labels: [
-        1,
-        2,
-        3,
-        4,
-        5
-    ],
+    labels: dataChart?.data?.labels,
     datasets: [
       {
         label: "Số lượng",
@@ -31,12 +45,23 @@ function ChartDashboard() {
         pointHighlightFill: "#fff",
         pointHighlightStroke: "#696cff",
         tension: 0.4,
-        data: [60, 30, 20 ,80, 100]
+        data: dataChart?.data?.data
       }
     ]
   }
 
-  return <LineChart data={chartData} width={600} height={height} />
+  return (
+    <div className="card h-100">
+      <h5 className="card-header m-0 me-2 pb-3">{title}</h5>
+      <div className="card-body px-0">
+        <div className="tab-content flex !p-0">
+          <div className="tab-pane fade show active grow" id="navs-tabs-line-card-income" role="tabpanel">
+            <LineChart data={chartData} width={600} height={height} />
+          </div>
+        </div>
+      </div>
+    </div>
+  )
 }
 
 export default ChartDashboard

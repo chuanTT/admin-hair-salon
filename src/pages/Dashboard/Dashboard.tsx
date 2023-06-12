@@ -21,22 +21,23 @@ const Dashboard = () => {
 
         <div className="col-lg-4 col-md-4 order-1">
           <div className="row h-full">
-            <CardCouter src={images.ChartSuccess} title="Sản phẩm" counter={data?.data?.countProduct || 0} desc="Số lượng sản phẩm trong ngày" />
-            <CardCouter src={images.walletInfo} title="Bài viết" counter={data?.data?.countBlog || 0} desc="Số lượng bài viết trong ngày" />
+            <CardCouter
+              src={images.ChartSuccess}
+              title="Sản phẩm"
+              counter={data?.data?.countProduct || 0}
+              desc="Số lượng sản phẩm trong ngày"
+            />
+            <CardCouter
+              src={images.walletInfo}
+              title="Bài viết"
+              counter={data?.data?.countBlog || 0}
+              desc="Số lượng bài viết trong ngày"
+            />
           </div>
         </div>
 
         <div className="col-md-6 col-lg-12 order-1 mb-4">
-          <div className="card h-100">
-            <h5 className="card-header m-0 me-2 pb-3">Số lượng sản phẩm trong tháng</h5>
-            <div className="card-body px-0">
-              <div className="tab-content flex !p-0">
-                <div className="tab-pane fade show active grow" id="navs-tabs-line-card-income" role="tabpanel">
-                  <ChartDashboard />
-                </div>
-              </div>
-            </div>
-          </div>
+          <ChartDashboard title="Số lượng sản phẩm trong tháng" />
         </div>
       </div>
     </>

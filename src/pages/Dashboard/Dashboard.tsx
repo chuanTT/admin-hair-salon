@@ -30,8 +30,8 @@ const Dashboard = () => {
           <div className="card h-100">
             <h5 className="card-header m-0 me-2 pb-3">Số lượng sản phẩm trong tháng</h5>
             <div className="card-body px-0">
-              <div className="tab-content p-0">
-                <div className="tab-pane fade show active" id="navs-tabs-line-card-income" role="tabpanel">
+              <div className="tab-content flex !p-0">
+                <div className="tab-pane fade show active grow" id="navs-tabs-line-card-income" role="tabpanel">
                   <ChartDashboard />
                 </div>
               </div>

@@ -2,7 +2,7 @@
 import LineChart from "../LineChart"
 
 function ChartDashboard() {
-  const height = 200
+  const height = 150
   const chartData = {
     labels: [
         1,

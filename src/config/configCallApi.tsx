@@ -1,7 +1,9 @@
+import { getSettings } from "@/api/otherApi"
 import { getProduct, tableProduct } from "@/api/productApi"
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { getUser, tableUser } from "@/api/usersApi"
 import { configAll, funcKeyRole, funcUserIdKey, funcUserKey } from "@/common/ConfigSelectOption"
+import { useFetchingApiParmeter } from "@/hooks/useFetchingApi"
 import { useFetchingOptionApiProps } from "@/hooks/useFetchingOptionApi"
 
 const configRoleApi: useFetchingOptionApiProps = {
@@ -19,6 +21,11 @@ const configProductApi: useFetchingOptionApiProps = {
   nameTable: tableProduct,
   keySearching: "name",
   isSearching: true
+}
+
+const configSettingApi: useFetchingApiParmeter = {
+  nameTable: "s",
+  CallAPi: getSettings,
 }
 
 const configUserApi: useFetchingOptionApiProps = {
@@ -57,4 +64,4 @@ const configUserAllTrashApi: useFetchingOptionApiProps = {
   ...configUserAllApi
 }
 
-export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi, configUserIdApi, configProductApi }
+export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi, configUserIdApi, configProductApi, configSettingApi }

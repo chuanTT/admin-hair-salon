@@ -9,6 +9,9 @@ import { useNavigate } from "react-router-dom"
 import config from "@/config"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
 import "@/assets/css/pages/page-auth.css"
+import { useProviderSettings } from "@/layout/ProviderSettings"
+import { setStyleImageSettings } from "@/common/functions"
+import Images from "@/components/Images"
 
 const schema = Yup.object().shape({
   account: Yup.string().required("Vui lòng nhập tên đăng nhập"),
@@ -19,6 +22,19 @@ const Login = () => {
   const [auth, setAuth] = useLocalstorageState(AUTH_LS_KEY, "")
   const [isLoged, setIsLoged] = useState(false)
   const navigate = useNavigate()
+
+  const { dataSettings } = useProviderSettings()
+  const [settingsImg, setSettingsImg] = useState({})
+
+  useEffect(() => {
+    if (dataSettings?.logo) {
+      const settingsStyle = setStyleImageSettings({
+        logo: dataSettings?.logo
+      })
+      setSettingsImg(settingsStyle)
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dataSettings?.logo])
 
   useEffect(() => {
     if (isLoged || auth) {
@@ -33,15 +49,21 @@ const Login = () => {
         <div className="authentication-inner">
           <div className="card">
             <div className="card-body">
-              <div className="app-brand justify-content-center">
-                <a href="index.html" className="app-brand-link gap-2">
-                  <span className="app-brand-logo demo"></span>
-                  <span className="app-brand-text demo text-body fw-bolder">Hair Salon</span>
-                </a>
+              <div className="app-brand justify-content-center !mb-5">
+                <span className="app-brand-link gap-2">
+                  <span className="app-brand-logo demo">
+                    <Images
+                      src={dataSettings?.logo?.src}
+                      h={80}
+                      w={"auto"}
+                      innerPropsImages={{ style: { ...settingsImg } }}
+                    />
+                  </span>
+                </span>
               </div>
 
               <h4 className="mb-2 text-center">Phần Mềm Quản Lý</h4>
-              <p className="mb-4">Vui lòng đăng nhập tài khoản của bạn</p>
+              <p className="mb-4 text-center">Vui lòng đăng nhập tài khoản của bạn</p>
 
               <FormHandel
                 msgObj={{ erorr: "Đăng nhập thất bại", suss: "Đăng nhập thành công" }}

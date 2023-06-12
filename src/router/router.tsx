@@ -1,5 +1,5 @@
 /* eslint-disable react/display-name */
-import { createBrowserRouter, defer, IndexRouteObject, NonIndexRouteObject } from "react-router-dom"
+import { createBrowserRouter, defer, IndexRouteObject, NonIndexRouteObject, Outlet } from "react-router-dom"
 import { lazy, Suspense } from "react"
 import config from "@/config"
 import Dashboard from "@/pages/Dashboard"
@@ -29,6 +29,7 @@ import EditBlog from "@/pages/Blog/EditBlog"
 import AddProductsSilder from "@/pages/Products/AddProductsSilder"
 import EditProductsSlider from "@/pages/Products/EditProductsSlider"
 import GeneralSettings from "@/pages/Settings/GeneralSettings"
+import ProviderSettings from "@/layout/ProviderSettings"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -66,165 +67,172 @@ export type CustomRouteConfig = CustomIndexRouteObject | CustomNonIndexRouteObje
 
 export const router: CustomRouteConfig[] = [
   {
-    path: config.router.home,
-    type: typeRouter.private,
-    title: "Trang chủ",
-    loader: () => defer({ userPromise: verifyToken() }),
-    element: <AuthLayout />,
-    errorElement: <NotFound />,
+    element: (
+      <ProviderSettings>
+        <Outlet />
+      </ProviderSettings>
+    ),
     children: [
       {
-        index: true,
-        element: <Dashboard />,
-        icon: IoHome
-      },
-
-      {
-        title: "Quản lý",
-        isHeader: true
-      },
-
-      {
-        path: config.router.user,
-        title: "Nhân viên",
-        icon: BsFillPeopleFill,
+        path: config.router.home,
+        type: typeRouter.private,
+        title: "Trang chủ",
+        loader: () => defer({ userPromise: verifyToken() }),
+        element: <AuthLayout />,
+        errorElement: <NotFound />,
         children: [
           {
             index: true,
-            title: "Danh sách nhân viên",
-            element: <Users />
+            element: <Dashboard />,
+            icon: IoHome
           },
 
           {
-            path: config.router.userTrash,
-            title: "Danh sách nhân viên đã xóa",
-            element: <UserListTrash />
+            title: "Quản lý",
+            isHeader: true
           },
+
           {
-            path: config.router.addUser,
-            title: "Thêm nhân viên",
-            element: <AddUser />
+            path: config.router.user,
+            title: "Nhân viên",
+            icon: BsFillPeopleFill,
+            children: [
+              {
+                index: true,
+                title: "Danh sách nhân viên",
+                element: <Users />
+              },
+
+              {
+                path: config.router.userTrash,
+                title: "Danh sách nhân viên đã xóa",
+                element: <UserListTrash />
+              },
+              {
+                path: config.router.addUser,
+                title: "Thêm nhân viên",
+                element: <AddUser />
+              },
+              {
+                path: config.router.editUser,
+                title: "Chỉnh sửa nhân viên",
+                isNoRender: true,
+                element: <EditUser />
+              }
+            ]
           },
+
           {
-            path: config.router.editUser,
-            title: "Chỉnh sửa nhân viên",
-            isNoRender: true,
-            element: <EditUser />
+            path: config.router.product,
+            title: "Sản phẩm",
+            icon: FaProductHunt,
+            children: [
+              {
+                index: true,
+                title: "Danh sách sản phẩm",
+                element: <Product />
+              },
+
+              {
+                path: config.router.addProduct,
+                title: "Thêm sản phẩm",
+                element: <AddProducts />
+              },
+
+              {
+                path: config.router.editProduct,
+                title: "Chỉnh sửa sản phẩm",
+                element: <EditProducts />,
+                isNoRender: true
+              },
+
+              {
+                path: config.router.userTrash,
+                title: "Danh sách sản phẩm đã xóa",
+                element: <ProductListTrash />
+              },
+
+              {
+                path: config.router.slideshowProduct,
+                title: "Trình chiếu sản phẩm",
+                element: <SlideshowProducts />
+              },
+
+              {
+                path: config.router.addSlideshowProduct,
+                title: "Thêm trình chiếu",
+                element: <AddProductsSilder />,
+                isNoRender: true
+              },
+
+              {
+                path: config.router.editSlideshowProduct,
+                title: "Chỉnh sửa trình chiếu",
+                element: <EditProductsSlider />,
+                isNoRender: true
+              }
+            ]
+          },
+
+          {
+            path: config.router.blog,
+            title: "Bài viết",
+            icon: GiOpenBook,
+            children: [
+              {
+                index: true,
+                title: "Danh sách bài viết",
+                element: <Blog />
+              },
+
+              {
+                path: config.router.userTrash,
+                title: "Danh sách bài viết đã xóa",
+                element: <BlogListTrash />
+              },
+
+              {
+                path: config.router.addBlog,
+                title: "Thêm bài viết",
+                element: <AddBlog />
+              },
+
+              {
+                path: config.router.editBlog,
+                title: "Chỉnh sửa bài viết",
+                element: <EditBlog />,
+                isNoRender: true
+              }
+            ]
+          },
+
+          {
+            path: config.router.settings,
+            title: "Cài đặt",
+            icon: IoSettingsSharp,
+            children: [
+              {
+                path: config.router.permission,
+                title: "Phân quyền",
+                element: <Permission />
+              },
+
+              {
+                path: config.router.generalSettings,
+                title: "Cài đặt chung",
+                element: <GeneralSettings />
+              }
+            ]
           }
         ]
       },
 
       {
-        path: config.router.product,
-        title: "Sản phẩm",
-        icon: FaProductHunt,
-        children: [
-          {
-            index: true,
-            title: "Danh sách sản phẩm",
-            element: <Product />
-          },
-
-          
-          {
-            path: config.router.addProduct,
-            title: "Thêm sản phẩm",
-            element: <AddProducts />
-          },
-
-          {
-            path: config.router.editProduct,
-            title: "Chỉnh sửa sản phẩm",
-            element: <EditProducts />,
-            isNoRender: true
-          },
-
-          {
-            path: config.router.userTrash,
-            title: "Danh sách sản phẩm đã xóa",
-            element: <ProductListTrash />
-          },
-        
-
-          {
-            path: config.router.slideshowProduct,
-            title: "Trình chiếu sản phẩm",
-            element: <SlideshowProducts />
-          },
-
-          {
-            path: config.router.addSlideshowProduct,
-            title: "Thêm trình chiếu",
-            element: <AddProductsSilder />,
-            isNoRender: true
-          },
-
-          {
-            path: config.router.editSlideshowProduct,
-            title: "Chỉnh sửa trình chiếu",
-            element: <EditProductsSlider />,
-            isNoRender: true
-          },
-        ]
-      },
-
-      {
-        path: config.router.blog,
-        title: "Bài viết",
-        icon: GiOpenBook,
-        children: [
-          {
-            index: true,
-            title: "Danh sách bài viết",
-            element: <Blog />
-          },
-
-          {
-            path: config.router.userTrash,
-            title: "Danh sách bài viết đã xóa",
-            element: <BlogListTrash />
-          },
-
-          {
-            path: config.router.addBlog,
-            title: "Thêm bài viết",
-            element: <AddBlog />
-          },
-
-          {
-            path: config.router.editBlog,
-            title: "Chỉnh sửa bài viết",
-            element: <EditBlog />,
-            isNoRender: true
-          }
-        ]
-      },
-
-      {
-        path: config.router.settings,
-        title: "Cài đặt",
-        icon: IoSettingsSharp,
-        children: [
-          {
-            path: config.router.permission,
-            title: "Phân quyền",
-            element: <Permission />
-          },
-
-          {
-            path: config.router.generalSettings,
-            title: "Cài đặt chung",
-            element: <GeneralSettings />
-          }
-        ]
+        path: config.router.login,
+        type: typeRouter.public,
+        element: <Login />
       }
     ]
-  },
-
-  {
-    path: config.router.login,
-    type: typeRouter.public,
-    element: <Login />
   }
 ]
 

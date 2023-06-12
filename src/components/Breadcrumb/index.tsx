@@ -1,8 +1,8 @@
 import { FC, Fragment, useEffect, useState } from "react"
-import { useLocation, useMatches } from "react-router-dom"
+import { useLocation } from "react-router-dom"
 import { defaultProps } from "@/types"
-import { removeLink } from "@/common/functions"
-import { CustomRouteConfig, router, typeRouter } from "@/router/router"
+import { getPrivateRouter, removeLink } from "@/common/functions"
+import { CustomRouteConfig } from "@/router/router"
 
 interface optPath {
   title?: string
@@ -11,7 +11,7 @@ interface optPath {
 
 const Breadcrumb: FC<defaultProps> = ({ children }) => {
   const pathName = useLocation()
-  // const check = useMatches() 
+  // const check = useMatches()
   const [breadNav, setBreadNav] = useState<optPath[]>([])
 
   useEffect(() => {
@@ -19,8 +19,7 @@ const Breadcrumb: FC<defaultProps> = ({ children }) => {
       const string = removeLink(pathName?.pathname || "")
       if (string) {
         const arrPt = string.split("/")
-        const privateRole = router.find((itemRouter) => itemRouter?.type === typeRouter.private)
-        const childrenRouter = privateRole ? privateRole.children ?? [] : []
+        const { childrenRouter } = getPrivateRouter()
         let arrResult: CustomRouteConfig[] = [...childrenRouter]
         const arrNav: optPath[] = []
 

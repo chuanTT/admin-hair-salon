@@ -1,5 +1,7 @@
 import { TypeToast } from "@/components/ToastCustom"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
+import { dataSettingsApi } from "@/layout/ProviderSettings"
+import { router, typeRouter } from "@/router/router"
 import { requestAnimationFrameAccordionInterFace, typeObject } from "@/types"
 import moment from "moment"
 
@@ -224,42 +226,42 @@ const NowDate = () => {
 
 export const lsAuth = () => {
   if (!localStorage) {
-    return;
+    return
   }
 
-  const lsValue = localStorage.getItem(AUTH_LS_KEY);
+  const lsValue = localStorage.getItem(AUTH_LS_KEY)
   if (!lsValue) {
-    return;
+    return
   }
 
   try {
-    const auth = JSON.parse(lsValue);
+    const auth = JSON.parse(lsValue)
     if (auth) {
       // You can easily check auth_token expiration also
-      return auth;
+      return auth
     }
   } catch (error) {
-    console.error("AUTH LOCAL STORAGE PARSE ERROR", error);
+    console.error("AUTH LOCAL STORAGE PARSE ERROR", error)
   }
-};
+}
 
 export const lsRemoveAuth = () => {
   if (!localStorage) {
-    return;
+    return
   }
 
   try {
-    localStorage.removeItem(AUTH_LS_KEY);
+    localStorage.removeItem(AUTH_LS_KEY)
   } catch (error) {
-    console.error("AUTH LOCAL STORAGE REMOVE ERROR", error);
+    console.error("AUTH LOCAL STORAGE REMOVE ERROR", error)
   }
-};
+}
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const removeProperty = (propKey: string | number, { [propKey]: propValue, ...rest }) => rest;
+const removeProperty = (propKey: string | number, { [propKey]: propValue, ...rest }) => rest
 
 const fucPathName = (str: string) => {
-  const arr = str?.split('/')
+  const arr = str?.split("/")
   const strNew = arr?.[arr?.length - 1] ?? str
   return strNew
 }
@@ -268,11 +270,78 @@ const fucPathName = (str: string) => {
 const isObject = (obj: any) => {
   let isCheck = false
 
-  if(typeof obj === "object" && !Array.isArray(obj)) {
+  if (typeof obj === "object" && !Array.isArray(obj)) {
     isCheck = true
   }
 
   return isCheck
+}
+
+const getPrivateRouter = () => {
+  const privateRole = router?.[0]?.children?.find((itemRouter) => itemRouter?.type === typeRouter.private)
+  const childrenRouter = privateRole ? privateRole?.children || [] : []
+  return {
+    childrenRouter,
+    privateRole
+  }
+}
+
+const fucFirtsChart = (str?: string) => {
+  let newStr = ""
+  if (str) {
+    newStr = str.charAt(0).toUpperCase() + str.slice(1)
+  }
+  return newStr
+}
+
+const fucStyleCovert = (str?: string) => {
+  let strKey = ""
+  if (str) {
+    const keyNew = str?.split("-")
+    if (keyNew?.length > 1) {
+      keyNew?.forEach((newK, index) => {
+        if (index > 0) {
+          strKey += fucFirtsChart(newK)
+        } else {
+          strKey += newK
+        }
+      })
+    } else if (keyNew?.length === 0) {
+      strKey = keyNew?.[0] ?? ""
+    }
+  }
+
+  return strKey
+}
+
+interface setStyleImageSettingsPar {
+  logo?: dataSettingsApi["logo"]
+  callback?: (src?: string) => void
+  callLoop?: (key: string, value?: string) => void
+}
+
+const setStyleImageSettings = ({ logo, callback, callLoop }: setStyleImageSettingsPar) => {
+  let settingsStyle = {}
+  if (logo) {
+    const { src, settings } = logo
+
+    if (settings && isObject(settings)) {
+      const arrKey = Object.keys(settings)
+
+      arrKey.forEach((key) => {
+        callLoop && callLoop(key, settings?.[key])
+        // setValue(key, settings?.[key])
+        if (key && settings) {
+          const strKey = fucStyleCovert(key)
+          settingsStyle = { ...settingsStyle, [strKey]: settings?.[key] }
+        }
+      })
+    }
+
+    callback && callback(src)
+  }
+
+  return settingsStyle
 }
 
 export {
@@ -292,5 +361,9 @@ export {
   NowDate,
   removeProperty,
   fucPathName,
-  isObject
+  isObject,
+  getPrivateRouter,
+  setStyleImageSettings,
+  fucFirtsChart,
+  fucStyleCovert
 }

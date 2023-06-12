@@ -1,47 +1,84 @@
 import Breadcrumb from "@/components/Breadcrumb"
 import FormHandel from "@/components/FormHandel"
-import useFetchingApi from "@/hooks/useFetchingApi"
-import { UpdateLogo, getSettings } from "@/api/otherApi"
+import { UpdateIcon, UpdateLogo } from "@/api/otherApi"
 import SendFormData from "@/components/FormHandel/SendFormData"
+import { useProviderSettings } from "@/layout/ProviderSettings"
+import UpdateLogoSetting from "@/partials/Settings/UpdateLogoSetting"
 import UpdateIconSetting from "@/partials/Settings/UpdateIconSetting"
 
 const GeneralSettings = () => {
-  const { data: dataSettings, isFetched } = useFetchingApi({
-    nameTable: "s",
-    CallAPi: getSettings
-  })
+  const { dataSettings, isFetched, invalidateQueriesQueryClient } = useProviderSettings()
   return (
     <Breadcrumb>
-      <FormHandel
-        callApi={UpdateLogo}
-        ClassForm="!rounded"
-        customValuesData={(value) => {
-          const { logo, ...spread } = value
-          // eslint-disable-next-line @typescript-eslint/no-explicit-any
-          let data: any = {
-            settings: JSON.stringify(spread)
-          }
+      <div className="space-y-4">
+        <FormHandel
+          callApi={UpdateLogo}
+          ClassForm="!rounded"
+          customValuesData={(value) => {
+            const { logo, ...spread } = value
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let data: any = {
+              settings: JSON.stringify(spread)
+            }
 
-          if (logo) {
-            data = { ...data, logo }
-            data = SendFormData(data)
-          }
+            if (logo) {
+              data = { ...data, logo }
+              data = SendFormData(data)
+            }
 
-          return data
-        }}
-      >
-        {({ propForm, setResertForm, isPending }) => {
-          return (
-            <UpdateIconSetting
-              logo={dataSettings?.data?.logo}
-              propForm={propForm}
-              setResertForm={setResertForm}
-              isPending={isPending}
-              isFetchedSettings={isFetched}
-            />
-          )
-        }}
-      </FormHandel>
+            return data
+          }}
+          sussFuc={() => {
+            invalidateQueriesQueryClient && invalidateQueriesQueryClient()
+          }}
+        >
+          {({ propForm, setResertForm, isPending }) => {
+            return (
+              <UpdateLogoSetting
+                logo={dataSettings?.logo}
+                propForm={propForm}
+                setResertForm={setResertForm}
+                isPending={isPending}
+                isFetchedSettings={isFetched}
+              />
+            )
+          }}
+        </FormHandel>
+
+        <FormHandel
+          callApi={UpdateIcon}
+          ClassForm="!rounded"
+          customValuesData={(value) => {
+            const { icon, ...spread } = value
+            // eslint-disable-next-line @typescript-eslint/no-explicit-any
+            let data: any = {
+              ...spread
+            }
+
+            if (icon) {
+              data = { ...data, icon }
+              data = SendFormData(data)
+            }
+
+            return data
+          }}
+          sussFuc={() => {
+            invalidateQueriesQueryClient && invalidateQueriesQueryClient()
+          }}
+        >
+          {({ propForm, setResertForm, isPending }) => {
+            return (
+              <UpdateIconSetting
+                icon={dataSettings?.icon}
+                propForm={propForm}
+                setResertForm={setResertForm}
+                isPending={isPending}
+                isFetchedSettings={isFetched}
+              />
+            )
+          }}
+        </FormHandel>
+      </div>
     </Breadcrumb>
   )
 }

@@ -16,8 +16,12 @@ const UpdateLogo = (data: number | string | FormData | undefined | typeObject) =
   return HTTP.post(`${tableOther}/settings/update_logo`, data)
 }
 
+const UpdateIcon = (data: number | string | FormData | undefined | typeObject) => {
+  return HTTP.post(`${tableOther}/settings/update_icon`, data)
+}
+
 const getSettings = (url?: string) => {
   return HTTP.get(`${tableOther}/settings` ?? url)
 }
 
-export { getOtherCount, tableOther, getLoadSettingsLogo, UpdateLogo, getSettings }
+export { getOtherCount, tableOther, getLoadSettingsLogo, UpdateLogo, getSettings, UpdateIcon }

@@ -10,6 +10,8 @@ import SendFormData from "@/components/FormHandel/SendFormData"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
 import config from "@/config"
 import { addBlogApi } from "@/api/blogsApi"
+import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
+import { Event } from "@/types"
 
 const schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập tiều đề bài viết"),
@@ -22,89 +24,91 @@ const AddBlog = () => {
   const textEditorRef = useRef<refTextEditor>(null)
 
   return (
-    <Breadcrumb>
-      <FormHandel
-        isValidate
-        schema={schema}
-        callApi={addBlogApi}
-        closeFuncSucc={({ remove, propForm }) => {
-          typeof remove === "function" && remove()
-          propForm && propForm.reset()
-          ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
-          textEditorRef?.current && textEditorRef?.current?.clearValue()
-        }}
-        customValuesData={(value) => {
-          const { thumb_blog, ...spread } = value
-          const data = {
-            ...spread
-          }
-          console.log(thumb_blog)
-          const formData = SendFormData(data)
-          config.formDataFile([thumb_blog], formData, "thumb-blog")
+    <PermissonCheckLayout event={Event.CREATE}>
+      <Breadcrumb>
+        <FormHandel
+          isValidate
+          schema={schema}
+          callApi={addBlogApi}
+          closeFuncSucc={({ remove, propForm }) => {
+            typeof remove === "function" && remove()
+            propForm && propForm.reset()
+            ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
+            textEditorRef?.current && textEditorRef?.current?.clearValue()
+          }}
+          customValuesData={(value) => {
+            const { thumb_blog, ...spread } = value
+            const data = {
+              ...spread
+            }
+            console.log(thumb_blog)
+            const formData = SendFormData(data)
+            config.formDataFile([thumb_blog], formData, "thumb-blog")
 
-          return formData
-        }}
-      >
-        {({ propForm, isPending }) => {
-          const {
-            register,
-            reset,
-            setValue,
-            formState: { errors }
-          } = propForm
+            return formData
+          }}
+        >
+          {({ propForm, isPending }) => {
+            const {
+              register,
+              reset,
+              setValue,
+              formState: { errors }
+            } = propForm
 
-          return (
-            <LayoutFormDefault
-              isPending={isPending}
-              clickButtonCancel={() => {
-                reset()
-              }}
-            >
-              <InputField
-                classInputContainer="col-md-12 mb-3"
-                title="Tiều đề bài viết"
-                placeholder="Nhập tiều đề bài viết"
-                name="title"
-                register={register}
-                isRequire
-                errors={errors}
-              />
+            return (
+              <LayoutFormDefault
+                isPending={isPending}
+                clickButtonCancel={() => {
+                  reset()
+                }}
+              >
+                <InputField
+                  classInputContainer="col-md-12 mb-3"
+                  title="Tiều đề bài viết"
+                  placeholder="Nhập tiều đề bài viết"
+                  name="title"
+                  register={register}
+                  isRequire
+                  errors={errors}
+                />
 
-              <TextArea
-                classAreaContainer="col-md-12 mb-3"
-                name="short_content"
-                register={register}
-                title="Nội dung ngắn"
-                placeholder="Nhập nội dung ngắn"
-                rows={10}
-                isRequire
-                errors={errors}
-              />
+                <TextArea
+                  classAreaContainer="col-md-12 mb-3"
+                  name="short_content"
+                  register={register}
+                  title="Nội dung ngắn"
+                  placeholder="Nhập nội dung ngắn"
+                  rows={10}
+                  isRequire
+                  errors={errors}
+                />
 
-              <ListImagesUploadFile
-                classParentImg="mb-3"
-                ref={ImgRef}
-                setValue={setValue}
-                title="Hình ảnh"
-                name="thumb_blog"
-                register={register}
-              />
+                <ListImagesUploadFile
+                  classParentImg="mb-3"
+                  ref={ImgRef}
+                  setValue={setValue}
+                  title="Hình ảnh"
+                  name="thumb_blog"
+                  register={register}
+                />
 
-              <TextEditorCustom
-                classAreaContainer="col-md-12 mb-3"
-                title="Mô tả bài viết"
-                placeholder="Nhập mô tả bài viết"
-                name="description"
-                setValue={setValue}
-                isRequire
-                ref={textEditorRef}
-                errors={errors}
-              />
-            </LayoutFormDefault>
-          )
-        }}
-      </FormHandel>
-    </Breadcrumb>
+                <TextEditorCustom
+                  classAreaContainer="col-md-12 mb-3"
+                  title="Mô tả bài viết"
+                  placeholder="Nhập mô tả bài viết"
+                  name="description"
+                  setValue={setValue}
+                  isRequire
+                  ref={textEditorRef}
+                  errors={errors}
+                />
+              </LayoutFormDefault>
+            )
+          }}
+        </FormHandel>
+      </Breadcrumb>
+    </PermissonCheckLayout>
   )
 }
 

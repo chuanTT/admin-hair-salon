@@ -1,14 +1,20 @@
 import { FC, Fragment, memo } from "react"
-import { TypeValue, configProps, selectCheckProps } from "@/types"
+import { TypeEventPermission, TypeValue, configProps, selectCheckProps, typeEvent } from "@/types"
+import { checkViewsFuc } from "@/common/functions"
 interface TheadProps {
   config?: configProps[][]
   isStt?: boolean
   isFuc?: boolean
   selectCheck?: selectCheckProps
   provider?: TypeValue
+  checkEvents?: TypeEventPermission
+  configFuc?: typeEvent[]
 }
 
-const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider }) => {
+
+
+const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider, configFuc, checkEvents }) => {
+  const isFucViews = !isFuc ? checkViewsFuc(configFuc, checkEvents) : false
   return (
     <thead className="text-sm font-semibold text-slate-500 bg-slate-50 border-t border-b border-slate-200">
       {config?.map((thead, index) => {
@@ -32,7 +38,7 @@ const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider }) 
                             onChange={() => {
                               if (provider) {
                                 const { data, handelDeleteAll } = provider
-                                if(data?.data) {
+                                if (data?.data) {
                                   typeof handelDeleteAll === "function" && handelDeleteAll(data?.data)
                                 }
                               }
@@ -59,7 +65,7 @@ const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider }) 
                   >
                     {item.head}
                   </th>
-                  {!isFuc && maxThead === i && index === 0 && (
+                  {isFucViews && maxThead === i && index === 0 && (
                     <th
                       rowSpan={maxThead}
                       className="font-semibold text-left px-2 py-3 whitespace-nowrap border border-solid"

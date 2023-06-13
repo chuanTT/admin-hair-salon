@@ -1,7 +1,8 @@
 import { PermissionDefault, TypeEventPermission, defaultProps } from "@/types"
-import { FC, createContext, useContext, useState } from "react"
+import { FC, createContext, useContext, useEffect, useState } from "react"
 import { useProtectedLayout } from "../ProtectedLayout"
-import { isEmptyObj } from "@/common/functions"
+import { fucBreadCrumb, isEmptyObj } from "@/common/functions"
+import { useLocation } from "react-router-dom"
 
 const PermissonLayoutContext = createContext({})
 
@@ -24,6 +25,8 @@ const PermissonLayout: FC<defaultProps> = ({ children }) => {
   const [checkEvent, setCheckEvent] = useState<TypeEventPermission>({ ...initEvent })
   const nameRole = user?.role?.name || ""
   const permissionArr = user?.role?.permissions ?? []
+  const location = useLocation()
+  const [isFisrt, setIsFisrt] = useState(false)
   const KeyPermission = (key: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newEvent: any = { ...initEvent }
@@ -40,8 +43,51 @@ const PermissonLayout: FC<defaultProps> = ({ children }) => {
       }
     }
 
-    setCheckEvent(newEvent)
+    setCheckEvent(() => newEvent)
   }
+
+  useEffect(() => {
+    fucBreadCrumb({
+      path: location.pathname,
+      callOptCustom: (config) => {
+        return (
+          {
+            title: config?.title,
+            key: config?.key,
+            keyParent: config?.keyParent
+          } ?? {}
+        )
+      },
+      callOptChild: (config) => {
+        return (
+          {
+            title: config?.title,
+            key: config?.key,
+            keyParent: config?.keyParent
+          } ?? {}
+        )
+      },
+      callEndLoop: (config) => {
+        if (config) {
+          let key = ""
+          const arrConfigRever = config.reverse()
+          for (const item of arrConfigRever) {
+            const keyItem = Array.isArray(item?.key) ? item?.keyParent : item?.key
+            if (keyItem) {
+              key = keyItem
+              break
+            }
+          }
+
+          if (key) {
+            KeyPermission(key)
+          }
+        }
+      }
+    })
+    setIsFisrt(true)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   const value: ValuePermission = {
     checkEvent,
@@ -50,7 +96,7 @@ const PermissonLayout: FC<defaultProps> = ({ children }) => {
     permissionArr
   }
 
-  return <PermissonLayoutContext.Provider value={value}>{children}</PermissonLayoutContext.Provider>
+  return <PermissonLayoutContext.Provider value={value}>{isFisrt && children}</PermissonLayoutContext.Provider>
 }
 
 export const usePermissions = () => {

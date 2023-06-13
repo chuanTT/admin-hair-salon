@@ -1,14 +1,22 @@
 import { useRef, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { UpdateProductSlider } from "@/api/productApi"
-import SwitchRadio from "@/components/CustomField/SwitchRadio"
+import SwitchRadio, { RefSwitchRadio } from "@/components/CustomField/SwitchRadio"
 import { typeElment, typeObject } from "@/types"
 import ToastCustom, { TypeToast } from "@/components/ToastCustom"
 import { MsgType } from "@/common/functions"
 
 const UpdateShowSlider = ({ current }: typeElment) => {
   const [isShowToast, setIsShowToast] = useState(false)
+  const refRadio = useRef<RefSwitchRadio>(null)
   const msgObj = useRef({ title: "", type: TypeToast.WARN })
+
+  const resertSwitch = () => {
+    if (msgObj.current.type === TypeToast.ERROR) {
+      refRadio.current?.setValue?.()
+    }
+  }
+
   const { mutate } = useMutation({
     mutationFn: (value: string | number | typeObject) => {
       return UpdateProductSlider(current?.id, value)
@@ -17,20 +25,21 @@ const UpdateShowSlider = ({ current }: typeElment) => {
     onError: () => {
       msgObj.current = MsgType("Lỗi không xác định")
       setIsShowToast(true)
+      resertSwitch()
     },
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     onSuccess: (context: any) => {
-      if (context?.code === 402 || context?.code === 400) {
+      if (context?.code === 402 || context?.code === 400 || context?.code === 403) {
         msgObj.current = MsgType(context?.msg ?? "Thêm thất bại")
       } else if (context?.code === 422) {
         msgObj.current = MsgType("Thêm thất bại")
       } else {
         msgObj.current = MsgType(context?.msg ?? "Thêm thành công", false)
       }
+      resertSwitch()
       setIsShowToast(true)
     }
   })
-  const isShow = current?.is_show === 1 ? true : false
 
   return (
     <ToastCustom
@@ -41,7 +50,8 @@ const UpdateShowSlider = ({ current }: typeElment) => {
     >
       <div className="flex justify-center items-center">
         <SwitchRadio
-          isCheck={isShow}
+          ref={refRadio}
+          isCheck={current?.is_show === 1 ? true : false}
           ClickRadio={(checked) => {
             mutate({ is_show: checked ? 1 : "0" })
           }}

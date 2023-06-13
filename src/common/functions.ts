@@ -1,8 +1,9 @@
+import { optPath } from "@/components/Breadcrumb"
 import { TypeToast } from "@/components/ToastCustom"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
 import { dataSettingsApi } from "@/layout/ProviderSettings"
-import { router, typeRouter } from "@/router/router"
-import { requestAnimationFrameAccordionInterFace, typeObject } from "@/types"
+import { CustomRouteConfig, router, typeRouter } from "@/router/router"
+import { requestAnimationFrameAccordionInterFace, typeEvent, typeObject } from "@/types"
 import moment from "moment"
 
 const incrementHeight = (progress: number, element?: HTMLDivElement) => {
@@ -344,6 +345,104 @@ const setStyleImageSettings = ({ logo, callback, callLoop }: setStyleImageSettin
   return settingsStyle
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const checkViewsFuc = (configFuc?: typeEvent[], checkEvents?: any): boolean => {
+  let isFucViews = true
+  if (configFuc && checkEvents) {
+    const filterTypeEvent = configFuc.filter((config) => {
+      if (!config.typeEvent) {
+        return true
+      }
+    })
+    if (filterTypeEvent?.length === 0) {
+      const filterCheckEvent = configFuc.find((config) => {
+        const type = config.typeEvent ?? ""
+        if (type) {
+          return checkEvents?.[type]
+        }
+      })
+      if (!filterCheckEvent) {
+        isFucViews = false
+      }
+    }
+  }
+
+  return isFucViews
+}
+
+interface fucBreadCrumbPraram {
+  path?: string
+  callOptCustom?: (config?: CustomRouteConfig) => optPath
+  callOptChild?: (config?: CustomRouteConfig) => optPath
+  callEndLoop?: (config?: optPath[]) => void
+}
+
+const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBreadCrumbPraram) => {
+  if (path) {
+    const string = removeLink(path || "")
+    if (string) {
+      const arrPt = string.split("/")
+      const { childrenRouter } = getPrivateRouter()
+      let arrResult: CustomRouteConfig[] = [...childrenRouter]
+      const arrNav: optPath[] = []
+
+      if (Array.isArray(arrPt)) {
+        // eslint-disable-next-line @typescript-eslint/no-inferrable-types
+        let url: string = ""
+        arrPt.forEach((path) => {
+          const result = arrResult.find((asider) => {
+            const isPath = asider?.path?.indexOf("/") !== -1 ? `/${path}` : path
+            return asider?.path === isPath
+          })
+
+          if (result !== undefined) {
+            let opt: optPath = (callOptCustom && callOptCustom(result)) || {
+              title: result?.title
+            }
+
+            const c = result?.path || "/"
+            url += c.indexOf("/") === 0 ? result?.path : `/${result?.path}`
+            opt = { ...opt, path: url }
+            const isCheck = arrNav.find((item) => item?.title === result?.title)
+            if (!isCheck) {
+              arrNav.push(opt)
+            }
+            if (result?.children) {
+              arrResult = result?.children
+              if (arrPt?.length > 0) {
+                const resultCheck = arrResult.find((asider) => {
+                  const indexPath = asider?.path?.search(/\/:[a-z]*/)
+                  const newPath = indexPath !== -1 ? asider?.path?.substring(0, indexPath) : asider?.path
+                  return arrPt.includes(newPath || "") && !asider?.index
+                })
+
+                if (resultCheck === undefined) {
+                  const dataNav = arrResult.find((item) => !item?.path)
+                  const optChild = (callOptChild && callOptChild(dataNav)) || {
+                    title: dataNav?.title
+                  }
+                  arrNav.push(optChild)
+                } else {
+                  const isCheck = arrNav.find((item) => item?.title === resultCheck.title)
+
+                  if (!isCheck) {
+                    const optChild = (callOptChild && callOptChild(resultCheck)) || {
+                      title: resultCheck?.title
+                    }
+                    arrNav.push(optChild)
+                  }
+                }
+              }
+            }
+          }
+        })
+
+        callEndLoop && callEndLoop(arrNav)
+      }
+    }
+  }
+}
+
 export {
   requestAnimationFrameAccordion,
   decrementHeight,
@@ -365,5 +464,7 @@ export {
   getPrivateRouter,
   setStyleImageSettings,
   fucFirtsChart,
-  fucStyleCovert
+  fucStyleCovert,
+  checkViewsFuc,
+  fucBreadCrumb
 }

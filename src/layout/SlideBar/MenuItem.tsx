@@ -20,7 +20,7 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
     path.length === config.router.home.length ? location?.pathname : location?.pathname?.substring(0, path.length)
   const active = pathname === path
   const { KeyPermission, permissionArr, nameRole } = usePermissions()
-  const keyItem = (Array.isArray(item?.key) ? "" : item?.key) ?? ""
+  const keyItem = (Array.isArray(item?.key) ? item?.keyParent : item?.key) ?? ""
 
   return (
     <AccordionWapper
@@ -92,7 +92,7 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                             onClick={() => {
                               setUpdated && setUpdated((prev) => !prev)
                               const keyChild = (Array.isArray(child?.key) ? "" : child?.key) ?? ""
-                              KeyPermission && KeyPermission(keyChild || keyItem)
+                              KeyPermission && KeyPermission(keyChild || child?.keyParent || keyItem)
                             }}
                           >
                             <span className="menu-link">

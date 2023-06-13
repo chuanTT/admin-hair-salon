@@ -59,6 +59,7 @@ type CustomRouteObjectParams = {
   key?: string | string[]
   role?: string | string[]
   isEvent?: boolean
+  keyParent?: string
 }
 
 type CustomIndexRouteObject = IndexRouteObject & CustomRouteObjectParams
@@ -149,6 +150,7 @@ export const router: CustomRouteConfig[] = [
                 index: true,
                 title: "Danh sách sản phẩm",
                 key: [PermissionInterFace.PRODUCT, Event.READ],
+                keyParent: PermissionInterFace.PRODUCT,
                 isEvent: true,
                 element: <Product />
               },
@@ -157,6 +159,7 @@ export const router: CustomRouteConfig[] = [
                 path: config.router.userTrash,
                 title: "Danh sách sản phẩm đã xóa",
                 role: [RoleList.ROOT, RoleList.ADMIN],
+                keyParent: PermissionInterFace.PRODUCT,
                 element: <ProductListTrash />
               },
 
@@ -164,6 +167,7 @@ export const router: CustomRouteConfig[] = [
                 path: config.router.addProduct,
                 title: "Thêm sản phẩm",
                 key: [PermissionInterFace.PRODUCT, Event.CREATE],
+                keyParent: PermissionInterFace.PRODUCT,
                 isEvent: true,
                 element: <AddProducts />
               },
@@ -171,6 +175,7 @@ export const router: CustomRouteConfig[] = [
               {
                 path: config.router.editProduct,
                 title: "Chỉnh sửa sản phẩm",
+                keyParent: PermissionInterFace.PRODUCT,
                 element: <EditProducts />,
                 isNoRender: true
               },
@@ -179,6 +184,7 @@ export const router: CustomRouteConfig[] = [
                 path: config.router.slideshowProduct,
                 title: "Trình chiếu sản phẩm",
                 key: [PermissionInterFace.SILDE_PRODUCT, Event.READ],
+                keyParent: PermissionInterFace.SILDE_PRODUCT,
                 isEvent: true,
                 element: <SlideshowProducts />
               },
@@ -187,6 +193,7 @@ export const router: CustomRouteConfig[] = [
                 path: config.router.addSlideshowProduct,
                 title: "Thêm trình chiếu",
                 element: <AddProductsSilder />,
+                keyParent: PermissionInterFace.SILDE_PRODUCT,
                 isNoRender: true
               },
 
@@ -194,6 +201,7 @@ export const router: CustomRouteConfig[] = [
                 path: config.router.editSlideshowProduct,
                 title: "Chỉnh sửa trình chiếu",
                 element: <EditProductsSlider />,
+                keyParent: PermissionInterFace.SILDE_PRODUCT,
                 isNoRender: true
               }
             ]
@@ -257,6 +265,7 @@ export const router: CustomRouteConfig[] = [
               {
                 path: config.router.permission,
                 key: [PermissionInterFace.ROLE, Event.READ],
+                keyParent: PermissionInterFace.ROLE,
                 title: "Phân quyền",
                 element: <Permission />
               }

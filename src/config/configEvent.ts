@@ -1,16 +1,24 @@
 import { sliceRouteDynamic } from "@/common/functions"
 import { iconTypeEvent } from "@/components/Button"
-import { typeEvent, typeEventClick } from "@/types"
+import { Event, TypeEventPermission, typeEvent, typeEventClick } from "@/types"
 import config from "."
 // import ModalImages from "@/components/ModalImages"
 
+const fucIsViews = (checkEvents?: TypeEventPermission, type?: Event) => {
+  let isViews = true
+  if (checkEvents && type) {
+    isViews = checkEvents?.[type]
+  }
+  return isViews
+}
 export const EditFuc: typeEvent = {
   id: "edit",
   content: "Chỉnh sửa",
   customClass: "text-slate-400 hover:text-slate-500",
   key: "id",
-  isViews: true,
+  isViews: fucIsViews,
   type: iconTypeEvent.edit,
+  typeEvent: Event.UPDATE,
   to: sliceRouteDynamic(config.router.editUser)
 }
 
@@ -52,17 +60,18 @@ export const DeteleFuc: typeEvent = {
   content: "Xóa",
   customClass: "text-rose-500 hover:text-rose-600",
   key: "id",
-  isViews: true,
+  isViews: fucIsViews,
   type: iconTypeEvent.delete,
+  typeEvent: Event.DELETE,
   onClick: EventClickButton()
 }
 
 export const dynamicFucEvent = (to?: string, key?: string, callBack?: (str: string) => string) => {
   let str = sliceRouteDynamic(to || "")
-  if(callBack) {
+  if (callBack) {
     str = callBack(str)
   }
-  return [{ ...EditFuc, to: str , key: key || "alias" }, DeteleFuc]
+  return [{ ...EditFuc, to: str, key: key || "alias" }, DeteleFuc]
 }
 
 export const configDefaultEvent: typeEvent[] = [EditFuc, DeteleFuc]

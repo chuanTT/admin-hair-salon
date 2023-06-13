@@ -7,10 +7,7 @@ import { useMemo, useState } from "react"
 import { Event, typeEventClick } from "@/types"
 import ModelSlider from "@/components/ModalImages"
 import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
-import { usePermissions } from "@/layout/PermissonLayout"
 const Product = () => {
-  const { checkEvent } = usePermissions()
-  console.log(checkEvent)
   const [isOpen, setIsOpen] = useState(false)
   const [listImages, setListImages] = useState<string[]>([])
 

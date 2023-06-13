@@ -121,11 +121,12 @@ export interface typeEvent {
   content?: string
   customClass?: string
   key?: string
-  isViews?: boolean
+  isViews?: boolean | ((checkEvents?: TypeEventPermission, typeEvent?: Event) => boolean)
   to?: string
   type?: iconTypeEvent
   onClick?: (obj: typeEventClick) => void
   isCus?: boolean
+  typeEvent?: Event
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   element?: (props: any) => JSX.Element
 }
@@ -156,6 +157,7 @@ export interface TableProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   configFuc?: typeEvent[]
   provider?: TypeValue
+  checkEvents?: TypeEventPermission
 }
 
 export interface paginationType {
@@ -173,6 +175,7 @@ export interface TbodyProps {
   configFuc?: typeEvent[]
   provider?: TypeValue
   render: configProps[]
+  checkEvents?: TypeEventPermission
 }
 
 export interface RoleDefault {

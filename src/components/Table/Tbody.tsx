@@ -1,5 +1,5 @@
 import { FC, Fragment } from "react"
-import { RenderValue, STT } from "@/common/functions"
+import { RenderValue, STT, checkViewsFuc } from "@/common/functions"
 import { LoadValueCustomProps, TbodyProps, configProps, typeElment, typeEvent } from "@/types"
 import Button from "../Button"
 
@@ -22,7 +22,8 @@ const LoadValueCustom: FC<LoadValueCustomProps> = ({ data, type, element, curren
   }
 }
 
-const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, configFuc, provider }) => {
+const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, configFuc, provider, checkEvents }) => {
+  const isFucViews = !isFuc ? checkViewsFuc(configFuc, checkEvents) : false
   return (
     <tbody className="text-sm divide-y divide-slate-200 bg-white">
       {Array.isArray(data?.data) &&
@@ -86,28 +87,29 @@ const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, config
                         )}
                       </td>
 
-                      {!isFuc && i === maxTbody && (
+                      {isFucViews && i === maxTbody && (
                         <td className="px-2 py-3 whitespace-nowrap w-px">
                           <div className="space-x-3 flex justify-center">
                             {configFuc?.map((item: typeEvent, iFuc: number) => {
-                              const { key, isViews, isCus, element, ...rest } = item
+                              const { key, isViews, isCus, element, typeEvent, ...rest } = item
                               let id = RenderValue({
                                 key: key || "id",
                                 data: items
                               })
                               id = id != "-" ? id : 0
                               const checkTo = item?.to ? `${item?.to}/${id}` : ""
+                              const views = typeof isViews === "function" ? isViews(checkEvents, typeEvent) : isViews
                               const Element = element
                               return (
                                 <Fragment key={iFuc}>
-                                  {isViews && (
+                                  {views && (
                                     <>
                                       {!isCus && !Element && (
                                         <Button
                                           {...rest}
                                           customIcon={{
                                             type: item?.type,
-                                            views: item?.isViews
+                                            views
                                           }}
                                           id={`id-${index}-${i}-${iFuc}`}
                                           to={checkTo}
@@ -125,7 +127,7 @@ const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, config
                                           {...rest}
                                           customIcon={{
                                             type: item?.type,
-                                            views: item?.isViews
+                                            views: views
                                           }}
                                           id={`id-${index}-${i}-${iFuc}`}
                                           to={checkTo}

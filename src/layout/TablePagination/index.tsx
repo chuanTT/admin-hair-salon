@@ -7,6 +7,7 @@ import Table from "@/components/Table"
 import ModalDeleteCus from "@/components/ModalDeleteCus"
 import Portal from "@/components/Portal"
 import { LIMIT_SELECT } from "@/common/ConfigSelectOption"
+import { usePermissions } from "../PermissonLayout"
 
 const TablePaginationContext = createContext({})
 
@@ -29,6 +30,8 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
     is_restore,
     callBack
   } = prop
+
+  const { checkEvent } = usePermissions()
 
   // search nâng cao
   const [searchValue, setSearchValue] = useState<{ [key: string]: string | number | boolean }>({})
@@ -119,7 +122,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
 
   return (
     <TablePaginationContext.Provider value={values}>
-      {isFetched && isDelete && callApiDelete && (
+      {isFetched && isDelete && callApiDelete && checkEvent && checkEvent?.DELETE && (
         <Portal>
           <ModalDeleteCus
             id={listIDs}
@@ -146,6 +149,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
           selectCheck={selectCheck}
           configDetail={configDetail}
           provider={values}
+          checkEvents={checkEvent}
         />
         {isFetched && pagination && (
           <div className="mt-8 flex justify-end">

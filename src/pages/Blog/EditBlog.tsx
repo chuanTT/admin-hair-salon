@@ -11,11 +11,13 @@ import LayoutFormDefault from "@/layout/LayoutFormDefault"
 import TextEditorCustom, { refTextEditor } from "@/components/CustomField/TextEditor"
 import config from "@/config"
 import { UpdateBlog, getBlog, tableBlog } from "@/api/blogsApi"
+import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
+import { Event } from "@/types"
 
 const schema = Yup.object().shape({
   title: Yup.string().required("Vui lòng nhập họ và tên"),
   short_content: Yup.string().required("Vui lòng nhập nội dung ngắn"),
-  description: Yup.string().required("Vui lòng nhập mô tả"),
+  description: Yup.string().required("Vui lòng nhập mô tả")
 })
 export enum valueDefaultProduct {
   title = "title",
@@ -38,113 +40,115 @@ const EditBlog = () => {
   const textEditorRef = useRef<refTextEditor>(null)
 
   return (
-    <Breadcrumb>
-      <FormHandel
-        isValidate
-        schema={schema}
-        callApi={(data) => {
-          const { id, thumb_blog, ...spread } = data
-          let result = {
-            ...spread
-          }
-
-          if (!isEmptyObj(thumb_blog)) {
-            result = SendFormData(result)
-            config.formDataFile([thumb_blog], result, "thumb-blog")
-          }
-
-          return UpdateBlog(id ?? 0, result)
-        }}
-        defaultValues={defaultValues}
-        isEdit
-        nameTable={tableBlog}
-        id={alias}
-        callApiEdit={getBlog}
-        customValue={({ data, key }) => {
-          if (key === valueDefaultProduct.thumb_blog) {
-            if (ImgRef.current) {
-              ImgRef.current?.setSrc?.(data?.["thumb"])
-              setIsUpdated((prev) => !prev)
-              return true
+    <PermissonCheckLayout event={Event.UPDATE}>
+      <Breadcrumb>
+        <FormHandel
+          isValidate
+          schema={schema}
+          callApi={(data) => {
+            const { id, thumb_blog, ...spread } = data
+            let result = {
+              ...spread
             }
-          }
 
-          if (key === valueDefaultProduct.description) {
-            if (textEditorRef.current) {
-              textEditorRef.current?.setValue(data[key])
+            if (!isEmptyObj(thumb_blog)) {
+              result = SendFormData(result)
+              config.formDataFile([thumb_blog], result, "thumb-blog")
             }
-          }
-        }}
-        customValuesData={(value, resultApi) => {
-          const data = {
-            ...value,
-            id: resultApi?.data?.id
-          }
 
-          return data
-        }}
-      >
-        {({ propForm, isPending, setResertForm }) => {
-          const {
-            register,
-            clearErrors,
-            setValue,
-            formState: { errors }
-          } = propForm
-          return (
-            <LayoutFormDefault
-              isPending={isPending}
-              txtButtonPrimary="Chỉnh sửa"
-              clickButtonCancel={() => {
-                clearErrors()
-                typeof setResertForm === "function" && setResertForm((prev) => !prev)
-              }}
-            >
-              <InputField
-                classInputContainer="col-md-12 mb-3"
-                title="Tiều đề bài viết"
-                placeholder="Nhập tiều đề bài viết"
-                name="title"
-                register={register}
-                isRequire
-                errors={errors}
-              />
+            return UpdateBlog(id ?? 0, result)
+          }}
+          defaultValues={defaultValues}
+          isEdit
+          nameTable={tableBlog}
+          id={alias}
+          callApiEdit={getBlog}
+          customValue={({ data, key }) => {
+            if (key === valueDefaultProduct.thumb_blog) {
+              if (ImgRef.current) {
+                ImgRef.current?.setSrc?.(data?.["thumb"])
+                setIsUpdated((prev) => !prev)
+                return true
+              }
+            }
 
-              <TextArea
-                classAreaContainer="col-md-12 mb-3"
-                name="short_content"
-                register={register}
-                title="Nội dung ngắn"
-                placeholder="Nhập nội dung ngắn"
-                rows={10}
-                isRequire
-                errors={errors}
-              />
+            if (key === valueDefaultProduct.description) {
+              if (textEditorRef.current) {
+                textEditorRef.current?.setValue(data[key])
+              }
+            }
+          }}
+          customValuesData={(value, resultApi) => {
+            const data = {
+              ...value,
+              id: resultApi?.data?.id
+            }
 
-              <ListImagesUploadFile
-                classParentImg="mb-3"
-                ref={ImgRef}
-                setValue={setValue}
-                title="Hình ảnh"
-                name="thumb_blog"
-                register={register}
-              />
+            return data
+          }}
+        >
+          {({ propForm, isPending, setResertForm }) => {
+            const {
+              register,
+              clearErrors,
+              setValue,
+              formState: { errors }
+            } = propForm
+            return (
+              <LayoutFormDefault
+                isPending={isPending}
+                txtButtonPrimary="Chỉnh sửa"
+                clickButtonCancel={() => {
+                  clearErrors()
+                  typeof setResertForm === "function" && setResertForm((prev) => !prev)
+                }}
+              >
+                <InputField
+                  classInputContainer="col-md-12 mb-3"
+                  title="Tiều đề bài viết"
+                  placeholder="Nhập tiều đề bài viết"
+                  name="title"
+                  register={register}
+                  isRequire
+                  errors={errors}
+                />
 
-              <TextEditorCustom
-                classAreaContainer="col-md-12 mb-3"
-                title="Mô tả bài viết"
-                placeholder="Nhập mô tả bài viết"
-                name="description"
-                setValue={setValue}
-                isRequire
-                ref={textEditorRef}
-                errors={errors}
-              />
-            </LayoutFormDefault>
-          )
-        }}
-      </FormHandel>
-    </Breadcrumb>
+                <TextArea
+                  classAreaContainer="col-md-12 mb-3"
+                  name="short_content"
+                  register={register}
+                  title="Nội dung ngắn"
+                  placeholder="Nhập nội dung ngắn"
+                  rows={10}
+                  isRequire
+                  errors={errors}
+                />
+
+                <ListImagesUploadFile
+                  classParentImg="mb-3"
+                  ref={ImgRef}
+                  setValue={setValue}
+                  title="Hình ảnh"
+                  name="thumb_blog"
+                  register={register}
+                />
+
+                <TextEditorCustom
+                  classAreaContainer="col-md-12 mb-3"
+                  title="Mô tả bài viết"
+                  placeholder="Nhập mô tả bài viết"
+                  name="description"
+                  setValue={setValue}
+                  isRequire
+                  ref={textEditorRef}
+                  errors={errors}
+                />
+              </LayoutFormDefault>
+            )
+          }}
+        </FormHandel>
+      </Breadcrumb>
+    </PermissonCheckLayout>
   )
 }
 

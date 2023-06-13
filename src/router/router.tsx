@@ -31,6 +31,7 @@ import EditProductsSlider from "@/pages/Products/EditProductsSlider"
 import GeneralSettings from "@/pages/Settings/GeneralSettings"
 import ProviderSettings from "@/layout/ProviderSettings"
 import { Event, PermissionInterFace, RoleList } from "@/types"
+import NoPermission from "@/pages/NoPermission"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -274,6 +275,12 @@ export const router: CustomRouteConfig[] = [
         path: config.router[404],
         type: typeRouter.public,
         element: <NotFound />
+      },
+
+      {
+        path: config.router[403],
+        type: typeRouter.public,
+        element: <NoPermission />
       }
     ]
   }

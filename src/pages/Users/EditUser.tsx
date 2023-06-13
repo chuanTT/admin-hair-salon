@@ -11,6 +11,8 @@ import { isEmptyObj } from "@/common/functions"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
 import { configRoleApi } from "@/config/configCallApi"
+import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
+import { Event } from "@/types"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -35,117 +37,119 @@ const EditUser = () => {
   })
 
   return (
-    <Breadcrumb>
-      <FormHandel
-        isValidate
-        schema={schema}
-        callApi={(data) => UpdateUser(id ?? 0, data)}
-        defaultValues={defaultValues}
-        isEdit
-        nameTable={tableUser}
-        id={id}
-        callApiEdit={getUser}
-        customValue={({ data, key }) => {
-          if (key === defaultValues.avatar) {
-            if (ImgRef.current) {
-              ImgRef.current?.setSrc?.(data[key] ?? "")
+    <PermissonCheckLayout event={Event.UPDATE}>
+      <Breadcrumb>
+        <FormHandel
+          isValidate
+          schema={schema}
+          callApi={(data) => UpdateUser(id ?? 0, data)}
+          defaultValues={defaultValues}
+          isEdit
+          nameTable={tableUser}
+          id={id}
+          callApiEdit={getUser}
+          customValue={({ data, key }) => {
+            if (key === defaultValues.avatar) {
+              if (ImgRef.current) {
+                ImgRef.current?.setSrc?.(data[key] ?? "")
+              }
+              setIsUpdated((prev) => !prev)
+              return true
             }
-            setIsUpdated((prev) => !prev)
-            return true
-          }
-        }}
-        customValuesData={(value) => {
-          // eslint-disable-next-line @typescript-eslint/no-unused-vars
-          const { user_name, avatar, ...spread } = value
-          let data = {
-            ...spread
-          }
+          }}
+          customValuesData={(value) => {
+            // eslint-disable-next-line @typescript-eslint/no-unused-vars
+            const { user_name, avatar, ...spread } = value
+            let data = {
+              ...spread
+            }
 
-          if (!isEmptyObj(avatar)) {
-            data = { ...data, avatar }
-            data = SendFormData(data)
-          }
+            if (!isEmptyObj(avatar)) {
+              data = { ...data, avatar }
+              data = SendFormData(data)
+            }
 
-          return data
-        }}
-      >
-        {({ propForm, isPending, setResertForm }) => {
-          const {
-            register,
-            clearErrors,
-            setValue,
-            getValues,
-            formState: { errors }
-          } = propForm
-          return (
-            <LayoutFormDefault
-              isPending={isPending}
-              txtButtonPrimary="Chỉnh sửa"
-              clickButtonCancel={() => {
-                clearErrors()
-                typeof setResertForm === "function" && setResertForm((prev) => !prev)
-              }}
-            >
-              <InputField
-                classInputContainer="col-md-6 mb-3"
-                title="Họ và tên"
-                placeholder="Nhập họ và tên"
-                name="full_name"
-                register={register}
-                isRequire
-                errors={errors}
-              />
+            return data
+          }}
+        >
+          {({ propForm, isPending, setResertForm }) => {
+            const {
+              register,
+              clearErrors,
+              setValue,
+              getValues,
+              formState: { errors }
+            } = propForm
+            return (
+              <LayoutFormDefault
+                isPending={isPending}
+                txtButtonPrimary="Chỉnh sửa"
+                clickButtonCancel={() => {
+                  clearErrors()
+                  typeof setResertForm === "function" && setResertForm((prev) => !prev)
+                }}
+              >
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Họ và tên"
+                  placeholder="Nhập họ và tên"
+                  name="full_name"
+                  register={register}
+                  isRequire
+                  errors={errors}
+                />
 
-              <InputField
-                classInputContainer="col-md-6 mb-3"
-                title="Tên đăng nhập"
-                placeholder="Nhập tên đăng nhập"
-                name="user_name"
-                register={register}
-                isRequire
-                errors={errors}
-                readOnly
-              />
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Tên đăng nhập"
+                  placeholder="Nhập tên đăng nhập"
+                  name="user_name"
+                  register={register}
+                  isRequire
+                  errors={errors}
+                  readOnly
+                />
 
-              <InputField
-                classInputContainer="col-md-6 mb-3"
-                title="Số điện thoại"
-                placeholder="Nhập số điện thoại"
-                name="phone"
-                register={register}
-              />
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Số điện thoại"
+                  placeholder="Nhập số điện thoại"
+                  name="phone"
+                  register={register}
+                />
 
-              <InputField
-                classInputContainer="col-md-6 mb-3"
-                title="Email"
-                placeholder="Nhập địa chỉ email"
-                name="email"
-                register={register}
-                errors={errors}
-              />
+                <InputField
+                  classInputContainer="col-md-6 mb-3"
+                  title="Email"
+                  placeholder="Nhập địa chỉ email"
+                  name="email"
+                  register={register}
+                  errors={errors}
+                />
 
-              <ReactSelectCus
-                title="Vai trò"
-                parenSelect="mb-3 col-md-12"
-                placeholder="Chọn vai trò"
-                name="role_id"
-                options={optionRole}
-                getValue={getValues}
-                setValue={setValue}
-              />
+                <ReactSelectCus
+                  title="Vai trò"
+                  parenSelect="mb-3 col-md-12"
+                  placeholder="Chọn vai trò"
+                  name="role_id"
+                  options={optionRole}
+                  getValue={getValues}
+                  setValue={setValue}
+                />
 
-              <ListImagesUploadFile
-                ref={ImgRef}
-                setValue={setValue}
-                title="Hình ảnh đại diện"
-                name="avatar"
-                register={register}
-              />
-            </LayoutFormDefault>
-          )
-        }}
-      </FormHandel>
-    </Breadcrumb>
+                <ListImagesUploadFile
+                  ref={ImgRef}
+                  setValue={setValue}
+                  title="Hình ảnh đại diện"
+                  name="avatar"
+                  register={register}
+                />
+              </LayoutFormDefault>
+            )
+          }}
+        </FormHandel>
+      </Breadcrumb>
+    </PermissonCheckLayout>
   )
 }
 

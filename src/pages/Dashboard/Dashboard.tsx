@@ -37,7 +37,7 @@ const Dashboard = () => {
         </div>
 
         <div className="col-md-6 col-lg-12 order-1 mb-4">
-          <ChartDashboard title="Số lượng sản phẩm trong tháng" />
+          {/* <ChartDashboard title="Số lượng sản phẩm trong tháng" /> */}
         </div>
       </div>
     </>

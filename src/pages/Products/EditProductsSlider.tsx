@@ -11,6 +11,7 @@ import { optionShow } from "@/common/optionStatic"
 import { Event, SelectDefault } from "@/types"
 import { removeProperty } from "@/common/functions"
 import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
+import config from "@/config"
 
 export enum valueDefaultProduct {
   is_show = "is_show",
@@ -41,7 +42,12 @@ const EditProductsSlider = () => {
               is_show
             }
             data = removeProperty("product", data)
-            return UpdateProductSlider(id ?? 0, SendFormData(data))
+            data = SendFormData(data)
+
+            if (value?.big_thumb) {
+              config.formDataFile(value?.big_thumb, data, "big_thumb")
+            }
+            return UpdateProductSlider(id ?? 0, data)
           }}
           defaultValues={defaultValues}
           isEdit

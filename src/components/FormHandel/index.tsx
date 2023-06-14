@@ -16,6 +16,8 @@ import { AxiosResponse } from "axios"
 import { MsgType, isEmptyObj } from "@/common/functions"
 import SendFormData from "./SendFormData"
 import useFetchingApi, { customUrlProps } from "@/hooks/useFetchingApi"
+import { useNavigate } from "react-router-dom"
+import config from "@/config"
 // import SendFormData from "../CustomForm/SendFormData";
 
 export interface childrenFormHandel {
@@ -109,6 +111,8 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
 
   const QueryClient = useQueryClient()
 
+  const navigate = useNavigate()
+
   //   form
   const optionValidate: UseFormProps =
     isValidate && schema
@@ -190,8 +194,8 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
 
   useEffect(() => {
     if (id !== 0) {
-      if (result?.data && defaultValues) {
-        if (!isEmptyObj(defaultValues)) {
+      if (result?.data) {
+        if (defaultValues && !isEmptyObj(defaultValues)) {
           const arrKey = Object.keys(
             (typeof customDefaultValue === "function" && customDefaultValue(defaultValues)) || defaultValues
           )
@@ -208,6 +212,13 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [result?.data, sussessGetData, resertForm])
+
+  useEffect(() => {
+    if (isEdit && !result?.data && isFetched) {
+      navigate(config.router[404])
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isFetched])
 
   // end edit form
   //  end react query

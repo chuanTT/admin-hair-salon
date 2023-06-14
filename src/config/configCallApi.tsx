@@ -24,7 +24,7 @@ const configProductApi: useFetchingOptionApiProps = {
 }
 
 const configSettingApi: useFetchingApiParmeter = {
-  nameTable: "s",
+  nameTable: "settings",
   CallAPi: getSettings,
 }
 

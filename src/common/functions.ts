@@ -1,5 +1,6 @@
 import { optPath } from "@/components/Breadcrumb"
 import { TypeToast } from "@/components/ToastCustom"
+import config from "@/config"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
 import { dataSettingsApi } from "@/layout/ProviderSettings"
 import { CustomRouteConfig, router, typeRouter } from "@/router/router"
@@ -379,9 +380,10 @@ interface fucBreadCrumbPraram {
 
 const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBreadCrumbPraram) => {
   if (path) {
-    const string = removeLink(path || "")
+    const isMatches = config.router.home === path
+    const string = isMatches ? path : removeLink(path || "")
     if (string) {
-      const arrPt = string.split("/")
+      const arrPt = isMatches ? string : string.split("/")
       const { childrenRouter } = getPrivateRouter()
       let arrResult: CustomRouteConfig[] = [...childrenRouter]
       const arrNav: optPath[] = []
@@ -438,6 +440,16 @@ const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBr
         })
 
         callEndLoop && callEndLoop(arrNav)
+      } else {
+        const result = arrResult?.find((itemResult) => itemResult?.index || itemResult?.path === config.router.home)
+
+        if (result) {
+          const optChild = (callOptChild && callOptChild(result)) || {
+            title: result?.title
+          }
+          arrNav.push(optChild)
+          callEndLoop && callEndLoop(arrNav)
+        }
       }
     }
   }

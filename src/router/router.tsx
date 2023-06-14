@@ -83,13 +83,13 @@ export const router: CustomRouteConfig[] = [
       {
         path: config.router.home,
         type: typeRouter.private,
-        title: "Trang chủ",
         loader: () => defer({ userPromise: verifyToken() }),
         element: <AuthLayout />,
         children: [
           {
             index: true,
             element: <Dashboard />,
+            title: "Trang chủ",
             icon: IoHome
           },
 

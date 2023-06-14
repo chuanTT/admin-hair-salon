@@ -36,22 +36,20 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
           parent?.classList.remove("open")
         }
       }}
-      callBackUpdate={({ active: activeToggle, collapseAccordion, expandAccordion, setActive }) => {
-        if (active) {
-          if (!activeToggle) {
+      callBackUpdate={({ collapseAccordion, expandAccordion, setActive }) => {
+        if (checkChildren) {
+          if (active) {
             expandAccordion()
             setActive(true)
-          }
-        } else {
-          if (activeToggle) {
+          } else {
             collapseAccordion()
             setActive(false)
           }
+
         }
       }}
-      isUpdate={active}
     >
-      {({ refButton, refContent, toggleAccordion, setUpdated }) => {
+      {({ refButton, refContent, toggleAccordion }) => {
         return (
           <li className={`menu-item ${active ? "active" : ""}`}>
             <NavLink
@@ -64,7 +62,6 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                   typeof toggleAccordion === "function" && toggleAccordion()
                   return
                 }
-                setUpdated && setUpdated((prev) => !prev)
                 keyItem && KeyPermission && KeyPermission(keyItem)
               }}
             >
@@ -90,7 +87,6 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                             to={pathChild}
                             className="menu-item"
                             onClick={() => {
-                              setUpdated && setUpdated((prev) => !prev)
                               const keyChild = (Array.isArray(child?.key) ? "" : child?.key) ?? ""
                               KeyPermission && KeyPermission(keyChild || child?.keyParent || keyItem)
                             }}

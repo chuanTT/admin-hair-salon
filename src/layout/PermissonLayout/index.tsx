@@ -27,6 +27,7 @@ const PermissonLayout: FC<defaultProps> = ({ children }) => {
   const permissionArr = user?.role?.permissions ?? []
   const location = useLocation()
   const [isFisrt, setIsFisrt] = useState(false)
+
   const KeyPermission = (key: string) => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const newEvent: any = { ...initEvent }
@@ -70,7 +71,7 @@ const PermissonLayout: FC<defaultProps> = ({ children }) => {
       callEndLoop: (config) => {
         if (config) {
           let key = ""
-          const arrConfigRever = config.reverse()
+          const arrConfigRever = [...config].reverse()
           for (const item of arrConfigRever) {
             const keyItem = Array.isArray(item?.key) ? item?.keyParent : item?.key
             if (keyItem) {

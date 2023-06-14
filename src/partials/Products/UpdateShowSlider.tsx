@@ -1,4 +1,4 @@
-import { useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useMutation } from "@tanstack/react-query"
 import { UpdateProductSlider } from "@/api/productApi"
 import SwitchRadio, { RefSwitchRadio } from "@/components/CustomField/SwitchRadio"
@@ -16,6 +16,12 @@ const UpdateShowSlider = ({ current }: typeElment) => {
       refRadio.current?.setValue?.()
     }
   }
+
+  useEffect(() => {
+    if (refRadio.current) {
+      refRadio.current?.setValue?.(current?.is_show === 1 ? true : false)
+    }
+  }, [current])
 
   const { mutate } = useMutation({
     mutationFn: (value: string | number | typeObject) => {

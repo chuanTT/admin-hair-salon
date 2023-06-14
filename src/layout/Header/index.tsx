@@ -58,6 +58,8 @@ const Header = () => {
       window.removeEventListener("scroll", initPadding)
       window.removeEventListener("resize", initPadding)
     }
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

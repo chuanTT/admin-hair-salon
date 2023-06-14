@@ -83,6 +83,7 @@ const Modal: FC<ModalProps> = ({
       <div
         className="font-sans fixed bottom-0 top-0 inset-x-0 px-4 pb-4 inset-0 flex items-center justify-center z-[2000]"
         ref={containerModal}
+        style={{ display: "none" }}
       >
         <div
           className="fixed inset-0 transition-opacity opacity-0  duration-200"

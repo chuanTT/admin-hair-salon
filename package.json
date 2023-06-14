@@ -38,6 +38,7 @@
     "yup": "^1.1.1"
   },
   "devDependencies": {
+    "@tanstack/react-query-devtools": "^4.29.13",
     "@types/lodash-es": "^4.17.7",
     "@types/node": "^20.1.7",
     "@types/react": "^18.0.28",

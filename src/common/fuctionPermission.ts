@@ -1,5 +1,5 @@
 import { CustomRouteConfig } from "@/router/router"
-import { PermissionDefault, RoleDefault } from "@/types"
+import { PermissionDefault } from "@/types"
 import { isObject } from "./functions"
 
 export const checkEvents = (objPer?: PermissionDefault[], arr?: string | string[]) => {

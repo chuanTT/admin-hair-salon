@@ -1,7 +1,6 @@
 import Images from "@/components/Images"
 import "../NotFound/NotFound.css"
 import images from "@/assets/img"
-import Button from "@/components/Button"
 import config from "@/config"
 import ButtonLoading from "@/components/ButtonLoading"
 

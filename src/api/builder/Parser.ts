@@ -1,122 +1,114 @@
-import qs from "qs";
+import qs from "qs"
 
 export default class Parser {
-  constructor(query) {
-    this.query = query;
-    this.uri = "";
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  uri: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  query: any
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  constructor(query: any) {
+    this.query = query
+    this.uri = ""
   }
 
   // parse the final query string
   parse() {
-    this.includes();
-    this.appends();
-    this.fields();
-    this.filters();
-    this.sorts();
-    this.page();
-    this.limit();
-    this.per_page();
-    this.params();
+    this.includes()
+    this.appends()
+    this.fields()
+    this.filters()
+    this.sorts()
+    this.page()
+    this.limit()
+    this.per_page()
+    this.params()
 
-    return this.uri;
+    return this.uri
   }
 
   prepend() {
-    return this.uri === "" ? "?" : "&";
+    return this.uri === "" ? "?" : "&"
   }
 
   /**
    * Parsers
    */
   includes() {
-    if (!this.query.include.length > 0) {
-      return;
+    // eslint-disable-next-line no-extra-boolean-cast
+    if (!!((!this.query.include.length) ?? 0 > 0)) {
+      return
     }
 
-    this.uri += `${this.prepend() + this.query.queryParameters.includes}=${
-      this.query.include
-    }`;
+    this.uri += `${this.prepend() + this.query.queryParameters.includes}=${this.query.include}`
   }
 
   appends() {
-    if (!this.query.append.length > 0) {
-      return;
+    if ((!this.query.append.length) ?? 0 > 0) {
+      return
     }
 
-    this.uri += `${this.prepend() + this.query.queryParameters.appends}=${
-      this.query.append
-    }`;
+    this.uri += `${this.prepend() + this.query.queryParameters.appends}=${this.query.append}`
   }
 
   fields() {
-    if (!Object.keys(this.query.fields).length > 0) {
-      return;
+    if ((!Object.keys(this.query.fields).length) ?? 0 > 0) {
+      return
     }
 
     const fields = {
-      [`${this.query.queryParameters.fields}[${this.query.model}]`]:
-        this.query.fields,
-    };
-    this.uri += this.prepend() + qs.stringify(fields, { encode: false });
+      [`${this.query.queryParameters.fields}[${this.query.model}]`]: this.query.fields
+    }
+    this.uri += this.prepend() + qs.stringify(fields, { encode: false })
   }
 
   filters() {
-    if (!Object.keys(this.query.filters).length > 0) {
-      return;
+    if ((!Object.keys(this.query.filters).length) ?? 0 > 0) {
+      return
     }
 
     const filters = {
-      [this.query.queryParameters.filters]: this.query.filters,
-    };
-    this.uri += this.prepend() + qs.stringify(filters, { encode: false });
+      [this.query.queryParameters.filters]: this.query.filters
+    }
+    this.uri += this.prepend() + qs.stringify(filters, { encode: false })
   }
 
   sorts() {
-    if (!this.query.sorts.length > 0) {
-      return;
+    if ((!this.query.sorts.length) ?? 0 > 0) {
+      return
     }
 
-    this.uri += `${this.prepend() + this.query.queryParameters.sort}=${
-      this.query.sorts
-    }`;
+    this.uri += `${this.prepend() + this.query.queryParameters.sort}=${this.query.sorts}`
   }
 
   page() {
     if (this.query.pageValue === null) {
-      return;
+      return
     }
 
-    this.uri += `${this.prepend() + this.query.queryParameters.page}=${
-      this.query.pageValue
-    }`;
+    this.uri += `${this.prepend() + this.query.queryParameters.page}=${this.query.pageValue}`
   }
 
   limit() {
     if (this.query.limitValue === null) {
-      return;
+      return
     }
 
-    this.uri += `${this.prepend() + this.query.queryParameters.limit}=${
-      this.query.limitValue
-    }`;
+    this.uri += `${this.prepend() + this.query.queryParameters.limit}=${this.query.limitValue}`
   }
 
   per_page() {
     if (this.query.perPageValue === null) {
-      return;
+      return
     }
 
-    this.uri += `${this.prepend() + this.query.queryParameters.per_page}=${
-      this.query.perPageValue
-    }`;
+    this.uri += `${this.prepend() + this.query.queryParameters.per_page}=${this.query.perPageValue}`
   }
 
   params() {
     if (this.query.paramsObj === null) {
-      return;
+      return
     }
 
-    this.uri +=
-      this.prepend() + qs.stringify(this.query.paramsObj, { encode: false });
+    this.uri += this.prepend() + qs.stringify(this.query.paramsObj, { encode: false })
   }
 }

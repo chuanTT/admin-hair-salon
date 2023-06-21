@@ -347,20 +347,25 @@ const setStyleImageSettings = ({ logo, callback, callLoop }: setStyleImageSettin
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const checkViewsFuc = (configFuc?: typeEvent[], checkEvents?: any): boolean => {
+const checkViewsFuc = (configFuc?: typeEvent[], checkEvents?: any, nameRole?: string): boolean => {
   let isFucViews = true
   if (configFuc && checkEvents) {
     const filterTypeEvent = configFuc.filter((config) => {
-      if (!config.typeEvent) {
+      if (!config.typeEvent || !config.role) {
         return true
       }
     })
     if (filterTypeEvent?.length === 0) {
       const filterCheckEvent = configFuc.find((config) => {
         const type = config.typeEvent ?? ""
+        let isCheck = false
         if (type) {
-          return checkEvents?.[type]
+          isCheck = checkEvents?.[type]
         }
+        if(config?.role && Array.isArray(config?.role)) {
+          isCheck = config.role.includes(nameRole)
+        }
+        return isCheck
       })
       if (!filterCheckEvent) {
         isFucViews = false
@@ -454,6 +459,8 @@ const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBr
     }
   }
 }
+
+
 
 export {
   requestAnimationFrameAccordion,

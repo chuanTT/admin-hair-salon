@@ -254,13 +254,14 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
       }}
     >
       <form
+        method="POST"
         onSubmit={propForm.handleSubmit(SubmitForm)}
         className={`${
           isEdit ? (!removeClassForm ? `${isFetched ? "bg-white" : ""} ` : "") : !removeClassForm ? `bg-white ` : ""
         } ${
-          !removeClassForm &&
-          ` [&>:not(:last-child)]:max-md:flex-col space-y-4 [&>*>span]:!w-44 [&>*>span]:!mb-0 [&>*>span]:!pt-0 py-6 px-6 rounded-sm  flex-shrink-0 ${ClassForm}`
-        }`}
+          !removeClassForm ?
+          ` [&>:not(:last-child)]:max-md:flex-col space-y-4 [&>*>span]:!w-44 [&>*>span]:!mb-0 [&>*>span]:!pt-0 py-6 px-6 rounded-sm  flex-shrink-0` : ""
+        } ${ClassForm}`}
         // [&>*]:lg:!w-[84%] [&>*]:max-lg:!w-full
       >
         {isEdit && !isFetched && <Loading classNameDiv="flex justify-center [&>*]:scale-50 items-start py-4" />}

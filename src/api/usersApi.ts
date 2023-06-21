@@ -22,10 +22,15 @@ const deleteUser = (data: (string | number)[], is_force?: string | number) => {
   })
 }
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars, @typescript-eslint/no-explicit-any
+const resetPassword = (id: string | number, data: any) => {
+  return HTTP.patch(`${tableUser}/reset-password/${id}`, data)
+}
+
 const RecoveryUser = (data: (string | number)[]) => {
   return HTTP.patch(`${tableUser}`, {
     ids: data
   })
 }
 
-export { getUser, deleteUser, AddUser, UpdateUser, tableUser, RecoveryUser }
+export { getUser, deleteUser, AddUser, UpdateUser, tableUser, RecoveryUser, resetPassword }

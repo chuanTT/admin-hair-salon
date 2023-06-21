@@ -19,7 +19,7 @@ const Breadcrumb: FC<defaultProps> = ({ children }) => {
 
         <nav aria-label="breadcrumb">
           <ol className="breadcrumb">
-            {breadNav &&
+            {breadNav && breadNav?.length > 1 &&
               breadNav?.map((nav, index) => {
                 return (
                   <Fragment key={index}>

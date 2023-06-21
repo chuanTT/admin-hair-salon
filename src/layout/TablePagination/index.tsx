@@ -31,7 +31,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
     callBack
   } = prop
 
-  const { checkEvent } = usePermissions()
+  const { checkEvent, nameRole } = usePermissions()
 
   // search nâng cao
   const [searchValue, setSearchValue] = useState<{ [key: string]: string | number | boolean }>({})
@@ -150,6 +150,7 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
           configDetail={configDetail}
           provider={values}
           checkEvents={checkEvent}
+          nameRole={nameRole}
         />
         {isFetched && pagination && (
           <div className="mt-8 flex justify-end">

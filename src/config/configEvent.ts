@@ -2,13 +2,19 @@ import { sliceRouteDynamic } from "@/common/functions"
 import { iconTypeEvent } from "@/components/Button"
 import { Event, TypeEventPermission, typeEvent, typeEventClick } from "@/types"
 import config from "."
-// import ModalImages from "@/components/ModalImages"
+import { arrRootAdmin } from "@/common/fuctionPermission"
 
-const fucIsViews = (checkEvents?: TypeEventPermission, type?: Event) => {
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const fucIsViews = (checkEvents?: TypeEventPermission, type?: Event, role?: any[], nameRole?: string) => {
   let isViews = true
   if (checkEvents && type) {
     isViews = checkEvents?.[type]
   }
+
+  if (role && Array.isArray(role)) {
+    isViews = role?.includes(nameRole)
+  }
+
   return isViews
 }
 export const EditFuc: typeEvent = {
@@ -29,8 +35,16 @@ export const ViewsImagesFuc: typeEvent = {
   key: "thumb",
   isViews: true,
   type: iconTypeEvent.viewsImage
-  // isCus: true,
-  // element: ModalImages
+}
+
+export const ResetPassFuc: typeEvent = {
+  id: "reset_pass",
+  content: "Reset mật khẩu",
+  customClass: "text-blue-400 hover:text-blue-500",
+  key: "id",
+  isViews: fucIsViews,
+  role: arrRootAdmin,
+  type: iconTypeEvent.reset
 }
 
 export const RestoreFuc: typeEvent = {

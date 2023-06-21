@@ -22,8 +22,8 @@ const LoadValueCustom: FC<LoadValueCustomProps> = ({ data, type, element, curren
   }
 }
 
-const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, configFuc, provider, checkEvents }) => {
-  const isFucViews = !isFuc ? checkViewsFuc(configFuc, checkEvents) : false
+const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, configFuc, provider, checkEvents, nameRole }) => {
+  const isFucViews = !isFuc ? checkViewsFuc(configFuc, checkEvents, nameRole) : false
   return (
     <tbody className="text-sm divide-y divide-slate-200 bg-white">
       {Array.isArray(data?.data) &&
@@ -91,14 +91,14 @@ const Tbody: FC<TbodyProps> = ({ data, render, selectCheck, isStt, isFuc, config
                         <td className="px-2 py-3 whitespace-nowrap w-px">
                           <div className="space-x-3 flex justify-center">
                             {configFuc?.map((item: typeEvent, iFuc: number) => {
-                              const { key, isViews, isCus, element, typeEvent, ...rest } = item
+                              const { key, isViews, isCus, element, typeEvent, role, ...rest } = item
                               let id = RenderValue({
                                 key: key || "id",
                                 data: items
                               })
                               id = id != "-" ? id : 0
                               const checkTo = item?.to ? `${item?.to}/${id}` : ""
-                              const views = typeof isViews === "function" ? isViews(checkEvents, typeEvent) : isViews
+                              const views = typeof isViews === "function" ? isViews(checkEvents, typeEvent, role, nameRole) : isViews
                               const Element = element
                               return (
                                 <Fragment key={iFuc}>

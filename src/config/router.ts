@@ -17,6 +17,7 @@ const router = {
   settings: "/settings",
   generalSettings: "general-settings",
   permission: "permission",
+  me: "/me",
   404: "/404",
   403: "/403",
 }

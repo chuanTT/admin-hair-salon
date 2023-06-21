@@ -1,5 +1,5 @@
 import { CustomRouteConfig } from "@/router/router"
-import { PermissionDefault } from "@/types"
+import { PermissionDefault, RoleList } from "@/types"
 import { isObject } from "./functions"
 
 export const checkEvents = (objPer?: PermissionDefault[], arr?: string | string[]) => {
@@ -90,4 +90,16 @@ export const CheckRolePermissionFuc = (
   }
 
   return isPermission
+}
+
+export const arrRootAdmin = [RoleList.ADMIN, RoleList.ROOT]
+
+export const fucHasRole = (nameRole?: string, arr: string[] = arrRootAdmin) => {
+  let check = false
+  if(nameRole) {
+    if(arr && Array.isArray(arr)) {
+      check = arr.includes(nameRole)
+    }
+  }
+  return check
 }

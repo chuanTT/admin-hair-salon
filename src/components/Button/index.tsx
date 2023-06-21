@@ -1,7 +1,7 @@
 import { NavLink, NavLinkProps } from "react-router-dom"
 import { FC, ComponentType, Fragment, HTMLAttributes } from "react"
 import { TbTrashFilled } from "react-icons/tb"
-import { MdModeEditOutline } from "react-icons/md"
+import { MdLockReset, MdModeEditOutline } from "react-icons/md"
 import ToolTip, { ToolTipProps } from "../ToolTips"
 import { defaultProps } from "@/types"
 import { LoadingIcon } from "../Icon"
@@ -12,7 +12,8 @@ export enum iconTypeEvent {
   edit = "edit",
   delete = "delete",
   viewsImage = "views_images",
-  restore = "restore"
+  restore = "restore",
+  reset = "reset",
 }
 
 interface iconConfig {
@@ -55,6 +56,9 @@ const LoadIcon = ({ customIcon }: { customIcon: iconConfig }) => {
       break
     case iconTypeEvent.restore:
       Icon = FaUndoAlt
+      break
+    case iconTypeEvent.reset:
+      Icon = MdLockReset
       break
   }
 

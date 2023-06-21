@@ -32,6 +32,7 @@ import GeneralSettings from "@/pages/Settings/GeneralSettings"
 import ProviderSettings from "@/layout/ProviderSettings"
 import { Event, PermissionInterFace, RoleList } from "@/types"
 import NoPermission from "@/pages/NoPermission"
+import MyProfile from "@/pages/MyProfile"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (str: string) => () => {
@@ -270,6 +271,13 @@ export const router: CustomRouteConfig[] = [
                 element: <Permission />
               }
             ]
+          },
+
+          {
+            path: config.router.me,
+            title: "Thông tin cá nhân",
+            isNoRender: true,
+            element: <MyProfile />
           }
         ]
       },

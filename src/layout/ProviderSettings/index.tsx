@@ -45,7 +45,7 @@ const ProviderSettings: FC<defaultProps> = ({ children }) => {
       path: pathName?.pathname,
       callEndLoop: (config) => {
         setBreadNav(config ?? [])
-        document.title = (config && config[config?.length - 1]?.title) ?? "Trang chủ"
+        document.title = (config && config[config?.length - 1]?.title) ?? "Phần mềm quản lý"
       }
     })
   }, [pathName])

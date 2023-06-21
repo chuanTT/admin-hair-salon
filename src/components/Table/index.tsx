@@ -5,7 +5,17 @@ import Tbody from "./Tbody"
 import { TableProps, configProps } from "@/types"
 import CustomScrollTable from "../CustomScrollTable"
 
-const Table: FC<TableProps> = ({ configDetail, isFuc, isStt, selectCheck, data, configFuc, provider, checkEvents }) => {
+const Table: FC<TableProps> = ({
+  configDetail,
+  isFuc,
+  isStt,
+  selectCheck,
+  data,
+  configFuc,
+  provider,
+  checkEvents,
+  nameRole
+}) => {
   const [tbody, setTbody] = useState<configProps[] | []>([])
 
   useEffect(() => {
@@ -43,6 +53,7 @@ const Table: FC<TableProps> = ({ configDetail, isFuc, isStt, selectCheck, data, 
                 provider={provider}
                 configFuc={configFuc}
                 checkEvents={checkEvents}
+                nameRole={nameRole}
               />
               {provider?.isFetched && (
                 <Tbody
@@ -54,6 +65,7 @@ const Table: FC<TableProps> = ({ configDetail, isFuc, isStt, selectCheck, data, 
                   configFuc={configFuc}
                   provider={provider}
                   checkEvents={checkEvents}
+                  nameRole={nameRole}
                 />
               )}
             </table>

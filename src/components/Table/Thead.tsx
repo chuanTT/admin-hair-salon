@@ -9,12 +9,13 @@ interface TheadProps {
   provider?: TypeValue
   checkEvents?: TypeEventPermission
   configFuc?: typeEvent[]
+  nameRole?: string
 }
 
 
 
-const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider, configFuc, checkEvents }) => {
-  const isFucViews = !isFuc ? checkViewsFuc(configFuc, checkEvents) : false
+const Thead: FC<TheadProps> = ({ config, isStt, isFuc, selectCheck, provider, configFuc, checkEvents, nameRole }) => {
+  const isFucViews = !isFuc ? checkViewsFuc(configFuc, checkEvents, nameRole) : false
   return (
     <thead className="text-sm font-semibold text-slate-500 bg-slate-50 border-t border-b border-slate-200">
       {config?.map((thead, index) => {

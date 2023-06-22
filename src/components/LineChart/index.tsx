@@ -1,4 +1,4 @@
-import { Chart } from "react-chartjs-2"
+import { Line } from "react-chartjs-2"
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -10,7 +10,6 @@ import {
   Legend,
   Filler
 } from "chart.js"
-import { useEffect, useRef } from "react"
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend, Filler)
 
@@ -23,11 +22,11 @@ interface LineChartProps {
 
 export const options = {
   responsive: true,
+  maintainAspectRatio: false,
   interaction: {
     mode: "index" as const,
     intersect: false
   },
-  stacked: false,
   plugins: {
     title: {
       display: false
@@ -59,31 +58,12 @@ export const options = {
   }
 }
 
-function LineChart({ data, width, height }: LineChartProps) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const chartRef = useRef<ChartJS>(null)
-
-  useEffect(() => {
-    const chart = chartRef.current
-
-    if (chart) {
-      window.addEventListener('beforeprint', () => {
-        chart.resize(600, 600);
-      });
-      window.addEventListener('afterprint', () => {
-        chart.resize();
-      });
-       
-    }
-
-    return () => {
-      if (chart) {
-        chart?.destroy()
-      }
-    }
-  }, [])
-
-  return <Chart type="line" options={options} data={data} width={width} height={height} ref={chartRef} />
+function LineChart({ data, height }: LineChartProps) {
+  return (
+    <div style={{ width: "100%", height: height }}>
+      <Line options={options} data={data} />
+    </div>
+  )
 }
 
 export default LineChart

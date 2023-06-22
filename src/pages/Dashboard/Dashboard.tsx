@@ -2,6 +2,7 @@ import { getOtherCount } from "@/api/otherApi"
 import images from "@/assets/img"
 import CardCouter from "@/components/CardCouter"
 import CardDefault from "@/components/CardDefault"
+import ChartDashboard from "@/components/ChartDashboard"
 import useFetchingApi from "@/hooks/useFetchingApi"
 import { useProtectedLayout } from "@/layout/ProtectedLayout"
 
@@ -19,7 +20,7 @@ const Dashboard = () => {
         </div>
 
         <div className="col-lg-4 col-md-4 order-1">
-          <div className="row h-full">
+          <div className="row h-full max-sm:[&>*]:!w-full">
             <CardCouter
               src={images.ChartSuccess}
               title="Sản phẩm"
@@ -35,9 +36,9 @@ const Dashboard = () => {
           </div>
         </div>
 
-        {/* <div className="col-md-6 col-lg-12 order-1 mb-4">
+        <div className="col-md-6 col-lg-12 order-1 mb-4 max-lg:!flex-1">
           <ChartDashboard title="Số lượng sản phẩm trong tháng" />
-        </div> */}
+        </div>
       </div>
     </>
   )

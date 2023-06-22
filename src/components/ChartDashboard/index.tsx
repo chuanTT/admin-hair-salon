@@ -22,7 +22,7 @@ function ChartDashboard({ title }: ChartDashboardProps) {
     }
   })
 
-  const height = 150
+  const height = 300
   const chartData = {
     labels: dataChart?.data?.labels,
     datasets: [
@@ -57,7 +57,7 @@ function ChartDashboard({ title }: ChartDashboardProps) {
       </h5>
       <div className="card-body px-0">
         <div className="tab-content flex !p-0">
-          <div className="tab-pane fade show active grow" id="navs-tabs-line-card-income" role="tabpanel">
+          <div className="tab-pane fade show active grow !w-full" id="navs-tabs-line-card-income" role="tabpanel">
             <LineChart data={chartData} width={600} height={height} />
           </div>
         </div>

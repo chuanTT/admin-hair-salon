@@ -121,7 +121,11 @@ const Header = () => {
                 <div className="dropdown-divider"></div>
               </li>
               <li>
-                <Link className="dropdown-item !flex items-center" to={config.router.me}>
+                <Link
+                  onClick={() => setIsOpen(false)}
+                  className="dropdown-item !flex items-center"
+                  to={config.router.me}
+                >
                   <div className="mr-2 text-lg">
                     <BiUser />
                   </div>
@@ -132,6 +136,7 @@ const Header = () => {
                 <span
                   className="dropdown-item !flex items-center"
                   onClick={() => {
+                    setIsOpen(false)
                     setIsShow(true)
                   }}
                   aria-hidden="true"

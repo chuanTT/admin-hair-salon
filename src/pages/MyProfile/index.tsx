@@ -5,42 +5,51 @@ import { InputField } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
-import { AddUser } from "@/api/usersApi"
+import { UpdateUser, getMeApi } from "@/api/usersApi"
 import SendFormData from "@/components/FormHandel/SendFormData"
-import { useRef } from "react"
+import { useRef, useState } from "react"
+import { useQueryClient } from "@tanstack/react-query"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
   user_name: Yup.string().required("Vui lòng nhập tên đăng nhập"),
-  password: Yup.string().required("Vui lòng nhập mật khẩu").min(6, "Mật khẩu tối thiểu 6 ký tự"),
-  confirm_password: Yup.string()
-    .required("Vui lòng nhập mật khẩu")
-    .min(6, "Mật khẩu tối thiểu 6 ký tự")
-    .oneOf([Yup.ref("password")], "Mật khẩu không khớp"),
   email: Yup.string().email("Email không đúng định dạng")
 })
 
+enum UserValue {
+  avatar = "avatar",
+  full_name = "full_name",
+  user_name = "user_name",
+  phone = "phone",
+  email = "email"
+}
+
+const defaultValues = {
+  avatar: "",
+  full_name: "",
+  user_name: "",
+  phone: "",
+  email: ""
+}
+
 const MyProfile = () => {
+  const [, setIsUpdated] = useState(false)
   const ImgRef = useRef<refListImage>(null)
+  const QueryClient = useQueryClient()
+
   return (
     <Breadcrumb>
       <FormHandel
         isValidate
         schema={schema}
-        callApi={AddUser}
-        errorFuc={(reset) => {
-          typeof reset === "function" &&
-            reset({
-              password: "",
-              confirm_password: ""
-            })
-        }}
+        callApi={(result) => UpdateUser(result?.id, result?.data)}
         closeFuncSucc={({ remove, propForm }) => {
           typeof remove === "function" && remove()
           propForm && propForm.reset()
           ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
+          QueryClient.invalidateQueries(["verify-token"])
         }}
-        customValuesData={(value) => {
+        customValuesData={(value, result) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars
           const { avatar, ...spread } = value
           let data = {
@@ -52,7 +61,27 @@ const MyProfile = () => {
             data = SendFormData(data)
           }
 
-          return data
+          return {
+            data,
+            id: result?.data?.id
+          }
+        }}
+        customValue={({ data, key }) => {
+          if (key === UserValue.avatar) {
+            if (ImgRef.current) {
+              ImgRef.current?.setSrc?.(data[key] ?? "")
+            }
+            setIsUpdated((prev) => !prev)
+            return true
+          }
+        }}
+        defaultValues={defaultValues}
+        isEdit
+        id={1}
+        nameTable="me"
+        callApiEdit={getMeApi}
+        customUrl={({ query, nameTable }) => {
+          return query?.for(nameTable)?.url()
         }}
       >
         {({ propForm, isPending, setResertForm }) => {
@@ -100,6 +129,8 @@ const MyProfile = () => {
                 register={register}
                 isRequire
                 errors={errors}
+                readOnly
+                disabled
               />
 
               <InputField

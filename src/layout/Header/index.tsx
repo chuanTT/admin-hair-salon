@@ -9,6 +9,7 @@ import { layoutMenuFucRemove } from "../DefaultLayout"
 import "./header.css"
 import Modal from "@/components/Modal"
 import ButtonLoading from "@/components/ButtonLoading"
+import config from "@/config"
 
 const Header = () => {
   const { user, removeAuth } = useProtectedLayout()
@@ -120,7 +121,7 @@ const Header = () => {
                 <div className="dropdown-divider"></div>
               </li>
               <li>
-                <Link className="dropdown-item !flex items-center" to="#">
+                <Link className="dropdown-item !flex items-center" to={config.router.me}>
                   <div className="mr-2 text-lg">
                     <BiUser />
                   </div>

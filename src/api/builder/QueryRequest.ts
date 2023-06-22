@@ -22,9 +22,9 @@ export default class QueryRequest {
   fields: any
   // eslint-disable-next-line @typescript-eslint/ban-types, @typescript-eslint/no-explicit-any
   filters: any
-  pageValue?: number
-  limitValue?: number
-  perPageValue?: number
+  pageValue?: number | null
+  limitValue?: number | null
+  perPageValue?: number | null
   paramsObj?: {
     [key: string]: string | number | undefined
   }
@@ -61,9 +61,9 @@ export default class QueryRequest {
     this.sorts = []
     this.fields = {}
     this.filters = {}
-    this.pageValue = 1
-    this.limitValue = 10
-    this.perPageValue = 10
+    this.pageValue = null
+    this.limitValue = null
+    this.perPageValue = null
     this.paramsObj = {}
 
     this.parser = new Parser(this)

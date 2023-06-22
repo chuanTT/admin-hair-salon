@@ -1,50 +1,58 @@
 /* eslint-disable react/display-name */
 import { createBrowserRouter, defer, IndexRouteObject, Navigate, NonIndexRouteObject, Outlet } from "react-router-dom"
-import { lazy, Suspense } from "react"
+import { ComponentType, lazy, LazyExoticComponent, Suspense } from "react"
 import config from "@/config"
-import Dashboard from "@/pages/Dashboard"
-import Product from "@/pages/Products"
-import Users from "@/pages/Users"
-import UserListTrash from "@/pages/Users/UserListTrash"
-import Blog from "@/pages/Blog"
-import AddUser from "@/pages/Users/AddUser"
-import EditUser from "@/pages/Users/EditUser"
-import Login from "@/pages/Login"
-import Permission from "@/pages/Settings/Permission"
-import NotFound from "@/pages/NotFound"
 import { IoHome, IoSettingsSharp } from "react-icons/io5"
 import { BsFillPeopleFill } from "react-icons/bs"
 import { FaProductHunt } from "react-icons/fa"
 import { GiOpenBook } from "react-icons/gi"
-import AddProducts from "@/pages/Products/AddProducts"
 import { verifyToken } from "@/api/authApi"
 import AuthLayout from "@/layout/AuthLayout"
 import Loading from "@/components/Loading"
-import ProductListTrash from "@/pages/Products/ProductListTrash"
-import BlogListTrash from "@/pages/Blog/BlogListTrash"
-import SlideshowProducts from "@/pages/Products/SlideshowProducts"
-import EditProducts from "@/pages/Products/EditProducts"
-import AddBlog from "@/pages/Blog/AddBlog"
-import EditBlog from "@/pages/Blog/EditBlog"
-import AddProductsSilder from "@/pages/Products/AddProductsSilder"
-import EditProductsSlider from "@/pages/Products/EditProductsSlider"
-import GeneralSettings from "@/pages/Settings/GeneralSettings"
 import ProviderSettings from "@/layout/ProviderSettings"
 import { Event, PermissionInterFace, RoleList } from "@/types"
-import NoPermission from "@/pages/NoPermission"
-import MyProfile from "@/pages/MyProfile"
+
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
-export const Loadable = (str: string) => () => {
-  const Component = lazy(() => import(str))
+export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () => {
   return (
     <Suspense fallback={<Loading isCenterScreen />}>
-      <Component />
+      <Comp />
     </Suspense>
   )
 }
 
-// const Users = Loadable("../pages/Users")
+
+const Users = Loadable(lazy(() => import("@/pages/Users")))
+const UserListTrash = Loadable(lazy(() => import("@/pages/Users/UserListTrash")))
+const AddUser = Loadable(lazy(() => import("@/pages/Users/AddUser")))
+const EditUser = Loadable(lazy(() => import("@/pages/Users/EditUser")))
+const Dashboard = Loadable(lazy(() => import("@/pages/Dashboard")))
+
+
+const Product = Loadable(lazy(() => import("@/pages/Products")))
+const AddProducts = Loadable(lazy(() => import("@/pages/Products/AddProducts")))
+const EditProducts = Loadable(lazy(() => import("@/pages/Products/EditProducts")))
+const AddProductsSilder = Loadable(lazy(() => import("@/pages/Products/AddProductsSilder")))
+const EditProductsSlider = Loadable(lazy(() => import("@/pages/Products/EditProductsSlider")))
+const SlideshowProducts = Loadable(lazy(() => import("@/pages/Products/SlideshowProducts")))
+const ProductListTrash = Loadable(lazy(() => import("@/pages/Products/ProductListTrash")))
+
+
+const Blog = Loadable(lazy(() => import("@/pages/Blog")))
+const AddBlog = Loadable(lazy(() => import("@/pages/Blog/AddBlog")))
+const EditBlog = Loadable(lazy(() => import("@/pages/Blog/EditBlog")))
+const BlogListTrash = Loadable(lazy(() => import("@/pages/Blog/BlogListTrash")))
+
+
+const Login = Loadable(lazy(() => import("@/pages/Login")))
+const NotFound = Loadable(lazy(() => import("@/pages/NotFound")))
+const NoPermission = Loadable(lazy(() => import("@/pages/NoPermission")))
+const MyProfile = Loadable(lazy(() => import("@/pages/MyProfile")))
+const Permission = Loadable(lazy(() => import("@/pages/Settings/Permission")))
+const GeneralSettings = Loadable(lazy(() => import("@/pages/Settings/GeneralSettings")))
+
+
 
 export enum typeRouter {
   public = "public",

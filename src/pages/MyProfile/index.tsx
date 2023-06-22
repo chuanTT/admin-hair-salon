@@ -5,10 +5,11 @@ import { InputField } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
-import { UpdateUser, getMeApi } from "@/api/usersApi"
+import { UpdateUser, changePassword, getMeApi } from "@/api/usersApi"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import { useRef, useState } from "react"
 import { useQueryClient } from "@tanstack/react-query"
+import ModalChangePassword from "@/components/ModalChangePassword"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -36,6 +37,7 @@ const MyProfile = () => {
   const [, setIsUpdated] = useState(false)
   const ImgRef = useRef<refListImage>(null)
   const QueryClient = useQueryClient()
+  const [isOpen, setIsOpen] = useState(false)
 
   return (
     <Breadcrumb>
@@ -109,6 +111,12 @@ const MyProfile = () => {
                 register={register}
               />
 
+              <div className="!mt-3 text-end">
+                <span className="cursor-pointer font-medium" onClick={() => setIsOpen(true)} aria-hidden="true">
+                  Thay đổi mật khẩu
+                </span>
+              </div>
+
               <hr className="!my-4 block" />
 
               <InputField
@@ -153,6 +161,8 @@ const MyProfile = () => {
           )
         }}
       </FormHandel>
+
+      <ModalChangePassword callApiDelete={changePassword} setIsOpen={setIsOpen} isOpen={isOpen} />
     </Breadcrumb>
   )
 }

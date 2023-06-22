@@ -31,10 +31,15 @@ const resetPassword = (id: string | number, data: any) => {
   return HTTP.patch(`${tableUser}/reset-password/${id}`, data)
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const changePassword = (data: any) => {
+  return HTTP.patch(`${tableUser}/change-password`, data)
+}
+
 const RecoveryUser = (data: (string | number)[]) => {
   return HTTP.patch(`${tableUser}`, {
     ids: data
   })
 }
 
-export { getUser, deleteUser, AddUser, UpdateUser, tableUser, RecoveryUser, resetPassword, getMeApi }
+export { getUser, deleteUser, AddUser, UpdateUser, tableUser, RecoveryUser, resetPassword, getMeApi, changePassword }

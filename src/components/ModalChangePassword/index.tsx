@@ -10,11 +10,10 @@ import ButtonLoading from "../ButtonLoading"
 
 interface ModalDeleteCusProps {
   isOpen: boolean
-  id: string | number
   setIsOpen: Dispatch<SetStateAction<boolean>>
   closeToastEvent?: () => void
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  callApiDelete: (id: number | string, data: any) => Promise<AxiosResponse<any, any>>
+  callApiDelete: (data: any) => Promise<AxiosResponse<any, any>>
   msgObj?: {
     erorr?: string
     suss?: string
@@ -26,22 +25,21 @@ interface ModalDeleteCusProps {
 
 const schema = Yup.object().shape({
   password: Yup.string().required("Vui lòng nhập mật khẩu").min(6, "Mật khẩu tối thiểu 6 ký tự"),
+  password_old: Yup.string().required("Vui lòng nhập mật khẩu hiện tại").min(6, "Mật khẩu tối thiểu 6 ký tự"),
   confirm_password: Yup.string()
     .required("Vui lòng nhập mật khẩu")
     .min(6, "Mật khẩu tối thiểu 6 ký tự")
     .oneOf([Yup.ref("password")], "Mật khẩu không khớp")
 })
 
-const ModalResetPassword: FC<ModalDeleteCusProps> = ({
+const ModalChangePassword: FC<ModalDeleteCusProps> = ({
   isOpen,
-  id,
   setIsOpen,
   closeToastEvent,
   callApiDelete,
   msgObj,
   sussFucMsg
 }) => {
-
   return (
     <Portal>
       <Modal classModalWidth="max-sm:w-[90%]" isOpen={isOpen} setIsOpen={setIsOpen} isClose>
@@ -52,6 +50,7 @@ const ModalResetPassword: FC<ModalDeleteCusProps> = ({
             propForm?.reset &&
               propForm?.reset({
                 password: "",
+                password_old: "",
                 confirm_password: ""
               })
 
@@ -62,9 +61,7 @@ const ModalResetPassword: FC<ModalDeleteCusProps> = ({
           removeClassForm
           isValidate
           schema={schema}
-          callApi={(value: { password: string | number; confirm_password: string | number }) =>
-            callApiDelete(id, value)
-          }
+          callApi={(value: { password: string | number; confirm_password: string | number }) => callApiDelete(value)}
         >
           {({ isPending, propForm }) => {
             const {
@@ -78,14 +75,25 @@ const ModalResetPassword: FC<ModalDeleteCusProps> = ({
                 <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
                   <div className="sm:flex sm:items-start w-full">
                     <div className="text-left w-full">
-                      <h3 className="text-lg leading-6 font-medium text-gray-900">Reset mật khẩu</h3>
+                      <h3 className="text-lg leading-6 font-medium text-gray-900">Thay đổi mật khẩu</h3>
                       <div className="mt-4">
                         <div className="row">
                           <InputField
                             type="password"
                             classInputContainer="col-md-12 mb-3"
                             title="Mật khẩu"
-                            placeholder="Nhập mật khẩu"
+                            placeholder="Nhập mật khẩu hiện tại"
+                            name="password_old"
+                            register={register}
+                            isRequire
+                            errors={errors}
+                          />
+
+                          <InputField
+                            type="password"
+                            classInputContainer="col-md-12 mb-3"
+                            title="Mật khẩu mới"
+                            placeholder="Nhập mật khẩu mới"
                             name="password"
                             register={register}
                             isRequire
@@ -95,8 +103,8 @@ const ModalResetPassword: FC<ModalDeleteCusProps> = ({
                           <InputField
                             type="password"
                             classInputContainer="col-md-12 mb-3"
-                            title="Xác nhận mật khẩu"
-                            placeholder="Nhập xác nhận mật khẩu"
+                            title="Xác nhận mật khẩu mới"
+                            placeholder="Nhập xác nhận mật khẩu mới"
                             name="confirm_password"
                             register={register}
                             isRequire
@@ -115,6 +123,7 @@ const ModalResetPassword: FC<ModalDeleteCusProps> = ({
                         reset &&
                           reset({
                             password: "",
+                            password_old: "",
                             confirm_password: ""
                           })
                         !isPending && setIsOpen((prev) => !prev)
@@ -139,4 +148,4 @@ const ModalResetPassword: FC<ModalDeleteCusProps> = ({
   )
 }
 
-export default ModalResetPassword
+export default ModalChangePassword

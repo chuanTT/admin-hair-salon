@@ -12,7 +12,6 @@ import Loading from "@/components/Loading"
 import ProviderSettings from "@/layout/ProviderSettings"
 import { Event, PermissionInterFace, RoleList } from "@/types"
 
-
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () => {
   return (
@@ -22,13 +21,11 @@ export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () =>
   )
 }
 
-
 const Users = Loadable(lazy(() => import("@/pages/Users")))
 const UserListTrash = Loadable(lazy(() => import("@/pages/Users/UserListTrash")))
 const AddUser = Loadable(lazy(() => import("@/pages/Users/AddUser")))
 const EditUser = Loadable(lazy(() => import("@/pages/Users/EditUser")))
 const Dashboard = Loadable(lazy(() => import("@/pages/Dashboard")))
-
 
 const Product = Loadable(lazy(() => import("@/pages/Products")))
 const AddProducts = Loadable(lazy(() => import("@/pages/Products/AddProducts")))
@@ -38,12 +35,10 @@ const EditProductsSlider = Loadable(lazy(() => import("@/pages/Products/EditProd
 const SlideshowProducts = Loadable(lazy(() => import("@/pages/Products/SlideshowProducts")))
 const ProductListTrash = Loadable(lazy(() => import("@/pages/Products/ProductListTrash")))
 
-
 const Blog = Loadable(lazy(() => import("@/pages/Blog")))
 const AddBlog = Loadable(lazy(() => import("@/pages/Blog/AddBlog")))
 const EditBlog = Loadable(lazy(() => import("@/pages/Blog/EditBlog")))
 const BlogListTrash = Loadable(lazy(() => import("@/pages/Blog/BlogListTrash")))
-
 
 const Login = Loadable(lazy(() => import("@/pages/Login")))
 const NotFound = Loadable(lazy(() => import("@/pages/NotFound")))
@@ -51,8 +46,6 @@ const NoPermission = Loadable(lazy(() => import("@/pages/NoPermission")))
 const MyProfile = Loadable(lazy(() => import("@/pages/MyProfile")))
 const Permission = Loadable(lazy(() => import("@/pages/Settings/Permission")))
 const GeneralSettings = Loadable(lazy(() => import("@/pages/Settings/GeneralSettings")))
-
-
 
 export enum typeRouter {
   public = "public",
@@ -87,7 +80,7 @@ export const router: CustomRouteConfig[] = [
         <Outlet />
       </ProviderSettings>
     ),
-    errorElement: <NotFound />,
+    errorElement: <Navigate to={config.router[404]} replace={true} />,
     children: [
       {
         path: config.router.home,
@@ -293,6 +286,7 @@ export const router: CustomRouteConfig[] = [
       {
         path: config.router.login,
         type: typeRouter.public,
+        title: "Đăng nhập phần mềm quản lý",
         element: <Login />
       },
 

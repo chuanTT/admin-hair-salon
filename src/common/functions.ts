@@ -279,8 +279,10 @@ const isObject = (obj: any) => {
   return isCheck
 }
 
-const getPrivateRouter = () => {
-  const privateRole = router?.[0]?.children?.find((itemRouter) => itemRouter?.type === typeRouter.private)
+const getPrivateRouter = (isPrivate = true) => {
+  const privateRole = isPrivate
+    ? router?.[0]?.children?.find((itemRouter) => itemRouter?.type === typeRouter.private)
+    : router?.[0]
   const childrenRouter = privateRole ? privateRole?.children || [] : []
   return {
     childrenRouter,
@@ -362,7 +364,7 @@ const checkViewsFuc = (configFuc?: typeEvent[], checkEvents?: any, nameRole?: st
         if (type) {
           isCheck = checkEvents?.[type]
         }
-        if(config?.role && Array.isArray(config?.role)) {
+        if (config?.role && Array.isArray(config?.role)) {
           isCheck = config.role.includes(nameRole)
         }
         return isCheck
@@ -381,15 +383,16 @@ interface fucBreadCrumbPraram {
   callOptCustom?: (config?: CustomRouteConfig) => optPath
   callOptChild?: (config?: CustomRouteConfig) => optPath
   callEndLoop?: (config?: optPath[]) => void
+  isPrivate?: boolean
 }
 
-const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBreadCrumbPraram) => {
+const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom, isPrivate = true }: fucBreadCrumbPraram) => {
   if (path) {
     const isMatches = config.router.home === path
     const string = isMatches ? path : removeLink(path || "")
     if (string) {
       const arrPt = isMatches ? string : string.split("/")
-      const { childrenRouter } = getPrivateRouter()
+      const { childrenRouter } = getPrivateRouter(isPrivate)
       let arrResult: CustomRouteConfig[] = [...childrenRouter]
       const arrNav: optPath[] = []
 
@@ -460,19 +463,16 @@ const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBr
   }
 }
 
-
 function DateMothYear(date = "") {
-  let d = moment();
-  if (date) d = moment(date);
+  let d = moment()
+  if (date) d = moment(date)
 
   return {
     d,
     y: d.year(),
-    m: d.month() + 1,
-  };
+    m: d.month() + 1
+  }
 }
-
-
 
 export {
   requestAnimationFrameAccordion,

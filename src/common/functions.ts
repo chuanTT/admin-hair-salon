@@ -461,6 +461,18 @@ const fucBreadCrumb = ({ path, callEndLoop, callOptChild, callOptCustom }: fucBr
 }
 
 
+function DateMothYear(date = "") {
+  let d = moment();
+  if (date) d = moment(date);
+
+  return {
+    d,
+    y: d.year(),
+    m: d.month() + 1,
+  };
+}
+
+
 
 export {
   requestAnimationFrameAccordion,
@@ -485,5 +497,6 @@ export {
   fucFirtsChart,
   fucStyleCovert,
   checkViewsFuc,
-  fucBreadCrumb
+  fucBreadCrumb,
+  DateMothYear
 }

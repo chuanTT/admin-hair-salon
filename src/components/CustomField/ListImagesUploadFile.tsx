@@ -401,7 +401,7 @@ function ListImages(props: ListImagesProps, ref: ForwardedRef<refListImage>) {
 
       <Portal>
         <Modal classModalWidth={"max-h-[90%] overflow-y-auto"} isOpen={isOpen} setIsOpen={setIsOpen}>
-          <Images w={"100%"} h={"auto"} classNameImg="rounded-md w-full" src={srcViews} alt="images" />
+          <Images w={"100%"} h={"auto"} classNameImg="rounded-md w-full" src={srcViews} alt="images" innerPropsImages={styleImg} />
         </Modal>
       </Portal>
       {/* {isError && (

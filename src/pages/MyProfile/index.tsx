@@ -8,7 +8,6 @@ import LayoutFormDefault from "@/layout/LayoutFormDefault"
 import { UpdateUser, changePassword, getMeApi } from "@/api/usersApi"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import { useRef, useState } from "react"
-import { useQueryClient } from "@tanstack/react-query"
 import ModalChangePassword from "@/components/ModalChangePassword"
 
 const schema = Yup.object().shape({
@@ -36,7 +35,6 @@ const defaultValues = {
 const MyProfile = () => {
   const [, setIsUpdated] = useState(false)
   const ImgRef = useRef<refListImage>(null)
-  const QueryClient = useQueryClient()
   const [isOpen, setIsOpen] = useState(false)
 
   return (
@@ -49,7 +47,6 @@ const MyProfile = () => {
           typeof remove === "function" && remove()
           propForm && propForm.reset()
           ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
-          QueryClient.invalidateQueries(["verify-token"])
         }}
         customValuesData={(value, result) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars

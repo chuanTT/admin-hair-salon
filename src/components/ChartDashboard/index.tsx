@@ -62,11 +62,12 @@ function ChartDashboard({ title, height = 300 }: ChartDashboardProps) {
 
   return (
     <div className="card h-100">
-      <h5 className="card-header m-0 pb-3 flex items-center justify-between gap-4">
+      <h5 className="card-header m-0 pb-3 flex items-center justify-between gap-4 flex-wrap">
         <span>{title}</span>
 
-        <div>
+        <div className="max-sm:w-full">
           <DatePickerField
+            classDate="max-sm:[&>*]:w-full"
             name="date"
             placeholder="mm/yyyy"
             rest={{

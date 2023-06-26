@@ -24,11 +24,11 @@ const SwitchRadioComp = (props: SwitchRadioProps, ref: ForwardedRef<RefSwitchRad
     () => {
       return {
         setValue: (checked) => {
-          const isChecked = checked ?? !checked
-          setChecked(isChecked)
+          setChecked((prev) => checked ?? !prev)
         }
       }
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     []
   )
 

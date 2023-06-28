@@ -44,6 +44,7 @@ const MyProfile = () => {
   return (
     <Breadcrumb>
       <FormHandel
+        isNoReCallList
         isValidate
         schema={schema}
         callApi={(result) => UpdateUser(result?.id, result?.data)}

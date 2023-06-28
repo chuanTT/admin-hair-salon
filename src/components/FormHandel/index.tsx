@@ -75,6 +75,7 @@ interface FormHandelProps {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   sussFuc?: (data: any) => void
   optionValidateRest?: UseFormProps
+  isNoReCallList?: boolean
 }
 
 const FormHandel: FC<FormHandelProps> = (prop) => {
@@ -101,7 +102,8 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
     customValue,
     closeFuncSucc,
     isFormData,
-    optionValidateRest
+    optionValidateRest,
+    isNoReCallList
   } = prop
   // init
   const [isPending, setIsPending] = useState(false)
@@ -155,7 +157,7 @@ const FormHandel: FC<FormHandelProps> = (prop) => {
         typeof errorFuc === "function" && errorFuc(propForm.reset)
       } else {
         msgToast.current = MsgType(context?.msg ?? msgObj?.suss ?? "Thêm thành công", false)
-        nameTable && QueryClient.invalidateQueries([nameTable])
+        !isNoReCallList && nameTable && QueryClient.invalidateQueries([nameTable])
         typeof sussFuc === "function" && sussFuc(context)
       }
       ReRender()

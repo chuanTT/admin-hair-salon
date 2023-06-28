@@ -217,6 +217,7 @@ export interface userProps {
 export interface dataProvider {
   user?: userProps
   token?: string
+  setUser?:  Dispatch<SetStateAction<userProps>>
   saveAuth?: () => void
   removeAuth?: () => void
 }

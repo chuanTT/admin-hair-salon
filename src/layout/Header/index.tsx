@@ -69,7 +69,7 @@ const Header = () => {
       id="layout-navbar"
     >
       <div
-        className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none"
+        className="layout-menu-toggle navbar-nav align-items-xl-center me-3 me-xl-0 d-xl-none cursor-pointer"
         onClick={() => {
           const html = document.querySelector("html")
           html?.classList?.add("layout-menu-expanded", "layout-transitioning")

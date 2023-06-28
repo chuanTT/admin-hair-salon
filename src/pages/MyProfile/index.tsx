@@ -9,6 +9,9 @@ import { UpdateUser, changePassword, getMeApi } from "@/api/usersApi"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import { useRef, useState } from "react"
 import ModalChangePassword from "@/components/ModalChangePassword"
+import { verifyToken } from "@/api/authApi"
+import { useProtectedLayout } from "@/layout/ProtectedLayout"
+import { userProps } from "@/types"
 
 const schema = Yup.object().shape({
   full_name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -33,6 +36,7 @@ const defaultValues = {
 }
 
 const MyProfile = () => {
+  const { setUser } = useProtectedLayout()
   const [, setIsUpdated] = useState(false)
   const ImgRef = useRef<refListImage>(null)
   const [isOpen, setIsOpen] = useState(false)
@@ -43,10 +47,14 @@ const MyProfile = () => {
         isValidate
         schema={schema}
         callApi={(result) => UpdateUser(result?.id, result?.data)}
-        closeFuncSucc={({ remove, propForm }) => {
+        closeFuncSucc={async ({ remove, propForm }) => {
           typeof remove === "function" && remove()
           propForm && propForm.reset()
           ImgRef?.current && ImgRef?.current?.clearImage && ImgRef?.current?.clearImage()
+          const result = await verifyToken()
+          if (result?.data) {
+            setUser && setUser(result.data as userProps)
+          }
         }}
         customValuesData={(value, result) => {
           // eslint-disable-next-line @typescript-eslint/no-unused-vars

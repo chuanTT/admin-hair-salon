@@ -12,7 +12,7 @@ interface ProtectedLayoutProps extends defaultProps {
 }
 
 const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
-  const [user, setUser] = useState(userData)
+  const [user, setUser] = useState(userData ?? {})
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -33,6 +33,7 @@ const ProtectedLayout: FC<ProtectedLayoutProps> = ({ children, userData }) => {
 
   const value = useMemo(
     () => ({
+      setUser,
       user,
       removeAuth
     }),

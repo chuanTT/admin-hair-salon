@@ -29,7 +29,7 @@ const SlideBar = () => {
       <div className="app-brand demo mb-4 pt-5 flex justify-center items-center">
         <NavLink to={config.router.home} className="app-brand-link">
           <span className="app-brand-logo demo w-full">
-            <Images src={dataSettings?.logo?.src} h={80} w={"auto"} innerPropsImages={{ style: { ...settingsImg } }} />
+            <Images src={dataSettings?.logo?.src} h={45} w={"auto"} innerPropsImages={{ style: { ...settingsImg } }} />
           </span>
         </NavLink>
       </div>

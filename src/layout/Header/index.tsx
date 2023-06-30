@@ -87,7 +87,7 @@ const Header = () => {
           <li className="nav-item navbar-dropdown dropdown-user dropdown">
             <div className="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
               <div className="avatar avatar-online select-none" onClick={() => setIsOpen(!isOpen)} aria-hidden="true">
-                <Images src={user?.avatar} w={"100%"} h={"100%"} alt="avatar" classNameImg="w-px-40 h-auto" isRounded />
+                <Images src={user?.avatar} w={"100%"} h={"100%"} alt="avatar" isRounded />
               </div>
             </div>
             <ul
@@ -105,7 +105,6 @@ const Header = () => {
                           w={"100%"}
                           h={"100%"}
                           alt="avatar"
-                          classNameImg="w-px-40 h-auto"
                           isRounded
                         />
                       </div>

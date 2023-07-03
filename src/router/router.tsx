@@ -34,6 +34,7 @@ const AddProductsSilder = Loadable(lazy(() => import("@/pages/Products/AddProduc
 const EditProductsSlider = Loadable(lazy(() => import("@/pages/Products/EditProductsSlider")))
 const SlideshowProducts = Loadable(lazy(() => import("@/pages/Products/SlideshowProducts")))
 const ProductListTrash = Loadable(lazy(() => import("@/pages/Products/ProductListTrash")))
+const CategoryList = Loadable(lazy(() => import("@/pages/Products/CategoryList")))
 
 const Blog = Loadable(lazy(() => import("@/pages/Blog")))
 const AddBlog = Loadable(lazy(() => import("@/pages/Blog/AddBlog")))
@@ -205,6 +206,12 @@ export const router: CustomRouteConfig[] = [
                 element: <EditProductsSlider />,
                 keyParent: PermissionInterFace.SILDE_PRODUCT,
                 isNoRender: true
+              },
+
+              {
+                path: config.router.category,
+                title: "Danh sách danh mục",
+                element: <CategoryList />,
               }
             ]
           },

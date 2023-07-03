@@ -142,6 +142,7 @@ export interface TablePaginationProps extends TableProps {
   isDelete?: boolean
   is_force?: number | string
   is_restore?: boolean
+  is_checkEvent?: boolean
   customUrl?: (obj: customUrlProps) => string | undefined
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   callApiDelete?: (id: (number | string)[]) => Promise<AxiosResponse<any, any>>

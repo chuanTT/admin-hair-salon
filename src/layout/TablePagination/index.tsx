@@ -28,7 +28,8 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
     selectCheck,
     is_force,
     is_restore,
-    callBack
+    callBack,
+    is_checkEvent = false
   } = prop
 
   const { checkEvent, nameRole } = usePermissions()
@@ -122,22 +123,25 @@ const TablePagination: FC<TablePaginationProps> = (prop) => {
 
   return (
     <TablePaginationContext.Provider value={values}>
-      {isFetched && isDelete && callApiDelete && checkEvent && checkEvent?.DELETE && (
-        <Portal>
-          <ModalDeleteCus
-            id={listIDs}
-            isOpen={isOpen}
-            setIsOpen={setIsOpen}
-            callApiDelete={callApiDelete}
-            is_force={is_force}
-            is_restore={is_restore}
-            SuccessModal={() => {
-              setListIDs([])
-              invalidateQueriesQueryClient()
-            }}
-          />
-        </Portal>
-      )}
+      {isFetched &&
+        isDelete &&
+        callApiDelete &&
+        (is_checkEvent || (!is_checkEvent && checkEvent && checkEvent?.DELETE)) && (
+          <Portal>
+            <ModalDeleteCus
+              id={listIDs}
+              isOpen={isOpen}
+              setIsOpen={setIsOpen}
+              callApiDelete={callApiDelete}
+              is_force={is_force}
+              is_restore={is_restore}
+              SuccessModal={() => {
+                setListIDs([])
+                invalidateQueriesQueryClient()
+              }}
+            />
+          </Portal>
+        )}
 
       <Breadcrumb>
         {children}

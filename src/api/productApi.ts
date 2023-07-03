@@ -3,6 +3,7 @@ import HTTP from "./axiosClient"
 
 const tableProduct = "product"
 const tableSliderProduct = "slider-product"
+const tableCategory = "category"
 
 const getProduct = (url: string) => {
   return HTTP.get(url)
@@ -12,10 +13,20 @@ const getSliderProduct = (url: string) => {
   return HTTP.get(`/${tableProduct}${url}`)
 }
 
+const getCategory = (url: string) => {
+  return HTTP.get(url)
+}
+
 //  @typescript-eslint/no-explicit-any
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const addProductApi = (data: any) => {
   return HTTP.post(`${tableProduct}`, data)
+}
+
+//  @typescript-eslint/no-explicit-any
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const addCategory = (data: any) => {
+  return HTTP.post(`${tableCategory}`, data)
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -27,6 +38,11 @@ const RecoveryProduct = (data: (string | number)[]) => {
   return HTTP.patch(`${tableProduct}`, {
     ids: data
   })
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const updateCategory = (id: number | string, data: any) => {
+  return HTTP.patch(`${tableCategory}/${id}`, data)
 }
 
 const UpdateProduct = (id: number | string, data: number | string | FormData | undefined) => {
@@ -53,6 +69,16 @@ const deleletProductSlide = (data: (string | number)[]) => {
   })
 }
 
+const deleletCategory = (ids: string | number | (string | number)[]) => {
+  let id: string | number = 0
+
+  if (Array.isArray(ids)) {
+    if (ids?.length > 0) {
+      id = ids[0]
+    }
+  }
+  return HTTP.delete(`${tableCategory}/${id}`)
+}
 
 export {
   getProduct,
@@ -65,5 +91,10 @@ export {
   RecoveryProduct,
   UpdateProductSlider,
   addProductSlideApi,
-  deleletProductSlide
+  deleletProductSlide,
+  getCategory,
+  tableCategory,
+  deleletCategory,
+  addCategory,
+  updateCategory
 }

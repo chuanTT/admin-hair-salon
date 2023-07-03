@@ -11,6 +11,8 @@ interface LayoutDefaultFilterProps extends defaultProps, FilterTrashProps {
   is_restore?: boolean
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   setIsOpen?: Dispatch<SetStateAction<boolean>>
+  isEvent?: boolean
+  onClick?: (e?: Event) => void
 }
 
 const LayoutDefaultFilter: FC<LayoutDefaultFilterProps> = ({
@@ -21,7 +23,10 @@ const LayoutDefaultFilter: FC<LayoutDefaultFilterProps> = ({
   is_show,
   setIsOpen,
   setIsRestore,
-  is_restore
+  is_restore,
+  isEvent = false,
+  onClick,
+  ...spread
 }) => {
   const { checkEvent } = usePermissions()
   return (
@@ -30,8 +35,16 @@ const LayoutDefaultFilter: FC<LayoutDefaultFilterProps> = ({
         {children}
       </div>
       <div className="flex items-center gap-3 [&>*]:h-10">
-        {isButton && checkEvent?.CREATE && (
-          <ButtonLoading classCustom="w-fit" to={to} isPrimary>
+        {isButton && (isEvent || (!isEvent && checkEvent?.CREATE)) && (
+          <ButtonLoading
+            classCustom="w-fit"
+            to={to}
+            onClick={(e) => {
+              onClick && onClick(e)
+            }}
+            isPrimary
+            {...spread}
+          >
             {txtButton}
           </ButtonLoading>
         )}

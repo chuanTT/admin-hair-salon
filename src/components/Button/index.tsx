@@ -13,7 +13,7 @@ export enum iconTypeEvent {
   delete = "delete",
   viewsImage = "views_images",
   restore = "restore",
-  reset = "reset",
+  reset = "reset"
 }
 
 interface iconConfig {
@@ -37,6 +37,8 @@ export interface ButtonProps extends ToolTipProps, defaultProps, HTMLAttributes<
   hIcon?: number
   isPending?: boolean
   customIcon?: iconConfig
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  onClick?: (e: any) => void
 }
 
 const LoadIcon = ({ customIcon }: { customIcon: iconConfig }) => {
@@ -74,7 +76,7 @@ const Button: FC<ButtonProps> = ({
   to,
   href,
   customClass,
-  //   onClick,
+  onClick,
   id,
   content,
   position,
@@ -87,7 +89,8 @@ const Button: FC<ButtonProps> = ({
   let Comp = tag ?? "button"
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   let props: any = {
-    ...rest
+    ...rest,
+    onClick
   }
 
   if (to) {

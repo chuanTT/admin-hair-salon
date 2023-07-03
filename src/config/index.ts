@@ -1,5 +1,5 @@
 import router from "./router"
-import { configProduct, configUsers, configBlog, configPermission, configProductSildeShow } from "./configTable"
+import { configProduct, configUsers, configBlog, configPermission, configProductSildeShow, configCategory } from "./configTable"
 import { typeObject } from "@/types"
 
 interface objFilter {
@@ -18,7 +18,8 @@ const config = {
     configUsers,
     configBlog,
     configPermission,
-    configProductSildeShow
+    configProductSildeShow,
+    configCategory
   },
   filter: {
     user: ({ searchValue, is_deleted }: objFilter) => {

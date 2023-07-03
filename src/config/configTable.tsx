@@ -184,4 +184,30 @@ const configProductSildeShow: configProps[][] = [
   ]
 ]
 
-export { configProduct, configUsers, configBlog, configPermission, configProductSildeShow }
+const configCategory: configProps[][] = [
+  [
+    {
+      key: "name",
+      head: "Tên danh mục"
+    },
+
+    {
+      key: "alias",
+      head: "Đường dẫn thân thiện"
+    },
+
+    {
+      key: "created_at",
+      head: "Ngày tạo",
+      customValue: formatDate
+    },
+
+    {
+      key: "updated_at",
+      head: "Ngày cập nhật",
+      customValue: formatDate
+    }
+  ]
+]
+
+export { configProduct, configUsers, configBlog, configPermission, configProductSildeShow, configCategory }

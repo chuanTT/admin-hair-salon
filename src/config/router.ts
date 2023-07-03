@@ -6,6 +6,7 @@ const router = {
   slideshowProduct: "slideshow",
   addSlideshowProduct: "slideshow/add-slideshow",
   editSlideshowProduct: "slideshow/edit-slideshow/:id",
+  category: "category",
   user: "/users",
   userTrash: "trash",
   addUser: "add-user",

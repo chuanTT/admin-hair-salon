@@ -5,7 +5,7 @@ import { InputField, ReactSelectCus, TextArea } from "@/components/CustomField"
 import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
 import FormHandel from "@/components/FormHandel"
 import { useParams } from "react-router-dom"
-import { isEmptyObj } from "@/common/functions"
+import { convertNumber, isEmptyObj } from "@/common/functions"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
 import { UpdateProduct, getProduct, tableProduct } from "@/api/productApi"
@@ -15,6 +15,8 @@ import { options, optionsStatus } from "@/common/optionStatic"
 import config from "@/config"
 import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
 import { Event } from "@/types"
+import { configCategoryApi } from "@/config/configCallApi"
+import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Vui lòng nhập họ và tên"),
@@ -35,7 +37,8 @@ export enum valueDefaultProduct {
   isNegotiate = "isNegotiate",
   price = "price",
   short_content = "short_content",
-  description = "description"
+  description = "description",
+  cate_id = "cate_id"
 }
 
 const defaultValues = {
@@ -45,7 +48,8 @@ const defaultValues = {
   [valueDefaultProduct.isNegotiate]: "",
   [valueDefaultProduct.price]: "",
   [valueDefaultProduct.short_content]: "",
-  [valueDefaultProduct.description]: ""
+  [valueDefaultProduct.description]: "",
+  [valueDefaultProduct.cate_id]: ""
 }
 
 const EditProducts = () => {
@@ -57,6 +61,7 @@ const EditProducts = () => {
   const [showPrice, setShowPrice] = useState(true)
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const [deleteImages, setDeleteImages] = useState<any[] | []>([])
+  const { option: optCate, setSearch } = useFethingOptionApi(configCategoryApi)
 
   return (
     <PermissonCheckLayout event={Event.UPDATE}>
@@ -124,10 +129,14 @@ const EditProducts = () => {
           }}
           customValuesData={(value, resultApi) => {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars
-            const { status, ...spread } = value
+            const { status, price, ...spread } = value
+            const { value: cvPrice } = convertNumber(price)
+            const isNegotiate = spread?.isNegotiate === 0 ? "0" : spread?.isNegotiate
             const data = {
               ...spread,
-              status: status ?? 1,
+              isNegotiate,
+              status: (status === 0 ? "0" : status) || "0",
+              price: (cvPrice === 0 ? "0" : cvPrice) || "0",
               id: resultApi?.data?.id
             }
 
@@ -167,6 +176,18 @@ const EditProducts = () => {
                   placeholder="Chọn trạng thái"
                   name="status"
                   options={optionsStatus}
+                  getValue={getValues}
+                  setValue={setValue}
+                />
+
+                <ReactSelectCus
+                  title="Danh mục"
+                  parenSelect="mb-3 col-md-12"
+                  placeholder="Chọn danh mục"
+                  name="cate_id"
+                  isRequire
+                  setValueSearch={setSearch}
+                  options={optCate}
                   getValue={getValues}
                   setValue={setValue}
                 />

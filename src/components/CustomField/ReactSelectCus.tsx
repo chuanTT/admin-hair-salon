@@ -21,7 +21,7 @@ export interface ReactSelectCusProps {
   clearErrors?: UseFormClearErrors<FieldValues>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   changeSelected?: (value: any) => void
-  setValueSearch?: Dispatch<SetStateAction<string>>
+  setValueSearch?: Dispatch<SetStateAction<string | number>>
   timeDelay?: number
   height?: string | number
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -56,7 +56,7 @@ const ReactSelectCus: FC<ReactSelectCusProps> = (prop) => {
     rest
   } = prop
   // const [valueSearch, setValueSearch] = useState("");
-  const setValueDebounced = useDebounce<Dispatch<SetStateAction<string>>>(
+  const setValueDebounced = useDebounce<Dispatch<SetStateAction<string | number>>>(
     setValueSearch ?? (() => {}),
     timeDelay ?? 800
   )

@@ -5,6 +5,7 @@ import TablePagination from "@/layout/TablePagination"
 import FilterCategory from "@/partials/Products/FilterCategory"
 import { DeteleFuc, EditFuc } from "@/config/configEvent"
 import { typeEventClick } from "@/types"
+import { isEmptyObj } from "@/common/functions"
 
 const CategoryList = () => {
   const idCate = useRef({ id: 0, isEdit: false })
@@ -44,15 +45,14 @@ const CategoryList = () => {
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
         let url = query?.for(nameTable).page(page).limit(limit)
         const obj = config.filter.other({ searchValue, key: "name" })
-        url = url?.params(obj)
+        if (!isEmptyObj(obj)) {
+          console.log(obj)
+          url = url?.params(obj)
+        }
         return url?.url()
       }}
     >
-      <FilterCategory
-        idCate={idCate}
-        isOpenModal={isOpen}
-        setIsOpenModal={setIsOpen}
-      />
+      <FilterCategory idCate={idCate} isOpenModal={isOpen} setIsOpenModal={setIsOpen} />
     </TablePagination>
   )
 }

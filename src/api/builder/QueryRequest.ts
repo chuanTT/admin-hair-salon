@@ -3,7 +3,7 @@ import Parser from "./Parser"
 
 export const initialQueryRequest = {
   page: 1,
-  per_page: 10
+  limit: 10
 }
 
 export default class QueryRequest {
@@ -204,7 +204,6 @@ export default class QueryRequest {
     if (!Number.isInteger(value)) {
       throw new Error("The limit() function takes a single argument of a number.")
     }
-
     this.limitValue = value
 
     return this

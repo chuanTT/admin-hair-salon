@@ -47,7 +47,9 @@ const useFethingOptionApi = ({
       if (isSearching && search) {
         if ((isOptionAll && search !== -1) || !isOptionAll) {
           if (typeof url !== "string") {
-            url = url?.where(keySearching, search)
+            url = url?.params({
+              [keySearching]: search
+            })
           }
         }
       }

@@ -15,11 +15,14 @@ import { options, optionsStatus } from "@/common/optionStatic"
 import config from "@/config"
 import { Event } from "@/types"
 import PermissonCheckLayout from "@/layout/PermissonCheckLayout"
+import useFethingOptionApi from "@/hooks/useFetchingOptionApi"
+import { configCategoryApi } from "@/config/configCallApi"
 
 const schema = Yup.object().shape({
   name: Yup.string().required("Vui lòng nhập họ và tên"),
   short_content: Yup.string().required("Vui lòng nhập nội dung ngắn"),
   description: Yup.string().required("Vui lòng nhập mô tả"),
+  cate_id: Yup.string().required("Vui lòng chọn danh mục"),
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   price: Yup.string().when("$showPrice", (showPrice: any, schema?: any) => {
     if (showPrice?.[0]) {
@@ -39,6 +42,7 @@ const AddProducts = () => {
   const PriceRef = useRef<RefType>(null)
   const textEditorRef = useRef<refTextEditor>(null)
   const [showPrice, setShowPrice] = useState(true)
+  const { option: optCate, setSearch } = useFethingOptionApi(configCategoryApi)
 
   return (
     <PermissonCheckLayout event={Event.CREATE}>
@@ -67,7 +71,8 @@ const AddProducts = () => {
 
             const data = {
               ...spread,
-              price: cvPrice === 0 ? "0" : cvPrice,
+              status: (spread?.status === 0 ? "0" : spread?.status) || "0",
+              price: (cvPrice === 0 ? "0" : cvPrice) || "0",
               isNegotiate
             }
 
@@ -109,6 +114,18 @@ const AddProducts = () => {
                   placeholder="Chọn trạng thái"
                   name="status"
                   options={optionsStatus}
+                  getValue={getValues}
+                  setValue={setValue}
+                />
+
+                <ReactSelectCus
+                  title="Danh mục"
+                  parenSelect="mb-3 col-md-12"
+                  placeholder="Chọn danh mục"
+                  name="cate_id"
+                  isRequire
+                  setValueSearch={setSearch}
+                  options={optCate}
                   getValue={getValues}
                   setValue={setValue}
                 />

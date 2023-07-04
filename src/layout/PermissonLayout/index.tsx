@@ -72,8 +72,9 @@ const PermissonLayout: FC<defaultProps> = ({ children }) => {
         if (config) {
           let key = ""
           const arrConfigRever = [...config].reverse()
+
           for (const item of arrConfigRever) {
-            const keyItem = Array.isArray(item?.key) ? item?.keyParent : item?.key
+            const keyItem = (Array.isArray(item?.key) || !item?.key) ? item?.keyParent : item?.key
             if (keyItem) {
               key = keyItem
               break

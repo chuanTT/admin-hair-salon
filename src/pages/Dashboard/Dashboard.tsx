@@ -31,7 +31,7 @@ const Dashboard = () => {
           <CardDefault full_name={user?.full_name} />
         </div>
 
-        <div className="col-lg-4 col-md-12 col-6 mb-[26px]">
+        <div className="col-lg-4 col-md-12 mb-[26px]">
           <div className="card h-full">
             <h5 className="card-header m-0 pb-3">Top nhân viên nổi bật</h5>
             <div>

@@ -1,5 +1,5 @@
 import { getSettings } from "@/api/otherApi"
-import { getProduct, tableProduct } from "@/api/productApi"
+import { getCategory, getProduct, tableCategory, tableProduct } from "@/api/productApi"
 import { getRoles, tableRole } from "@/api/rolesApi"
 import { getUser, tableUser } from "@/api/usersApi"
 import { configAll, funcKeyRole, funcUserIdKey, funcUserKey } from "@/common/ConfigSelectOption"
@@ -23,9 +23,16 @@ const configProductApi: useFetchingOptionApiProps = {
   isSearching: true
 }
 
+const configCategoryApi: useFetchingOptionApiProps = {
+  CallAPi: getCategory,
+  nameTable: tableCategory,
+  keySearching: "name",
+  isSearching: true
+}
+
 const configSettingApi: useFetchingApiParmeter = {
   nameTable: "settings",
-  CallAPi: getSettings,
+  CallAPi: getSettings
 }
 
 const configUserApi: useFetchingOptionApiProps = {
@@ -64,4 +71,13 @@ const configUserAllTrashApi: useFetchingOptionApiProps = {
   ...configUserAllApi
 }
 
-export { configRoleApi, configUserApi, configUserAllApi, configUserAllTrashApi, configUserIdApi, configProductApi, configSettingApi }
+export {
+  configRoleApi,
+  configUserApi,
+  configUserAllApi,
+  configUserAllTrashApi,
+  configUserIdApi,
+  configProductApi,
+  configSettingApi,
+  configCategoryApi
+}

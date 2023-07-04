@@ -1,8 +1,9 @@
+import { isEmptyObj, isObject } from "@/common/functions"
 import qs from "qs"
 
 export default class Parser {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  uri: any
+  uri: string
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   query: any
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -35,7 +36,7 @@ export default class Parser {
    */
   includes() {
     // eslint-disable-next-line no-extra-boolean-cast
-    if (!!((!this.query.include.length) ?? 0 > 0)) {
+    if (!(this.query.include.length > 0)) {
       return
     }
 
@@ -43,7 +44,7 @@ export default class Parser {
   }
 
   appends() {
-    if ((!this.query.append.length) ?? 0 > 0) {
+    if (!(this.query.append.length > 0)) {
       return
     }
 
@@ -51,7 +52,7 @@ export default class Parser {
   }
 
   fields() {
-    if ((!Object.keys(this.query.fields).length) ?? 0 > 0) {
+    if (!(Object.keys(this.query.fields).length > 0)) {
       return
     }
 
@@ -62,7 +63,7 @@ export default class Parser {
   }
 
   filters() {
-    if ((!Object.keys(this.query.filters).length) ?? 0 > 0) {
+    if (!(Object.keys(this.query.filters).length > 0)) {
       return
     }
 
@@ -73,7 +74,7 @@ export default class Parser {
   }
 
   sorts() {
-    if ((!this.query.sorts.length) ?? 0 > 0) {
+    if (!(this.query.sorts.length > 0)) {
       return
     }
 
@@ -105,7 +106,7 @@ export default class Parser {
   }
 
   params() {
-    if (this.query.paramsObj === null) {
+    if (this.query.paramsObj === null || (isObject(this.query.paramsObj) && isEmptyObj(this.query.paramsObj))) {
       return
     }
 

@@ -474,6 +474,25 @@ function DateMothYear(date = "") {
   }
 }
 
+const parentSelect = (element: HTMLElement, selector: string) => {
+  let parentElement: HTMLElement | null = null
+  if (element) {
+    if (element.matches(selector)) {
+      parentElement = element
+    } else {
+      let elementCheck: HTMLElement | null = element
+      while (elementCheck?.parentElement) {
+        if (elementCheck?.parentElement?.matches(selector)) {
+          parentElement = elementCheck?.parentElement
+          break
+        }
+        elementCheck = elementCheck?.parentElement
+      }
+    }
+  }
+  return parentElement
+}
+
 export {
   requestAnimationFrameAccordion,
   decrementHeight,
@@ -498,5 +517,6 @@ export {
   fucStyleCovert,
   checkViewsFuc,
   fucBreadCrumb,
-  DateMothYear
+  DateMothYear,
+  parentSelect
 }

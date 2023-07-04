@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { Link, NavLink } from "react-router-dom"
 import { RiMenu2Fill } from "react-icons/ri"
 import { BiUser } from "react-icons/bi"
@@ -16,6 +16,8 @@ const Header = () => {
   const [isOpen, setIsOpen] = useState(false)
   const [isShow, setIsShow] = useState(false)
   const [isPending, setIsPending] = useState(false)
+  const trigger = useRef<HTMLDivElement>(null)
+  const dropdown = useRef<HTMLUListElement>(null)
 
   useEffect(() => {
     const initPadding = () => {
@@ -63,6 +65,22 @@ const Header = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // close on click outside
+  useEffect(() => {
+    const clickHandler = ({ target }: MouseEvent) => {
+      if (!dropdown.current) return
+      if (
+        !isOpen ||
+        dropdown.current?.contains(target as HTMLElement) ||
+        trigger.current?.contains(target as HTMLElement)
+      )
+        return
+      setIsOpen(false)
+    }
+    document.addEventListener("click", clickHandler)
+    return () => document.removeEventListener("click", clickHandler)
+  }, [isOpen])
+
   return (
     <nav
       className="layout-navbar !mx-0 max-1200:!top-0 !max-w-none !fixed transition-all duration-150 navbar navbar-expand-xl navbar-detached bg-navbar-theme flex items-center"
@@ -86,11 +104,17 @@ const Header = () => {
         <ul className="navbar-nav flex-row align-items-center ms-auto">
           <li className="nav-item navbar-dropdown dropdown-user dropdown">
             <div className="nav-link dropdown-toggle hide-arrow" data-bs-toggle="dropdown">
-              <div className="avatar avatar-online select-none" onClick={() => setIsOpen(!isOpen)} aria-hidden="true">
+              <div
+                ref={trigger}
+                className="avatar avatar-online select-none"
+                onClick={() => setIsOpen(!isOpen)}
+                aria-hidden="true"
+              >
                 <Images src={user?.avatar} w={"100%"} h={"100%"} alt="avatar" isRounded />
               </div>
             </div>
             <ul
+              ref={dropdown}
               className={`dropdown-menu right-0 z-10 !block transition-all duration-300 ${
                 isOpen ? "opacity-100 visible" : "opacity-0 invisible translate-y-5"
               }`}
@@ -100,13 +124,7 @@ const Header = () => {
                   <div className="d-flex">
                     <div className="flex-shrink-0 me-3">
                       <div className="avatar avatar-online">
-                        <Images
-                          src={user?.avatar}
-                          w={"100%"}
-                          h={"100%"}
-                          alt="avatar"
-                          isRounded
-                        />
+                        <Images src={user?.avatar} w={"100%"} h={"100%"} alt="avatar" isRounded />
                       </div>
                     </div>
                     <div className="flex-grow-1">

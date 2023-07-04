@@ -4,6 +4,7 @@ import config from "@/config"
 import TablePagination from "@/layout/TablePagination"
 import FilterCategory from "@/partials/Products/FilterCategory"
 import { DeteleFuc, EditFuc } from "@/config/configEvent"
+import { typeEventClick } from "@/types"
 
 const CategoryList = () => {
   const idCate = useRef({ id: 0, isEdit: false })
@@ -18,7 +19,7 @@ const CategoryList = () => {
       { ...restDelete },
       {
         ...restEdit,
-        onClick(obj) {
+        onClick(obj: typeEventClick) {
           const { id } = obj
           idCate.current = {
             ...idCate.current,

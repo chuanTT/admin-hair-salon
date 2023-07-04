@@ -1,5 +1,13 @@
 import router from "./router"
-import { configProduct, configUsers, configBlog, configPermission, configProductSildeShow, configCategory } from "./configTable"
+import {
+  configProduct,
+  configUsers,
+  configBlog,
+  configTopUser,
+  configPermission,
+  configProductSildeShow,
+  configCategory
+} from "./configTable"
 import { typeObject } from "@/types"
 
 interface objFilter {
@@ -19,7 +27,8 @@ const config = {
     configBlog,
     configPermission,
     configProductSildeShow,
-    configCategory
+    configCategory,
+    configTopUser
   },
   filter: {
     user: ({ searchValue, is_deleted }: objFilter) => {

@@ -14,7 +14,8 @@ const Table: FC<TableProps> = ({
   configFuc,
   provider,
   checkEvents,
-  nameRole
+  nameRole,
+  isTransparent = false
 }) => {
   const [tbody, setTbody] = useState<configProps[] | []>([])
 
@@ -40,6 +41,7 @@ const Table: FC<TableProps> = ({
     <CustomScrollTable
       isNoResult={!(data?.data && Array.isArray(data?.data) && data?.data?.length > 0)}
       isFetched={!!provider?.isFetched}
+      isTransparent={isTransparent}
     >
       {(refTable) => {
         return (

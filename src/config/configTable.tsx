@@ -137,21 +137,45 @@ const configPermission: configProps[][] = [
   ]
 ]
 
+const configTopUser: configProps[][] = [
+  [
+    {
+      key: "full_name",
+      head: "Họ và tên"
+    },
+
+    {
+      key: "user_name",
+      head: "Bí danh"
+    },
+
+    {
+      key: "count_blog",
+      head: "Số lượng bài viết",
+      classBodyCus: "text-center",
+      customValue(value) {
+        return value?.toString()
+      },
+    }
+  ]
+]
+
+
 const configProductSildeShow: configProps[][] = [
   [
-    // {
-    //   key: "big_thumb",
-    //   head: "Hình ảnh",
-    //   classCustom: "w-[80px]",
-    //   isCus: true,
-    //   element: ({ data }) => {
-    //     return (
-    //       <div className="flex justify-center items-center">
-    //         <Images w={60} h={60} className="" src={(data as string) ?? ""} alt={"hình ảnh"} />
-    //       </div>
-    //     )
-    //   }
-    // },
+    {
+      key: "big_thumb",
+      head: "Hình ảnh",
+      classCustom: "w-[80px]",
+      isCus: true,
+      element: ({ data }) => {
+        return (
+          <div className="flex justify-center items-center">
+            <Images w={60} h={60} className="" src={(data as string) ?? ""} alt={"hình ảnh"} />
+          </div>
+        )
+      }
+    },
 
     {
       key: ["user", "full_name"],
@@ -210,4 +234,4 @@ const configCategory: configProps[][] = [
   ]
 ]
 
-export { configProduct, configUsers, configBlog, configPermission, configProductSildeShow, configCategory }
+export { configProduct, configUsers, configBlog, configTopUser, configPermission, configProductSildeShow, configCategory }

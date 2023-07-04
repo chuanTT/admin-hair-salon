@@ -2,6 +2,7 @@ import { typeObject } from "@/types"
 import HTTP from "./axiosClient"
 
 const tableOther = "other"
+const TableTopUser = "top-user"
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 const getOtherCount = (url?: string) => {
@@ -28,4 +29,18 @@ const getSettings = (url?: string) => {
   return HTTP.get(`${tableOther}/settings` ?? url)
 }
 
-export { getOtherCount, tableOther, getLoadSettingsLogo, UpdateLogo, getSettings, UpdateIcon, getChartDoashBoard }
+const getTopUser = (url?: string) => {
+  return HTTP.get(`${tableOther}${url}`)
+}
+
+export {
+  getOtherCount,
+  tableOther,
+  TableTopUser,
+  getTopUser,
+  getLoadSettingsLogo,
+  UpdateLogo,
+  getSettings,
+  UpdateIcon,
+  getChartDoashBoard
+}

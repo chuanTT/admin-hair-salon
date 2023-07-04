@@ -10,7 +10,7 @@ interface CardCouterProps {
 
 const CardCouter: FC<CardCouterProps> = ({ title, counter, desc, src }) => {
     return (
-        <div className="col-lg-6 col-md-12 col-6 mb-4">
+        <div className="col-lg-4 col-md-12 col-6 mb-[26px]">
             <div className="card h-full">
                 <div className="card-body">
                     <div className="card-title d-flex align-items-start justify-content-between">

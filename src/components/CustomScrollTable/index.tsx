@@ -6,11 +6,13 @@ import Loading from "../Loading"
 const CustomScrollTable = ({
   children,
   isNoResult = true,
-  isFetched = false
+  isFetched = false,
+  isTransparent = false
 }: {
   children: (refTable: MutableRefObject<HTMLTableElement | null>) => JSX.Element
   isNoResult: boolean
   isFetched: boolean
+  isTransparent?: boolean
 }) => {
   const scrollContainer = useRef<HTMLDivElement | null>(null)
   const scrollThumb = useRef<HTMLDivElement | null>(null)
@@ -25,9 +27,9 @@ const CustomScrollTable = ({
         const { top } = scrollContainer.current.getBoundingClientRect()
         const { height: heightThumb } = scrollBg.current.getBoundingClientRect()
         const { width: wTable, top: topTable, height: heightTable } = TableContainer.current.getBoundingClientRect()
-        const thead = TableContainer.current.querySelector('thead')
+        const thead = TableContainer.current.querySelector("thead")
         let hThead = 0
-        if(thead) {
+        if (thead) {
           hThead = thead?.clientHeight
         }
         scrollThumb.current.style.width = `${wTable}px`
@@ -35,7 +37,7 @@ const CustomScrollTable = ({
         const topElement = heightWindow - top - heightThumb
         const maxScroll = top + heightTable - heightThumb
 
-        if (!(heightWindow > topTable + hThead) ||  maxScroll < heightWindow ) {
+        if (!(heightWindow > topTable + hThead) || maxScroll < heightWindow) {
           scrollBg.current.style.display = `none`
         } else {
           scrollBg.current.style.display = `block`
@@ -86,7 +88,7 @@ const CustomScrollTable = ({
 
   return (
     <>
-      <div className="bg-white shadow-lg rounded-sm relative">
+      <div className={`${isTransparent ? "" : "bg-white shadow-lg"} rounded-sm relative`}>
         <div className="absolute left-0 w-full h-5 overflow-x-auto overflow-y-hidden z-[5]" ref={scrollBg}>
           <div className="h-5" ref={scrollThumb}></div>
         </div>
@@ -104,7 +106,6 @@ const CustomScrollTable = ({
           </div>
         )}
       </div>
-
     </>
   )
 }

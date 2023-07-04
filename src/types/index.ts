@@ -163,6 +163,7 @@ export interface TableProps {
   provider?: TypeValue
   checkEvents?: TypeEventPermission
   nameRole?: string
+  isTransparent?: boolean
 }
 
 export interface paginationType {

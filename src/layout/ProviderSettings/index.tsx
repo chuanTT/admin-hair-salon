@@ -16,6 +16,20 @@ export interface dataSettingsApi {
     }
     src?: string
   }
+  company: {
+    company_name?: string
+    phone?: string
+    email?: string
+    fanpage_id?: string
+    address: {
+      text?: string
+      link?: string
+    }
+    link_page: {
+      url?: string
+      is_show_page?: number
+    }
+  }
 }
 
 export interface valueSettingsProps {

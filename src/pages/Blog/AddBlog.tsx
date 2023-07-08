@@ -41,9 +41,10 @@ const AddBlog = () => {
             const data = {
               ...spread
             }
-            console.log(thumb_blog)
             const formData = SendFormData(data)
-            config.formDataFile([thumb_blog], formData, "thumb-blog")
+            if (thumb_blog) {
+              config.formDataFile([thumb_blog], formData, "thumb-blog")
+            }
 
             return formData
           }}

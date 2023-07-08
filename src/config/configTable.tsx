@@ -1,3 +1,4 @@
+import { UpdateSectionShow, UpdateSectionShowIndex } from "@/api/sectionApi"
 import { NowDate, formatDate, numberMoneyVND } from "@/common/functions"
 import Images from "@/components/Images"
 import UpdateShowSlider from "@/partials/Products/UpdateShowSlider"
@@ -155,11 +156,10 @@ const configTopUser: configProps[][] = [
       classBodyCus: "text-center",
       customValue(value) {
         return value?.toString()
-      },
+      }
     }
   ]
 ]
-
 
 const configProductSildeShow: configProps[][] = [
   [
@@ -234,4 +234,80 @@ const configCategory: configProps[][] = [
   ]
 ]
 
-export { configProduct, configUsers, configBlog, configTopUser, configPermission, configProductSildeShow, configCategory }
+const configSocials: configProps[][] = [
+  [
+    {
+      key: "thumb",
+      head: "Hình ánh",
+      isCus: true,
+      classCustom: "w-px",
+      element: ({ data, current }) => {
+        return <Images className="m-auto" w={32} h={32} src={(data as string) ?? ""} alt={current?.name} />
+      }
+    },
+    {
+      key: "name",
+      head: "Tiêu đề"
+    },
+
+    {
+      key: "url",
+      head: "Đường dẫn"
+    }
+  ]
+]
+
+const configSection: configProps[][] = [
+  [
+    {
+      key: "thumb",
+      head: "Hình ảnh",
+      isCus: true,
+      classCustom: "w-px",
+      element: ({ data, current }) => {
+        return <Images className="m-auto" w={80} h={80} src={(data as string) ?? ""} alt={current?.name} />
+      }
+    },
+    {
+      key: "title",
+      head: "Tiêu đề"
+    },
+
+    {
+      key: "sub_title",
+      head: "Tiêu đề phụ"
+    },
+
+    {
+      key: "is_show",
+      head: "Trạng thái",
+      isCus: true,
+      classCustom: "text-center",
+      element: ({ current }) => {
+        return <UpdateShowSlider current={current} callApi={UpdateSectionShow} />
+      }
+    },
+
+    {
+      key: "show_index",
+      head: "Hiển thị trang chủ",
+      classCustom: "text-center",
+      isCus: true,
+      element: ({ current }) => {
+        return <UpdateShowSlider current={current} callApi={UpdateSectionShowIndex} keyProps="show_index" />
+      }
+    }
+  ]
+]
+
+export {
+  configProduct,
+  configSocials,
+  configUsers,
+  configBlog,
+  configTopUser,
+  configPermission,
+  configProductSildeShow,
+  configCategory,
+  configSection
+}

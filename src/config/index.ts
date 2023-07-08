@@ -6,7 +6,9 @@ import {
   configTopUser,
   configPermission,
   configProductSildeShow,
-  configCategory
+  configCategory,
+  configSocials,
+  configSection
 } from "./configTable"
 import { typeObject } from "@/types"
 
@@ -28,7 +30,9 @@ const config = {
     configPermission,
     configProductSildeShow,
     configCategory,
-    configTopUser
+    configTopUser,
+    configSocials,
+    configSection
   },
   filter: {
     user: ({ searchValue, is_deleted }: objFilter) => {

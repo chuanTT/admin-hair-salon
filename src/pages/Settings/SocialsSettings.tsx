@@ -1,14 +1,14 @@
 import { useMemo, useRef, useState } from "react"
-import { deleletCategory, getCategory, tableCategory } from "@/api/productApi"
 import config from "@/config"
 import TablePagination from "@/layout/TablePagination"
-import FilterCategory from "@/partials/Products/FilterCategory"
 import { DeteleFuc, EditFuc } from "@/config/configEvent"
 import { typeEventClick } from "@/types"
 import { isEmptyObj } from "@/common/functions"
+import { deleteSocials, getSocials, tableSocials } from "@/api/socialsApi"
+import FilterSocials from "@/partials/Settings/FilterSocials"
 
-const CategoryList = () => {
-  const idCate = useRef({ id: 0, isEdit: false })
+const SocialsSettings = () => {
+  const idSocials = useRef({ id: 0, isEdit: false })
   const [isOpen, setIsOpen] = useState(false)
 
   const configFuc = useMemo(() => {
@@ -22,8 +22,8 @@ const CategoryList = () => {
         ...restEdit,
         onClick(obj: typeEventClick) {
           const { id } = obj
-          idCate.current = {
-            ...idCate.current,
+          idSocials.current = {
+            ...idSocials.current,
             id: id as number,
             isEdit: true
           }
@@ -35,11 +35,11 @@ const CategoryList = () => {
 
   return (
     <TablePagination
-      configDetail={config.table.configCategory}
-      nameTable={tableCategory}
-      callApi={getCategory}
+      configDetail={config.table.configSocials}
+      nameTable={tableSocials}
+      callApi={getSocials}
       isDelete
-      callApiDelete={deleletCategory}
+      callApiDelete={deleteSocials}
       configFuc={configFuc}
       is_checkEvent
       customUrl={({ nameTable, query, limit, page, searchValue }) => {
@@ -51,9 +51,9 @@ const CategoryList = () => {
         return url?.url()
       }}
     >
-      <FilterCategory idCate={idCate} isOpenModal={isOpen} setIsOpenModal={setIsOpen} />
+      <FilterSocials idCate={idSocials} isOpenModal={isOpen} setIsOpenModal={setIsOpen} />
     </TablePagination>
   )
 }
 
-export default CategoryList
+export default SocialsSettings

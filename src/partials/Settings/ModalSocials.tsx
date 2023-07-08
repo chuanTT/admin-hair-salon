@@ -1,11 +1,14 @@
-import { FC, Dispatch, SetStateAction } from "react"
+import { FC, Dispatch, SetStateAction, useRef } from "react"
 import * as Yup from "yup"
 import Portal from "@/components/Portal"
 import Modal from "@/components/Modal"
 import FormHandel from "@/components/FormHandel"
 import { InputField } from "@/components/CustomField"
 import ButtonLoading from "@/components/ButtonLoading"
-import { addCategory, getCategory, tableCategory, updateCategory } from "@/api/productApi"
+import ListImagesUploadFile, { refListImage } from "@/components/CustomField/ListImagesUploadFile"
+import { AddSocials, UpdateSocials, getSocials, tableSocials } from "@/api/socialsApi"
+import SendFormData from "@/components/FormHandel/SendFormData"
+import config from "@/config"
 
 interface ModalDeleteCusProps {
   isOpen: boolean
@@ -23,14 +26,17 @@ interface ModalDeleteCusProps {
 }
 
 const defaultValue = {
-  name: ""
+  name: "",
+  url: "",
+  thumb: ""
 }
 
 const schema = Yup.object().shape({
-  name: Yup.string().required("Vui lòng nhập tên danh mục")
+  name: Yup.string().required("Vui lòng nhập tên danh mục"),
+  url: Yup.string().required("Vui lòng nhập đường dẫn")
 })
 
-const ModalAddCategory: FC<ModalDeleteCusProps> = ({
+const ModalSocials: FC<ModalDeleteCusProps> = ({
   isOpen,
   setIsOpen,
   closeToastEvent,
@@ -39,6 +45,8 @@ const ModalAddCategory: FC<ModalDeleteCusProps> = ({
   isEdit,
   id
 }) => {
+  const imagesRef = useRef<refListImage>(null)
+
   return (
     <Portal>
       <Modal classModalWidth="max-sm:w-[90%]" isOpen={isOpen} setIsOpen={setIsOpen} isClose>
@@ -47,23 +55,43 @@ const ModalAddCategory: FC<ModalDeleteCusProps> = ({
           msgObj={msgObj}
           defaultValues={defaultValue}
           closeToastEvent={({ propForm }) => {
-            propForm?.reset && propForm?.reset()
+            !isEdit && propForm?.reset && propForm?.reset()
+            imagesRef.current && imagesRef.current?.clearImage?.()
             closeToastEvent && closeToastEvent()
-            setIsOpen(false)
           }}
           isEdit={isEdit ?? false}
           id={id}
-          callApiEdit={getCategory}
-          nameTable={tableCategory}
-          sussFuc={sussFucMsg}
+          callApiEdit={getSocials}
+          nameTable={tableSocials}
+          sussFuc={() => {
+            sussFucMsg && sussFucMsg()
+            setIsOpen(false)
+          }}
+          customValue={({ propForm, data, key }) => {
+            if (propForm) {
+              if (key === "thumb") {
+                imagesRef.current && imagesRef.current?.setSrc?.(data?.thumb)
+                return true
+              }
+            }
+          }}
+          customValuesData={(values) => {
+            const { thumb, ...spread } = values
+            const formData = SendFormData(spread)
+            if (thumb) {
+              config.formDataFile([thumb], formData, "thumb")
+            }
+            return formData
+          }}
           removeClassForm
           isValidate
           schema={schema}
-          callApi={(value) => (isEdit ? updateCategory(id ?? 0, value) : addCategory(value))}
+          callApi={(value) => (isEdit ? UpdateSocials(id ?? 0, value) : AddSocials(value))}
         >
           {({ isPending, propForm }) => {
             const {
               reset,
+              setValue,
               register,
               formState: { errors }
             } = propForm
@@ -74,18 +102,36 @@ const ModalAddCategory: FC<ModalDeleteCusProps> = ({
                   <div className="sm:flex sm:items-start w-full">
                     <div className="text-left w-full">
                       <h3 className="text-lg leading-6 font-medium text-gray-900">
-                        {isEdit ? "Chỉnh sửa" : "Thêm"} danh mục
+                        {isEdit ? "Chỉnh sửa" : "Thêm"} mạng xã hội
                       </h3>
                       <div className="mt-4">
                         <div className="row">
                           <InputField
                             classInputContainer="col-md-12 mb-3"
-                            title="Tên danh mục"
-                            placeholder="Nhập tên danh mục"
+                            title="Tiều đề"
+                            placeholder="Nhập tiều đề"
                             name="name"
                             register={register}
                             isRequire
                             errors={errors}
+                          />
+
+                          <InputField
+                            classInputContainer="col-md-12 mb-3"
+                            title="Đường dẫn"
+                            placeholder="Nhập đường dẫn"
+                            name="url"
+                            register={register}
+                            isRequire
+                            errors={errors}
+                          />
+
+                          <ListImagesUploadFile
+                            setValue={setValue}
+                            ref={imagesRef}
+                            title="Hình ảnh"
+                            name="thumb"
+                            register={register}
                           />
                         </div>
                       </div>
@@ -98,6 +144,7 @@ const ModalAddCategory: FC<ModalDeleteCusProps> = ({
                       onClick={(e) => {
                         e.preventDefault()
                         reset && reset()
+                        imagesRef.current && imagesRef.current?.clearImage?.()
                         !isPending && setIsOpen((prev) => !prev)
                       }}
                       classCustom="bg-red-600 hover:bg-red-500 text-white max-sm:min-w-[88px]"
@@ -120,4 +167,4 @@ const ModalAddCategory: FC<ModalDeleteCusProps> = ({
   )
 }
 
-export default ModalAddCategory
+export default ModalSocials

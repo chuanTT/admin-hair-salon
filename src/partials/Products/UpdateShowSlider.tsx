@@ -5,8 +5,18 @@ import SwitchRadio, { RefSwitchRadio } from "@/components/CustomField/SwitchRadi
 import { typeElment, typeObject } from "@/types"
 import ToastCustom, { TypeToast } from "@/components/ToastCustom"
 import { MsgType } from "@/common/functions"
+import { AxiosResponse } from "axios"
 
-const UpdateShowSlider = ({ current }: typeElment) => {
+interface UpdateShowSliderProps extends typeElment {
+  callApi?: (
+    id: number | string,
+    data: number | string | FormData | undefined | typeObject
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  ) => Promise<AxiosResponse<any, any>>
+  keyProps?: string
+}
+
+const UpdateShowSlider = ({ current, callApi, keyProps = "is_show" }: UpdateShowSliderProps) => {
   const [isShowToast, setIsShowToast] = useState(false)
   const refRadio = useRef<RefSwitchRadio>(null)
   const msgObj = useRef({ title: "", type: TypeToast.WARN })
@@ -19,13 +29,14 @@ const UpdateShowSlider = ({ current }: typeElment) => {
 
   useEffect(() => {
     if (refRadio.current) {
-      refRadio.current?.setValue?.(current?.is_show === 1 ? true : false)
+      refRadio.current?.setValue?.(current?.[keyProps] === 1 ? true : false)
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [current])
 
   const { mutate } = useMutation({
     mutationFn: (value: string | number | typeObject) => {
-      return UpdateProductSlider(current?.id, value)
+      return !callApi ? UpdateProductSlider(current?.id, value) : callApi(current?.id, value)
     },
 
     onError: () => {
@@ -57,9 +68,9 @@ const UpdateShowSlider = ({ current }: typeElment) => {
       <div className="flex justify-center items-center">
         <SwitchRadio
           ref={refRadio}
-          isCheck={current?.is_show === 1 ? true : false}
+          isCheck={current?.[keyProps] === 1 ? true : false}
           ClickRadio={(checked) => {
-            mutate({ is_show: checked ? 1 : "0" })
+            mutate({ [keyProps]: checked ? 1 : "0" })
           }}
           classChecked="#4f46e5"
         />

@@ -17,10 +17,14 @@ const router = {
   login: "/login",
   settings: "/settings",
   generalSettings: "general-settings",
+  socialsSettings: "socials-settings",
   permission: "permission",
+  section: "/section",
+  addSection: "add-section",
+  editSection: "edit-section/:id",
   me: "/me",
   404: "/404",
-  403: "/403",
+  403: "/403"
 }
 
 export default router

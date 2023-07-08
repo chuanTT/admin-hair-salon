@@ -3,7 +3,7 @@ import { createBrowserRouter, defer, IndexRouteObject, Navigate, NonIndexRouteOb
 import { ComponentType, lazy, LazyExoticComponent, Suspense } from "react"
 import config from "@/config"
 import { IoHome, IoSettingsSharp } from "react-icons/io5"
-import { BsFillPeopleFill } from "react-icons/bs"
+import { BsFillBoxFill, BsFillPeopleFill } from "react-icons/bs"
 import { FaProductHunt } from "react-icons/fa"
 import { GiOpenBook } from "react-icons/gi"
 import { verifyToken } from "@/api/authApi"
@@ -47,6 +47,11 @@ const NoPermission = Loadable(lazy(() => import("@/pages/NoPermission")))
 const MyProfile = Loadable(lazy(() => import("@/pages/MyProfile")))
 const Permission = Loadable(lazy(() => import("@/pages/Settings/Permission")))
 const GeneralSettings = Loadable(lazy(() => import("@/pages/Settings/GeneralSettings")))
+const SocialsSettings = Loadable(lazy(() => import("@/pages/Settings/SocialsSettings")))
+
+const SectionList = Loadable(lazy(() => import("@/pages/Section/SectionList")))
+const AddSection = Loadable(lazy(() => import("@/pages/Section/AddSection")))
+const EditSection = Loadable(lazy(() => import("@/pages/Section/EditSection")))
 
 export enum typeRouter {
   public = "public",
@@ -211,7 +216,7 @@ export const router: CustomRouteConfig[] = [
               {
                 path: config.router.category,
                 title: "Danh sách danh mục",
-                element: <CategoryList />,
+                element: <CategoryList />
               }
             ]
           },
@@ -255,6 +260,32 @@ export const router: CustomRouteConfig[] = [
           },
 
           {
+            path: config.router.section,
+            title: "Thành phần",
+            icon: BsFillBoxFill,
+            children: [
+              {
+                index: true,
+                title: "Danh sách thành phần",
+                element: <SectionList />
+              },
+
+              {
+                path: config.router.addSection,
+                title: "Thêm thành phần",
+                element: <AddSection />
+              },
+
+              {
+                path: config.router.editSection,
+                title: "Chỉnh sửa thành phần",
+                element: <EditSection />,
+                isNoRender: true
+              }
+            ]
+          },
+
+          {
             path: config.router.settings,
             title: "Cài đặt",
             icon: IoSettingsSharp,
@@ -270,6 +301,11 @@ export const router: CustomRouteConfig[] = [
                 title: "Cài đặt chung",
                 role: [RoleList.ROOT, RoleList.ADMIN],
                 element: <GeneralSettings />
+              },
+              {
+                path: config.router.socialsSettings,
+                element: <SocialsSettings />,
+                title: "Mạng xã hội"
               },
               {
                 path: config.router.permission,

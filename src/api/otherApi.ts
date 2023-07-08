@@ -25,6 +25,11 @@ const UpdateIcon = (data: number | string | FormData | undefined | typeObject) =
   return HTTP.post(`${tableOther}/settings/update_icon`, data)
 }
 
+const UpdateCompanyApi = (data: number | string | FormData | undefined | typeObject) => {
+  return HTTP.post(`${tableOther}/settings/company`, data)
+}
+
+
 const getSettings = (url?: string) => {
   return HTTP.get(`${tableOther}/settings` ?? url)
 }
@@ -42,5 +47,6 @@ export {
   UpdateLogo,
   getSettings,
   UpdateIcon,
-  getChartDoashBoard
+  getChartDoashBoard,
+  UpdateCompanyApi
 }

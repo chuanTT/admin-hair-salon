@@ -1,16 +1,37 @@
 import Breadcrumb from "@/components/Breadcrumb"
 import FormHandel from "@/components/FormHandel"
-import { UpdateIcon, UpdateLogo } from "@/api/otherApi"
+import { UpdateCompanyApi, UpdateIcon, UpdateLogo } from "@/api/otherApi"
 import SendFormData from "@/components/FormHandel/SendFormData"
 import { useProviderSettings } from "@/layout/ProviderSettings"
 import UpdateLogoSetting from "@/partials/Settings/UpdateLogoSetting"
 import UpdateIconSetting from "@/partials/Settings/UpdateIconSetting"
+import UpdateCompany from "@/partials/Settings/UpdateCompany"
 
 const GeneralSettings = () => {
   const { dataSettings, isFetched, invalidateQueriesQueryClient } = useProviderSettings()
   return (
     <Breadcrumb>
       <div className="space-y-4">
+        <FormHandel
+          callApi={UpdateCompanyApi}
+          ClassForm="!rounded"
+          sussFuc={() => {
+            invalidateQueriesQueryClient && invalidateQueriesQueryClient()
+          }}
+        >
+          {({ propForm, setResertForm, isPending }) => {
+            return (
+              <UpdateCompany
+                company={dataSettings?.company}
+                propForm={propForm}
+                setResertForm={setResertForm}
+                isPending={isPending}
+                isFetchedSettings={isFetched}
+              />
+            )
+          }}
+        </FormHandel>
+
         <FormHandel
           callApi={UpdateLogo}
           ClassForm="!rounded"

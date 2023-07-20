@@ -8,14 +8,13 @@ import { FaProductHunt } from "react-icons/fa"
 import { GiOpenBook } from "react-icons/gi"
 import { verifyToken } from "@/api/authApi"
 import AuthLayout from "@/layout/AuthLayout"
-import Loading from "@/components/Loading"
 import ProviderSettings from "@/layout/ProviderSettings"
 import { Event, PermissionInterFace, RoleList } from "@/types"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () => {
   return (
-    <Suspense fallback={<Loading isCenterScreen />}>
+    <Suspense>
       <Comp />
     </Suspense>
   )

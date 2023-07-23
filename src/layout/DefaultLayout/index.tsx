@@ -17,6 +17,17 @@ export const layoutMenuFucRemove = (html?: HTMLElement | null) => {
   }
 }
 
+export const CloseMenu = () => {
+  const html = document.querySelector("html")
+  if (html?.classList?.contains("layout-menu-expanded")) {
+    html?.classList?.remove("layout-menu-expanded")
+  }
+  if (!html?.classList?.contains("layout-transitioning")) {
+    html?.classList?.add("layout-transitioning")
+    layoutMenuFucRemove(html)
+  }
+}
+
 const DefaultLayout = ({ children }: { children: ReactNode }) => {
   return (
     <PermissonLayout>
@@ -35,14 +46,7 @@ const DefaultLayout = ({ children }: { children: ReactNode }) => {
         <div
           className="layout-overlay layout-menu-toggle"
           onClick={() => {
-            const html = document.querySelector("html")
-            if (html?.classList?.contains("layout-menu-expanded")) {
-              html?.classList?.remove("layout-menu-expanded")
-            }
-            if (!html?.classList?.contains("layout-transitioning")) {
-              html?.classList?.add("layout-transitioning")
-              layoutMenuFucRemove(html)
-            }
+            CloseMenu()
           }}
           aria-hidden="true"
         ></div>

@@ -10,11 +10,12 @@ import { verifyToken } from "@/api/authApi"
 import AuthLayout from "@/layout/AuthLayout"
 import ProviderSettings from "@/layout/ProviderSettings"
 import { Event, PermissionInterFace, RoleList } from "@/types"
+import Loading from "@/components/Loading"
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any, @typescript-eslint/no-unused-vars
 export const Loadable = (Comp: LazyExoticComponent<ComponentType<any>>) => () => {
   return (
-    <Suspense>
+    <Suspense fallback={<Loading isCenterScreen isIndex />}>
       <Comp />
     </Suspense>
   )
@@ -67,11 +68,12 @@ type CustomRouteObjectParams = {
   role?: string | string[]
   isEvent?: boolean
   keyParent?: string
+  isShowAll?: boolean
 }
 
-type CustomIndexRouteObject = IndexRouteObject & CustomRouteObjectParams
+export type CustomIndexRouteObject = IndexRouteObject & CustomRouteObjectParams
 
-type CustomNonIndexRouteObject = Omit<NonIndexRouteObject, "children"> &
+export type CustomNonIndexRouteObject = Omit<NonIndexRouteObject, "children"> &
   CustomRouteObjectParams & {
     children?: (CustomIndexRouteObject | CustomNonIndexRouteObject)[]
   }

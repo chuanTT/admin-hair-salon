@@ -55,7 +55,7 @@ const Login = () => {
                     <Images
                       src={dataSettings?.logo?.src}
                       h={45}
-                      w={"auto"}
+                      w={134}
                       innerPropsImages={{ style: { ...settingsImg } }}
                     />
                   </span>

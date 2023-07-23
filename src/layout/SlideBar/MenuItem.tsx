@@ -1,17 +1,21 @@
-import { FC, Fragment } from "react"
+import { Dispatch, FC, Fragment, SetStateAction } from "react"
 import { NavLink, useLocation } from "react-router-dom"
 import config from "@/config"
 import AccordionWapper from "@/components/AccordionWapper"
 import { CustomRouteConfig } from "@/router/router"
 import { usePermissions } from "../PermissonLayout"
 import { CheckRolePermissionFuc } from "@/common/fuctionPermission"
+import { getPrivareRouterResult } from "@/common/functions"
+import { CloseMenu } from "../DefaultLayout"
 
 interface MenuItemProps {
   item: CustomRouteConfig
   titleDefault?: string
+  setMenuItemSlide?: Dispatch<SetStateAction<getPrivareRouterResult>>
+  index?: number
 }
 
-const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
+const MenuItem: FC<MenuItemProps> = ({ item, titleDefault, setMenuItemSlide, index }) => {
   const checkChildren = item?.children && Array.isArray(item?.children) && item?.children.length > 0
   const Icon = item?.icon || Fragment
   const location = useLocation()
@@ -24,6 +28,7 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
 
   return (
     <AccordionWapper
+      isUpdate={item?.isShowAll}
       customProgressOpen={(element) => {
         const parent = element?.parentElement
         if (!parent?.classList?.contains("open")) {
@@ -38,18 +43,17 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
       }}
       callBackUpdate={({ collapseAccordion, expandAccordion, setActive }) => {
         if (checkChildren) {
-          if (active) {
-            expandAccordion()
-            setActive(true)
+          if (item?.isShowAll) {
+            expandAccordion && expandAccordion()
+            setActive(item?.isShowAll)
           } else {
-            collapseAccordion()
+            collapseAccordion && collapseAccordion()
             setActive(false)
           }
-
         }
       }}
     >
-      {({ refButton, refContent, toggleAccordion }) => {
+      {({ refButton, refContent }) => {
         return (
           <li className={`menu-item ${active ? "active" : ""}`}>
             <NavLink
@@ -59,10 +63,37 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
               onClick={(e) => {
                 if (checkChildren) {
                   e.preventDefault()
-                  typeof toggleAccordion === "function" && toggleAccordion()
-                  return
+                } else {
+                  const wWindown = window.innerWidth
+                  if (wWindown < 1200) {
+                    CloseMenu()
+                  }
+                  keyItem && KeyPermission && KeyPermission(keyItem)
                 }
-                keyItem && KeyPermission && KeyPermission(keyItem)
+                setMenuItemSlide &&
+                  setMenuItemSlide((prev) => {
+                    let newPrev = [...prev.childrenRouter]
+
+                    if (Array.isArray(newPrev)) {
+                      newPrev = newPrev.map((item, indexPrev) => {
+                        if (indexPrev === index) {
+                          return {
+                            ...item,
+                            isShowAll: !item?.isShowAll
+                          }
+                        }
+                        return {
+                          ...item,
+                          isShowAll: false
+                        }
+                      })
+                    }
+
+                    return {
+                      privateRole: prev?.privateRole,
+                      childrenRouter: newPrev
+                    }
+                  })
               }}
             >
               <div className="menu-icon">
@@ -89,6 +120,10 @@ const MenuItem: FC<MenuItemProps> = ({ item, titleDefault }) => {
                             onClick={() => {
                               const keyChild = (Array.isArray(child?.key) ? "" : child?.key) ?? ""
                               KeyPermission && KeyPermission(keyChild || child?.keyParent || keyItem)
+                              const wWindown = window.innerWidth
+                              if (wWindown < 1200) {
+                                CloseMenu()
+                              }
                             }}
                           >
                             <span className="menu-link">

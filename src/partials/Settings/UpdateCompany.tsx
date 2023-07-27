@@ -1,6 +1,6 @@
 import { FC, useEffect } from "react"
 import { optionShow } from "@/common/optionStatic"
-import { InputField, ReactSelectCus } from "@/components/CustomField"
+import { InputField, ReactSelectCus, TextArea } from "@/components/CustomField"
 import { childrenFormHandel } from "@/components/FormHandel"
 import Loading from "@/components/Loading"
 import LayoutFormDefault from "@/layout/LayoutFormDefault"
@@ -17,7 +17,8 @@ enum defaultValueCompany {
   email = "email",
   address = "address",
   link_page = "link_page",
-  fanpage_id = "fanpage_id"
+  fanpage_id = "fanpage_id",
+  description = "description"
 }
 
 const defaultValues = {
@@ -26,7 +27,8 @@ const defaultValues = {
   [defaultValueCompany.email]: "",
   [defaultValueCompany.address]: "",
   [defaultValueCompany.link_page]: "",
-  [defaultValueCompany.fanpage_id]: ""
+  [defaultValueCompany.fanpage_id]: "",
+  [defaultValueCompany.description]: "",
 }
 
 const UpdateCompany: FC<UpdateCompanyProps> = ({ isFetchedSettings, propForm, isPending, company }) => {
@@ -122,6 +124,15 @@ const UpdateCompany: FC<UpdateCompanyProps> = ({ isFetchedSettings, propForm, is
             options={optionShow}
             getValue={getValues}
             setValue={setValue}
+          />
+
+          <TextArea
+            classAreaContainer="col-md-12 mb-3"
+            name="description"
+            register={register}
+            title="Mô tả công ty/cá nhân"
+            placeholder="Mô tả công ty/cá nhân"
+            rows={3}
           />
         </LayoutFormDefault>
       )}

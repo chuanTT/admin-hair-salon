@@ -3,7 +3,13 @@ import { TypeToast } from "@/components/ToastCustom"
 import config from "@/config"
 import { AUTH_LS_KEY } from "@/constants/LocalStorage"
 import { dataSettingsApi } from "@/layout/ProviderSettings"
-import { CustomRouteConfig, router, typeRouter } from "@/router/router"
+import {
+  CustomIndexRouteObject,
+  CustomNonIndexRouteObject,
+  CustomRouteConfig,
+  router,
+  typeRouter
+} from "@/router/router"
 import { requestAnimationFrameAccordionInterFace, typeEvent, typeObject } from "@/types"
 import moment from "moment"
 
@@ -279,7 +285,12 @@ const isObject = (obj: any) => {
   return isCheck
 }
 
-const getPrivateRouter = (isPrivate = true) => {
+export interface getPrivareRouterResult {
+  childrenRouter: (CustomIndexRouteObject | CustomNonIndexRouteObject)[]
+  privateRole: CustomRouteConfig | undefined
+}
+
+const getPrivateRouter = (isPrivate = true): getPrivareRouterResult => {
   const privateRole = isPrivate
     ? router?.[0]?.children?.find((itemRouter) => itemRouter?.type === typeRouter.private)
     : router?.[0]
